@@ -1,0 +1,30 @@
+//created on: Jun 2, 2018
+package rules
+
+//list any import classes here.
+import com.testEntities.Fare;
+import com.testEntities.TaxiRide;
+
+
+//declare any global variables here
+global testEntities.Fare rideFare;
+
+
+rule "Scenario1"
+
+    when
+        taxiRideInstance:TaxiRide(isNightSurcharge == false && distanceInMile < 10);
+    then
+        rideFare.setNightSurcharge(new Long(0));
+        rideFare.setRideFare(new Long(70));
+        System.out.println("Total: " + rideFare.getTotalFare());
+end
+
+rule "Your Second Rule"
+    //include attributes such as "salience" here...
+    when
+        //conditions
+    then
+        //actions
+
+end
