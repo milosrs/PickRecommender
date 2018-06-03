@@ -8,10 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public abstract class LeagueService {
-	private String eun1RiotApiURL = "https://eun1.api.riotgames.com/lol/platform/v3/";
-	private String riotApiKey = "api_key=RGAPI-b153cc56-22c1-4b52-9573-2697c6de3fe4";
+	protected String apiGroup;
+	protected String apiMethod;
+	protected String full_URL;
 	
-	private static void sendGET() throws IOException {
+	private static void sendGET(String methodName) throws IOException {
 		/*URL obj = new URL(GET_URL);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("GET");
