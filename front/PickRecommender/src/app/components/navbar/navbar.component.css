@@ -1,0 +1,4 @@
+.ScaleDown {
+    z-index: -1;
+    display: absolute;
+}
