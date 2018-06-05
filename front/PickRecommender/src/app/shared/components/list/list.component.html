@@ -1,0 +1,37 @@
+<div>
+  <div class="ListHeader">
+    {{header}}
+  </div>
+
+  <div class="ListWrapper" [ngStyle]="this.dynamicStyle" *ngIf="type == null || type == listType.COMMON" id="Common">
+    <ul class="list-group">
+      <li class="list-group-item ListItem" *ngFor="let item of items; let i = index" (click)="elementClicked(item)"
+          id={{i}}>
+            <div class="row">
+              <div class="col-sm-3 Image">
+                  <img *ngIf="item.imagePath != null && item.imagePath !== undefined" class="Image"
+                    src="{{item.imagePath}}"/>
+              </div>
+              <div class="col-sm-3 Text">
+                  {{item.text}}
+              </div>
+            </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="ListWrapper" [ngStyle]="this.dynamicStyle" *ngIf="type === listType.REQUEST_LIST" id="Request">
+    <ul class="list-group">
+      <li class="list-group-item RequestItem" *ngFor="let item of items; let i = index"
+          id="{{'RequestW'+i}}">
+          <app-request *ngIf="item.type === 'Accept-Decline' || selectedRequestType === null"
+                       [requestText]="item.text" 
+                       [type]="item.type" [relatedItem]="item.relatedItem"></app-request>
+          <app-request *ngIf="item.type === 'ADD-REMOVE'" id="{{'Request'+i}}"
+                       [requestText]="item.text" [type]="item.type" 
+                       (addRemoveClickEvent)="addRemove(item.relatedItem)" 
+                       [relatedItem]="item.relatedItem" #`Req+{{i}}`></app-request>
+      </li>
+    </ul>
+  </div>
+</div>

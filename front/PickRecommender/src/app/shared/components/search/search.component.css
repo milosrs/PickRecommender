@@ -1,0 +1,32 @@
+.SearchWrapper {
+  width: auto;
+  height: auto;
+  max-height: 350px;
+}
+
+.AutocompleteWrapper {
+  width: 40%;
+  margin-top:25px;
+  position: absolute;
+  z-index: 1;
+}
+
+.AutocompleteItem {
+  width: 50%;
+}
+
+.AutocompleteItem:Hover{
+  background-color: dodgerblue;
+  color: white;
+  cursor: pointer;
+}
+
+.SearchInput {
+  width: 60%;
+  height: 30px;
+}
+
+.DropDown {
+  width: 40%;
+  height: 30px;
+}

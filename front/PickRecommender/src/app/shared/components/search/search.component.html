@@ -1,0 +1,33 @@
+<div class="row SearchWrapper">
+  <div *ngIf="shouldHaveList === false">
+    <input type="text" name="search" placeholder="Search..." class="col-sm-8 SearchInput"
+           [(ngModel)]="text" (ngModelChange)="onInputChange($event)">
+    <select [(ngModel)]="selectedCriteria" class="col-sm-4 DropDown" (change)="criteriaChange($event)">
+      <option *ngFor="let crit of criteriaArray">
+        {{crit['view']}}
+      </option>
+    </select>
+
+    <ul class="list-group AutocompleteWrapper" *ngIf="shouldShowAutocomplete && searchResults.length > 0">
+      <li class="list-group-item AutocompleteItem" *ngFor="let result of searchResults; let i = index" (click)="elementClicked(result)"
+          id={{result.index}}>
+        {{searchResultToString(result)}}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="shouldHaveList">
+    <app-list [items]='createListItems()' [header]="header" [selectedRequestType]="requestType"
+              (onElementClickEvent)="elementClicked($event)"></app-list>
+    <div class="SearchWrapper">
+    <input type="text" name="search" placeholder="Search..." class="col-sm-8 SearchInput"
+           [(ngModel)]="text" (ngModelChange)="onInputChange($event)">
+    <select [(ngModel)]="selectedCriteria" class="col-sm-4 DropDown" (change)="criteriaChange($event)">
+      <option *ngFor="let crit of criteriaArray">
+        {{crit['view']}}
+      </option>
+    </select>
+    </div>
+  </div>
+
+</div>
