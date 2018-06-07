@@ -1,6 +1,7 @@
-<div class="container-fluid">
+<div class="container-fluid" [ngStyle]="{'background-color': 'black'}">
     <app-navbar></app-navbar>
 
-    <div id="content">
+    <div id="content" class="MainPage">
         <router-outlet></router-outlet>
     </div>
+</div>

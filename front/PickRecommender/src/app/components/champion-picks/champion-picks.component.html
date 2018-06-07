@@ -1,3 +1,17 @@
-<p>
-  champion-picks works!
-</p>
+<div class="container-fluid" [ngStyle]="{'margin-top' : '2%'}">
+  <div class="row">
+    <div class="col-3" [ngStyle]="{'background-color' : 'green'}">
+      <player-position
+        [playersType]="'Friendly'"
+        [customCss]="{'background-color' : 'green'}"></player-position>
+    </div>
+    <div class="col-6">
+      <champion-area></champion-area>
+    </div>
+    <div class="col-3" [ngStyle]="{'background-color' : 'red'}">
+        <player-position
+          [playersType]="'Opponent'"
+          [customCss]="{'background-color' : 'red'}"></player-position>
+    </div>
+  </div>
+</div>

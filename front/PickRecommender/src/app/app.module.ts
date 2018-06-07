@@ -14,6 +14,8 @@ import { RecommendedChampsComponent } from './components/recommended-champs/reco
 import { RunesComponent } from './components/runes/runes.component';
 import { SummonerSpellsComponent } from './components/summoner-spells/summoner-spells.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { PlayerPositionComponent } from './components/champion-picks/player-position/player-position.component';
+import { ChampionAreaComponent } from './components/champion-picks/champion-area/champion-area.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     RecommendedChampsComponent,
     RunesComponent,
     SummonerSpellsComponent,
-    NavbarComponent
+    NavbarComponent,
+    PlayerPositionComponent,
+    ChampionAreaComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,33 @@
+.CoinImage {
+    border-radius: 50%;
+    background: indigo;
+    border-style: outset;
+    border-color: goldenrod;
+}
+
+.Header {
+    margin-top: 3%;
+    margin-bottom: 1.5%;
+    justify-content: center;
+    color: gold;
+    background: linear-gradient(to right,darkblue, darkcyan);
+}
+
+.Section {
+    margin-top: 1%;
+    border-radius: 2%;
+    border-style: inset;
+    border-color: midnightblue;
+    border-collapse: separate;
+    padding-top: 0.75px;
+    padding-bottom: 0.3px;
+    color: yellowgreen;
+    background: darkcyan;
+}
+
+.Section:hover {
+    cursor: pointer;
+    background: seagreen;
+    color: gold;
+    border-color: dodgerblue;
+}

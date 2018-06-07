@@ -1,0 +1,5 @@
+.ScrollableArea {
+    background: url('../../../../assets/img/bg/A6000000.png');
+    overflow-y: scroll;
+    color: gold;
+}
