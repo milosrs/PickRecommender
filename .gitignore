@@ -23,3 +23,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+/front/PickRecommender/e2e
+/front/PickRecommender/node_modules
+/front/PickRecommender/src/assets
