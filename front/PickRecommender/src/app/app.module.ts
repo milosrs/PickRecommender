@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -16,6 +17,11 @@ import { SummonerSpellsComponent } from './components/summoner-spells/summoner-s
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlayerPositionComponent } from './components/champion-picks/player-position/player-position.component';
 import { ChampionAreaComponent } from './components/champion-picks/champion-area/champion-area.component';
+
+import { AbstractService } from './services/abstract.service';
+import { AuthService } from './services/auth.service';
+import { ChampionService } from './services/champion.service';
+import { SummonerService } from './services/summoner.service';
 
 @NgModule({
   declarations: [
@@ -33,11 +39,16 @@ import { ChampionAreaComponent } from './components/champion-picks/champion-area
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     CommonModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    ChampionService,
+    SummonerService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

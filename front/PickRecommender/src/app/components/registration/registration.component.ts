@@ -5,6 +5,9 @@ import { Message } from '../../shared/model/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgForm } from '@angular/forms';
+import { RealmList } from '../../model/realm-list';
+import { AuthService } from '../../services/auth.service';
+import { SummonerAuth } from '../../model/summonerAuth';
 
 @Component({
   selector: 'app-registration',
@@ -24,16 +27,17 @@ export class RegistrationComponent implements OnInit {
   private regInfo = {
     userName: null,
     password: null,
-    name: null,
-    lastName: null,
-    host: 'tmp'
+    realm: null
   };
   private errorMessage = null;
+  private serverList: any;
 
-  constructor(protected rt: Router) {
+  constructor(protected auth: AuthService, protected rt: Router) {
   }
 
   ngOnInit() {
+    this.serverList = new RealmList();
+    this.serverList = this.serverList.transformToObjectList();
   }
 
   tryRegister() {
@@ -42,7 +46,9 @@ export class RegistrationComponent implements OnInit {
     const shouldSendToServer = !areAnyEmptyValues && arePasswordsMatching;
 
     if (shouldSendToServer) {
-      this.regInfo.host = null;
+      this.errorMessage = null;
+      const summonerAuth = new SummonerAuth(this.regInfo.userName, this.regInfo.password, this.regInfo.realm);
+      this.auth.register(summonerAuth).subscribe(data => console.log(data), err => {console.log(err)}).unsubscribe();
     } else {
       this.clearImportantDetails();
       if (arePasswordsMatching === false) {
@@ -66,10 +72,8 @@ export class RegistrationComponent implements OnInit {
   clearAllInfo() {
     this.regInfo.password = '';
     this.repeatPW = '';
-    this.regInfo.name = '';
-    this.regInfo.lastName = '';
+    this.regInfo.realm = '';
     this.regInfo.userName = '';
-    this.regInfo.host = 'tmp';
   }
 
   clearImportantDetails() {

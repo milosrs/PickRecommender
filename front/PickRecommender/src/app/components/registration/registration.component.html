@@ -1,3 +1,5 @@
+<h3 align="center">Register to our website</h3>
+
 <div *ngIf="errorMessage !== null" class="errorContainer">
   <div class="alert alert-danger alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)='hideError()'>
@@ -43,6 +45,15 @@
       </div>
 
       <div class="form-group row">
+        <label for="realm" class="col-sm-4 control-label"> Select your realm: </label>
+        <select class="form-control col-sm-8" id="realm" [(ngModel)]="regInfo.realm" name="realmlist">
+          <option *ngFor="let server of serverList" [value] = "server.realmShort">
+            {{server.realmFull}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group row CenteredButton">
         <div align="center">
           <button type="button" class="btn btn-success" (click)="tryRegister()"
                   [disabled]="!regForm.valid">Register</button>

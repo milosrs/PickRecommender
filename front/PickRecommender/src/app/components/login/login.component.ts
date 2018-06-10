@@ -6,6 +6,8 @@ import { HomeComponent } from '../home/home.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgForm } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { AuthenticationRequest } from '../../model/authentication-request';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +28,7 @@ export class LoginComponent  implements OnInit {
     password: ''
   };
 
-  constructor(private router : Router) {
+  constructor(protected auth: AuthService, private router : Router) {
   }
 
   ngOnInit() {
@@ -40,6 +42,8 @@ export class LoginComponent  implements OnInit {
   tryLogin() {
     if (!HelperFunctions.containsEmptyValues(this.logInfo)) {
       this.errorMessage = null;
+      const authRequest = new AuthenticationRequest(this.logInfo.uname, this.logInfo.password);
+      this.auth.login(authRequest);
     }
   }
 
