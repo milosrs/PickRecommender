@@ -9,11 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import com.lol.dao.DaoException;
-import com.lol.dao.SummonerDao;
 import com.lol.model.summoner.SummonerAuth;
+import com.lol.repository.DaoException;
+import com.lol.repository.SummonerDao;
 
+@Service
 public class SummonerAuthService implements UserDetailsService {
 
 	@Autowired

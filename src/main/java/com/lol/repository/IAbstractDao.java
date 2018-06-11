@@ -1,8 +1,10 @@
-package com.lol.dao;
+package com.lol.repository;
 
 import java.util.List;
 
-public interface IAbstractDao<Entity, Key> {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IAbstractDao<Entity, Key> extends JpaRepository<Entity, Key> {
 
 	List<Entity> getAll() throws DaoException;
 	
@@ -13,8 +15,6 @@ public interface IAbstractDao<Entity, Key> {
 	Entity update(Entity entity) throws DaoException;
 	
 	List<Entity> getAllIn(List<Key> keys) throws DaoException;
-	
-	void delete(Key entity) throws DaoException;
 	
 	void initialize(Object proxy) throws DaoException;
 }

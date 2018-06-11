@@ -1,4 +1,4 @@
-package com.lol.dao;
+package com.lol.repository;
 
 import java.io.IOException;
 

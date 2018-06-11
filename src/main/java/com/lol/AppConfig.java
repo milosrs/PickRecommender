@@ -21,15 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class AppConfig implements WebMvcConfigurer{
-
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	@Autowired
-	private ApplicationContext applicationContext;
-
-	@Autowired
-	private EntityManager entityManager;
 	
 	@Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -44,23 +35,5 @@ public class AppConfig implements WebMvcConfigurer{
                 .maxAge(3600);
             }
         };
-    }
-	
-	@Bean
-	public MessageSource messageSource() {
-	    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-	    messageSource.setBasename("classpath:messages");
-	    messageSource.setCacheSeconds(100); //reload messages every 100 seconds
-	    return messageSource;
 	}
-	public static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/META-INF/resources/", "classpath:/resources/",
-            "classpath:/static/", "classpath:/public/" };
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-            .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
-        
-    }
 }

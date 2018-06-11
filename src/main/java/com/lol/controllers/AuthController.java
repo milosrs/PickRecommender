@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lol.dao.SummonerDao;
 import com.lol.model.summoner.SummonerAuth;
 import com.lol.model.summoner.SummonerDto;
 import com.lol.model.summoner.SummonerLoginAuth;
+import com.lol.repository.SummonerDao;
 import com.lol.requestSender.SummonerServiceRequestSender;
 import com.lol.security.JWTAuthenticationRequest;
 import com.lol.security.JWTAuthenticationResponse;

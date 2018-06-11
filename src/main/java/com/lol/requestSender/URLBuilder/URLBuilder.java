@@ -1,8 +1,8 @@
 package com.lol.requestSender.URLBuilder;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class URLBuilder {
 	private String realm;
 	private String riotApiURL = "https://{0}.api.riotgames.com/lol/{1}/v3/{2}/";

@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 import org.springframework.stereotype.Component;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
+@Component
 public class RestAuthenticationEntryPoint extends BasicAuthenticationEntryPoint{
 
 	@Override
