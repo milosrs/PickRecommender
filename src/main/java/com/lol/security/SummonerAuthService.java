@@ -12,20 +12,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lol.model.summoner.SummonerAuth;
-import com.lol.repository.DaoException;
-import com.lol.repository.SummonerDao;
 
 @Service
 public class SummonerAuthService implements UserDetailsService {
 
-	@Autowired
-	private SummonerDao dao;
-	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
 			List<SimpleGrantedAuthority> roleAuths = new ArrayList<>();
-			SummonerAuth summoner = dao.get(username);
+			SummonerAuth summoner = null;
 			if(summoner == null) {
 				throw new UsernameNotFoundException("Username not found");
 			}
@@ -45,7 +40,7 @@ public class SummonerAuthService implements UserDetailsService {
 			}*/
 			UserDetails userDetails = new SummonerDetails(summoner.getUsername(), summoner.getPassword());
 			return userDetails;
-		}catch(DaoException e) {
+		}catch(Exception e) {
 			throw new UsernameNotFoundException("Username not found. Error with database.");
 		}
 	}
