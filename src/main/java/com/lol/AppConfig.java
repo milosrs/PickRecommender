@@ -93,7 +93,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
     		.sessionManagement()
     		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     		.and()
-    		.authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated();
+    		.authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated()
+    		.and()
+    		.authorizeRequests().antMatchers("/champions/**").authenticated();
     	
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 	}
