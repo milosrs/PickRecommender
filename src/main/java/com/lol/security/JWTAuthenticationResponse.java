@@ -19,4 +19,8 @@ public class JWTAuthenticationResponse implements Serializable {
     public String getToken() {
         return this.token;
     }
+    
+    public SummonerDto getDto() {
+    	return this.dto;
+    }
 }

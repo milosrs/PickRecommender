@@ -16,10 +16,10 @@ public class URLBuilder {
 		this.realm = realm;
 		this.riotApiURL = this.riotApiURL.replace("{0}", realm)
 										 .replace("{1}", serviceUrl[0])
-										 .replace("{2}", serviceUrl[1]) + "/" + serviceUrl[2];
+										 .replace("{2}", serviceUrl[1]) + serviceUrl[2];
 		
 		if(optionalParameter != null) {
-			riotApiURL += optionalParameter;
+			riotApiURL += "/" + optionalParameter;
 		}
 		
 		System.out.println("Built a riotApiUrl: " + riotApiURL);

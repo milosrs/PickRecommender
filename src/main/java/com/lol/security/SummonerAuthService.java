@@ -12,15 +12,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lol.model.summoner.SummonerAuth;
+import com.lol.model.summoner.SummonerLoginAuth;
+import com.lol.repository.SummonerRepository;
 
-@Service
+@Service("summonerAuthService")
 public class SummonerAuthService implements UserDetailsService {
 
+	@Autowired
+	private SummonerRepository repository;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
-			List<SimpleGrantedAuthority> roleAuths = new ArrayList<>();
-			SummonerAuth summoner = null;
+			System.out.println("Autentikacija!!!!");
+			List<SimpleGrantedAuthority> roleAuths = new ArrayList<SimpleGrantedAuthority>();
+			SummonerAuth summoner = repository.getByUsername(username);
+
 			if(summoner == null) {
 				throw new UsernameNotFoundException("Username not found");
 			}
@@ -38,7 +45,7 @@ public class SummonerAuthService implements UserDetailsService {
 						})
 						.collect(Collectors.toList()));
 			}*/
-			UserDetails userDetails = new SummonerDetails(summoner.getUsername(), summoner.getPassword());
+			UserDetails userDetails = new SummonerDetails(new SummonerLoginAuth(summoner.getUsername(), summoner.getPassword()));
 			return userDetails;
 		}catch(Exception e) {
 			throw new UsernameNotFoundException("Username not found. Error with database.");

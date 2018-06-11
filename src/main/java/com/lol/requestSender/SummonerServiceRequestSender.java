@@ -24,6 +24,9 @@ public class SummonerServiceRequestSender extends RiotRequestSender<SummonerAuth
 	
 	@Override
 	protected SummonerDto convertToEntity(String json) throws JsonParseException, JsonMappingException, IOException {
+		if(json == null) {
+			throw new NullPointerException();
+		}
 		SummonerDto ret = mapper.readValue(json, SummonerDto.class);
 		return ret;
 	}

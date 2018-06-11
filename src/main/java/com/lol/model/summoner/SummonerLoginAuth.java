@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 public class SummonerLoginAuth {
-	private String username;
-	private String password;
+	protected String username;
+	protected String password;
 	
 	public SummonerLoginAuth() {
 		super();

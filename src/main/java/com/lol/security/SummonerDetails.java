@@ -1,5 +1,6 @@
 package com.lol.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,20 +9,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lol.model.summoner.SummonerLoginAuth;
 
-public class SummonerDetails implements UserDetails {
+public class SummonerDetails extends SummonerLoginAuth implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 	@JsonIgnore
-	private String password;
-	private String username;
 	private boolean enabled;
 	private List<SimpleGrantedAuthority> grantedAuthorities;
 	
-	public SummonerDetails(String username, String password) {
+	public SummonerDetails(SummonerLoginAuth login) {
 		super();
-		this.password = password;
-		this.username = username;
+		this.password = login.getPassword();
+		this.username = login.getUsername();
+		grantedAuthorities = new ArrayList<SimpleGrantedAuthority>();
 	}
 	
 	@Override
@@ -62,6 +63,6 @@ public class SummonerDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return enabled;
+		return true;
 	}
 }

@@ -8,9 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="SUMMONERS")
 public class SummonerAuth {
-	@Id
 	private String username;
 	private String password;
 	private String realm;
@@ -25,8 +23,7 @@ public class SummonerAuth {
 	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="USERNAME", unique=true, nullable=false)
+	@Column(unique=true, nullable=false)
 	public String getUsername() {
 		return username;
 	}

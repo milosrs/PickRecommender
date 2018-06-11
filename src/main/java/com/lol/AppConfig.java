@@ -1,22 +1,16 @@
 package com.lol;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,32 +20,57 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.lol.security.JWTAuthenticationTokenFilter;
+import com.lol.security.RestAuthenticationEntryPoint;
+import com.lol.security.SummonerAuthService;
 
 @Configuration
 @EnableWebMvc
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableJpaRepositories
 public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer{
-	private final UserDetailsService userDetailsService;
 	
 	@Autowired
-	public AppConfig(UserDetailsService udt) {
-		userDetailsService = udt;
-	}
+    private RestAuthenticationEntryPoint basicAuthenticationEntryPoint;
 	
 	@Autowired
-	public void configureAuthentication(AuthenticationManagerBuilder builder) throws Exception {
-		builder.userDetailsService(userDetailsService);
-	}
+	@Qualifier("summonerAuthService")
+	private UserDetailsService summonerAuthService;
 	
+	@Autowired
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(summonerAuthService);
+        auth.authenticationProvider(authenticationProvider());
+    }
+	
+	@Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(summonerAuthService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
 	@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(summonerAuthService)
+		.passwordEncoder(passwordEncoder());
+		super.configure(auth);
+	}
+	
+	@Autowired
+	public void configureAuthentication(AuthenticationManagerBuilder builder) throws Exception {
+		builder.userDetailsService(summonerAuthService);
+	}
+	
 
 	@Bean
 	@Override
@@ -65,7 +84,6 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
 		return authenticationTokenFilter;
 	}
 
-    
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception 
     {
@@ -75,11 +93,15 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
     		.sessionManagement()
     		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     		.and()
-    		.authorizeRequests()
-    		.antMatchers("**/secured/**").authenticated();
-        
+    		.authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated();
+    	
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 	}
+    
+    @Override
+	public void configure(WebSecurity web) throws Exception{
+    	web.ignoring().antMatchers("/auth/**");
+    }
 	
 	
 	@Bean
