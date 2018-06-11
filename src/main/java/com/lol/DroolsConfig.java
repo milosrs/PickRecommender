@@ -1,4 +1,4 @@
-package com.lol.config;
+package com.lol;
 
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("com.services")
-public class PickRecommenderConfiguration {
+public class DroolsConfig {
 	private static String drlFile = "taxirule.drl";
 	
 	@Bean
