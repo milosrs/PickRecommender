@@ -9,18 +9,24 @@ public class JWTAuthenticationResponse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
     private final String token;
-    private final SummonerDto dto;
+    private String username;
+    private String realm;
 
-    public JWTAuthenticationResponse(String token, SummonerDto dto) {
+    public JWTAuthenticationResponse(String token, String username, String realm) {
         this.token = token;
-        this.dto = dto;
+        this.username = username;
+        this.realm = realm;
     }
 
     public String getToken() {
         return this.token;
     }
     
-    public SummonerDto getDto() {
-    	return this.dto;
+    public String getUsername() {
+    	return this.username;
+    }
+    
+    public String getRealm() {
+    	return this.realm;
     }
 }

@@ -17,7 +17,12 @@ public class URLBuilder {
 		this.realm = realm;
 		urlCpy = this.riotApiURL.replace("{0}", realm)
 										 .replace("{1}", serviceUrl[0])
-										 .replace("{2}", serviceUrl[1]) + serviceUrl[2];
+										 .replace("{2}", serviceUrl[1]);
+		if(serviceUrl.length > 2) {
+			 urlCpy = urlCpy + serviceUrl[2];
+		} else {
+			urlCpy = urlCpy.substring(0, urlCpy.length() - 1);
+		}
 		
 		if(optionalParameter != null) {
 			urlCpy += "/" + optionalParameter;
