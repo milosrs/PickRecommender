@@ -41,11 +41,11 @@ export class AuthService {
   }
 
   register(user: SummonerAuth) {
-    return this.http.post(this.appUrl + 'api/auth/register', user);
+    return this.http.post(this.appUrl + 'auth/register', user);
   }
 
   login(loginInfo: AuthenticationRequest) {
-    return this.http.post(this.appUrl + 'api/auth/login', loginInfo)
+    return this.http.post(this.appUrl + 'auth/login', loginInfo)
       .pipe(map(ret => {
         this.loggedUserToken =  new Token(loginInfo.username, ret['realm'], ret['token']);
         this.storeToken();
@@ -63,7 +63,8 @@ export class AuthService {
   getJSONAuthHeader(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.loggedUserToken === null ? '' : this.loggedUserToken.token
+      'Authorization': 'Bearer ' + this.loggedUserToken === null ? '' : this.loggedUserToken.token,
+      'Bearer ' : this.loggedUserToken === null ? '' : this.loggedUserToken.token
     });
   }
   getFORMHeader(): HttpHeaders {
@@ -74,11 +75,13 @@ export class AuthService {
   getAuthHeader(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.loggedUserToken.token,
+      'Bearer ' : this.loggedUserToken === null ? '' : this.loggedUserToken.token
     });
   }
   getAuthHeaderMultipart(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.loggedUserToken.token,
+      'Bearer ' : this.loggedUserToken === null ? '' : this.loggedUserToken.token
     });
   }
   getJSONHeader(): HttpHeaders {
