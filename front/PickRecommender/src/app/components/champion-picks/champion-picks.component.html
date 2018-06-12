@@ -1,4 +1,4 @@
-<div class="container-fluid" [ngStyle]="{'margin-top' : '2%'}">
+<div class="container-fluid" [ngStyle]="{'margin-top' : '2%'}" *ngIf="isUserLoggedIn()">
   <div class="row">
     <div class="col-3" [ngStyle]="{'background-color' : 'green'}">
       <player-position
@@ -14,4 +14,8 @@
           [customCss]="{'background-color' : 'red'}"></player-position>
     </div>
   </div>
+</div>
+
+<div class="container-fluid" *ngIf="isUserLoggedIn() === false">
+  <h1>Please, <a href="/register">login</a> with your summoner username and a custom password to continue</h1>
 </div>
