@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -90,9 +91,13 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
     	httpSecurity
     		.csrf()
     		.disable()
+    		.cors().and()
     		.sessionManagement()
     		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     		.and()
+    		.authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
+            .and()
     		.authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated()
     		.and()
     		.authorizeRequests().antMatchers("/champions/**").authenticated();

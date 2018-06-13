@@ -9,5 +9,5 @@ public interface ChampionService {
 
 	public ChampionListDto getAllForList(String realm) throws IOException;
 	
-	public Champion getOneFullInfo(String champKey, String realm) throws IOException;
+	public Champion getOneFullInfo(String champKey, String token) throws IOException;
 }

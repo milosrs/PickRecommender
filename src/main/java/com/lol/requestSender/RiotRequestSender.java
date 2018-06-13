@@ -57,7 +57,18 @@ public abstract class RiotRequestSender<S, R> {
 			// print result
 			return response.toString();
 		} else {
-			System.out.println("GET request not worked");
+			System.out.println("GET request failed. Headers:");
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					con.getErrorStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+				System.out.println(inputLine);
+			}
+			in.close();
+			
 			return null;
 		}
 	}
