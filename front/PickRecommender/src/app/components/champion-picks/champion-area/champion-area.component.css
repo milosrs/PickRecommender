@@ -1,5 +1,19 @@
 .ScrollableArea {
-    background: url('../../../../assets/img/bg/A6000000.png');
+    /* background: url('../../../../assets/img/bg/A6000000.png'); */
     overflow-y: scroll;
     color: gold;
+}
+
+.paddedarea {
+    padding-left: 2%;
+}
+
+.ChampionGrid {
+    display: grid;
+    grid-template-columns: 16.666666667% 16.666666667% 16.666666667% 16.666666667% 16.666666667% 16.666666667%;
+    justify-content: space-evenly;
+}
+
+.Wrapper {
+    max-height: 80%;
 }

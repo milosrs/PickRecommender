@@ -31,7 +31,11 @@ export class AuthService {
     if (!HelperFunctions.isEmptyValue(item)) {
       if (!HelperFunctions.containsEmptyValues(item) && item === this.emptyToken) {
         const ls = JSON.parse(window.localStorage.getItem('currentUser'));
-        this.loggedUserToken = new Token(ls['username'], ls['realm']);
+        this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
+      }
+      if(HelperFunctions.containsEmptyValues(this.loggedUserToken)) {
+        const ls = JSON.parse(window.localStorage.getItem('currentUser'));
+        this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
       }
     }
   }
@@ -44,13 +48,20 @@ export class AuthService {
     return this.http.post(this.appUrl + 'auth/register', user);
   }
 
+  test() {
+    return this.http.get(this.appUrl + 'auth/test', {responseType:'text'})
+                    .subscribe(data => console.log('Got: ', data));
+  }
+
   login(loginInfo: AuthenticationRequest) {
-    return this.http.post(this.appUrl + 'auth/login', loginInfo)
-      .pipe(map(ret => {
+    return this.http.post<Token>(this.appUrl + 'auth/login', loginInfo)
+      .subscribe(ret => {
         this.loggedUserToken =  new Token(loginInfo.username, ret['realm'], ret['token']);
         this.storeToken();
         this.logger.next(true);
-      }));
+        console.log('Token:', this.loggedUserToken);
+        this.router.navigateByUrl('');
+      });
   }
 
   logout() {
@@ -61,10 +72,10 @@ export class AuthService {
   }
 
   getJSONAuthHeader(): HttpHeaders {
+    const tokenStr = this.loggedUserToken === null ? '' : this.loggedUserToken.token;
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.loggedUserToken === null ? '' : this.loggedUserToken.token,
-      'Bearer ' : this.loggedUserToken === null ? '' : this.loggedUserToken.token
+      'Authorization': 'Bearer ' + tokenStr
     });
   }
   getFORMHeader(): HttpHeaders {
@@ -75,13 +86,11 @@ export class AuthService {
   getAuthHeader(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.loggedUserToken.token,
-      'Bearer ' : this.loggedUserToken === null ? '' : this.loggedUserToken.token
     });
   }
   getAuthHeaderMultipart(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.loggedUserToken.token,
-      'Bearer ' : this.loggedUserToken === null ? '' : this.loggedUserToken.token
     });
   }
   getJSONHeader(): HttpHeaders {

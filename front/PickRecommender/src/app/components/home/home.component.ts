@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Token } from '../../model/token';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  private token: Token;
+  private isLoggedIn = false;
+  
+  constructor(protected auth: AuthService) {  }
 
   ngOnInit() {
+    this.token = this.auth.getToken();
+    this.isLoggedIn = this.auth.isLoggedInSimple();
+    console.log(this.isLoggedIn);
   }
 
 }

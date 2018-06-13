@@ -1,0 +1,12 @@
+.Text {
+    font-size: 10px;
+    color: wheat;
+    cursor:  default;
+}
+
+.ChampImage {
+    background: orange;
+    width: 80%;
+    padding-top: 16.66666666667%;
+    cursor: pointer;
+}

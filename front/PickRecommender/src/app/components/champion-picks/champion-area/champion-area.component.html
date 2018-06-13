@@ -1,5 +1,23 @@
-<div class="container-fluid ScrollableArea">
+<div class="Wrapper" *ngIf="selectedPosition !== null && selectedPosition !== undefined">
+<div class="container-fluid ScrollableArea" >
   <div class="row">
-    <h1>WELCOME TO CHAMPION PICKS!</h1>
+      <h6>Select {{selectedPosition['type']}} 
+          {{selectedPosition['type']=='Friendly' ? positions[selectedPosition['id']][0]
+                                                 : positions[selectedPosition['id']][1]}}</h6>
+  </div>
+  <div class='row ChampionGrid'>
+      <champion-holder *ngFor='let champion of champList'
+        [champion]='champion'
+        (championSelectionEvent)='selectChampion($event)'></champion-holder>
+  </div>
+</div>
+  <div class="row paddedarea">
+      <textarea rows="1" cols="20" placeholder="Filter by name" [(ngModel)]='filter'></textarea>
+  </div>
+</div>
+
+<div class="container-fluid ScrollableArea" *ngIf="selectedPosition === null || selectedPosition === undefined">
+  <div class="row">
+      <h3>Welcome to champion picks, patch version: {{champs.version}}</h3>
   </div>
 </div>

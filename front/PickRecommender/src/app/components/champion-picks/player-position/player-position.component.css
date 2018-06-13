@@ -1,3 +1,7 @@
+.Wrapper {
+    max-height: 90%;
+}
+
 .CoinImage {
     border-radius: 50%;
     background: indigo;
@@ -30,4 +34,17 @@
     background: seagreen;
     color: gold;
     border-color: dodgerblue;
+}
+
+.Active {
+    margin-top: 1%;
+    border-radius: 2%;
+    border-style: inset;
+    border-color: firebrick;
+    border-collapse: separate;
+    padding-top: 0.75px;
+    padding-bottom: 0.3px;
+    cursor: default;
+    background: darkblue;
+    color: greenyellow;
 }

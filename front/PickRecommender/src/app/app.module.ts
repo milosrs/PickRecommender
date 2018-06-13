@@ -22,6 +22,7 @@ import { AbstractService } from './services/abstract.service';
 import { AuthService } from './services/auth.service';
 import { ChampionService } from './services/champion.service';
 import { SummonerService } from './services/summoner.service';
+import { ChampionHolderComponent } from './components/champion-picks/champion-area/champion-holder/champion-holder.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SummonerService } from './services/summoner.service';
     SummonerSpellsComponent,
     NavbarComponent,
     PlayerPositionComponent,
-    ChampionAreaComponent
+    ChampionAreaComponent,
+    ChampionHolderComponent
   ],
   imports: [
     BrowserModule,

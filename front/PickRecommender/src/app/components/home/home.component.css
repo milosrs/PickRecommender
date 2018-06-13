@@ -2,5 +2,10 @@
     transform: scale(0.7, 0.7, 0.7);
     -webkit-transform: scale(0.7,0.7,0.7);
     -ms-transform: scale(0.7,0.7,0.7);
-    background: url('../../../assets/img/bg/F5141416.png');
+    /* background: url('../../../assets/img/bg/F5141416.png'); */
+    padding: 1% 1% 1% 1%;
+}
+
+.bgimg {
+    /* background-image: url("../../../assets/img/champion/splash/Amumu_5.jpg"); */
 }

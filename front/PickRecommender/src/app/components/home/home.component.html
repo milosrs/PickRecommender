@@ -1,3 +1,8 @@
-<div class="ScaleDown"> 
+<div class="ScaleDown" *ngIf="isLoggedIn == true"> 
     <champion-picks></champion-picks>
 </div>
+
+<div class="container-fluid bgimg" *ngIf="isLoggedIn === false">
+    <h1 align="center">Please, <a href="/register">login</a> with your summoner username and a custom password to continue.
+        This helps us collect statistics about service usage.</h1>
+  </div>
