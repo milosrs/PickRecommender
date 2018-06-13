@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { ChampionService } from '../../../services/champion.service';
 import { ChampionViewList } from '../../../model/champion-view-list';
 import { Champion } from '../../../model/champion';
@@ -20,7 +20,14 @@ export class ChampionAreaComponent implements OnInit {
     'sup' : ['Support', 'Position4'],
     'bot' : ['Bottom', 'Position5'],
   };
-  private selectedChampions = {
+  private friendlyChampions = {
+    'top' : null,
+    'jg' : null,
+    'mid': null,
+    'sup' : null,
+    'bot' : null,
+  }
+  private opponentChampions = {
     'top' : null,
     'jg' : null,
     'mid': null,
@@ -32,7 +39,7 @@ export class ChampionAreaComponent implements OnInit {
   private filteredChampList: Champion[];
   private filter: string;
   @Input() private selectedPosition:any;
-  @ViewChildren(PlayerPositionComponent) private ppc: QueryList<PlayerPositionComponent>;;
+  @Output() private championSelectEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(protected champService: ChampionService) {
     this.champList = [];
@@ -57,33 +64,38 @@ export class ChampionAreaComponent implements OnInit {
       const champToAdd = new Champion(champObj['id'], champObj['image'], champObj['name'], champObj['title']);
       this.champList.push(champToAdd);
     });
-
-    console.log('ChampList: ', this.champList);
-    HelperFunctions.sortArrayByKey(this.champList, name);
+    
+    this.champList = HelperFunctions.sortArrayByKey(this.champList, 'name');
   }
 
   ngOnInit() {
   }
 
   filterChamps() {
-      this.filteredChampList = HelperFunctions.filterArrayItems(this.champList, 'name', 
+    this.filteredChampList = HelperFunctions.filterArrayItems(this.champList, 'name', 
                                                                 this.filter, Constants.FilterType.CONTAINS);
+    console.log(this.filteredChampList);
   }
 
   selectChampion(champion) {
-    console.log('Holder Emmited This champ: ',champion.name);
-    this.selectedChampions[this.selectedPosition['id']] = champion.id;
-    console.log(this.selectedChampions);
-
-    this.ppc.forEach(p => {
-        if(p.getPlayersType() === this.selectedPosition['type']) {
-            p.setPickedChamps(this.selectedChampions);
-        }
-    })
+    console.log('Holder Emmited This champ: ',champion.name,'---> This is team: ', this.selectedPosition['type']);
+    if(this.selectedPosition['type'] === 'Friendly') {
+        this.friendlyChampions['type'] = this.selectedPosition['type'];
+        this.friendlyChampions[this.selectedPosition['id']] = champion;
+        this.championSelectEvent.emit(this.friendlyChampions);
+    } else if (this.selectedPosition['type'] === 'Opponent') {
+        this.opponentChampions['type'] = this.selectedPosition['type'];
+        this.opponentChampions[this.selectedPosition['id']] = champion;
+        this.championSelectEvent.emit(this.opponentChampions);
+    }
   }
 
-  getPicks() {
-      return this.selectedChampions;
+  getFriendlyPicks() {
+      return this.friendlyChampions;
+  }
+
+  getOpponentPicks() {
+    return this.opponentChampions;
   }
 
   private mock = {

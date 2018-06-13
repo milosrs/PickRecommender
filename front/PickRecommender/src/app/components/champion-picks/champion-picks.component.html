@@ -10,7 +10,8 @@
     
     <div class="col-6">
       <champion-area
-        [selectedPosition]='selectedPosition'></champion-area>
+        [selectedPosition]='selectedPosition'
+        (championSelectEvent)='setSelectedChampions($event)'></champion-area>
     </div>
 
     <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'red', 'padding': '1% 1% 1% 1%'}">

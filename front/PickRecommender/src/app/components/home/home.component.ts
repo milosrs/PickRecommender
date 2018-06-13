@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.token = this.auth.getToken();
     this.isLoggedIn = this.auth.isLoggedInSimple();
-    console.log(this.isLoggedIn);
   }
 
 }

@@ -4,23 +4,41 @@
     {{playersType}} Players
   </div>
 
-  <div class="row" id="top" (click)="onPositionClick($event)" 
-      [ngClass]="{'Active': activePosition === 'top', 'Section' : activePosition !== 'top'}">
-    <div class="col-4">
-      <!--img src="../../../../assets/8.9.1/img/sticker/poro-laugh.png" class="img-fluid CoinImage"/-->
-    </div>
-    <div class="col-8" *ngIf="playersType === 'Friendly'">
-      Top
-    </div>
-    <div class="col-8" *ngIf="playersType !== 'Friendly'">
-      Position 1
+  <div *ngFor='let positionkey of keyz'>  
+    <div class="row" id="{{positionkey}}" (click)="onPositionClick($event)" 
+        [ngClass]="{'Active': activePosition === positionkey, 'Section' : activePosition !== positionkey}">
+      <div class="col-4" *ngIf="selectedChampions[positionkey] !== null">
+        <img src="{{createImagePath(selectedChampions[positionkey].imageInfo.full)}}" class="img-fluid CoinImage" />
+      </div>
+      <div class="col-4" *ngIf="selectedChampions[positionkey] === null">
+        <img src="../../../../assets/8.9.1/img/sticker/poro-laugh.png" class="img-fluid CoinImage" 
+              *ngIf="positionkey === 'top'"/>
+        <img src="../../../../assets/8.9.1/img/sticker/poro-shock.png" class="img-fluid CoinImage" 
+              *ngIf="positionkey === 'jg'"/>
+        <img src="../../../../assets/8.9.1/img/sticker/poro-angry.png" class="img-fluid CoinImage" 
+              *ngIf="positionkey === 'mid'"/>
+        <img src="../../../../assets/8.9.1/img/sticker/poro-poo.png" class="img-fluid CoinImage" 
+              *ngIf="positionkey === 'sup'"/>
+        <img src="../../../../assets/8.9.1/img/sticker/poro-coolguy.png" class="img-fluid CoinImage" 
+              *ngIf="positionkey === 'bot'"/>
+      </div>
+      <div class="col-8" *ngIf="selectedChampions[positionkey] === null && playersType === 'Friendly'">
+        {{positions[positionkey][0]}}
+      </div>
+      <div class="col-8" *ngIf="selectedChampions[positionkey] === null && playersType === 'Opponent'">
+        {{positions[positionkey][1]}}
+      </div>
+      <div class="col-8" *ngIf="selectedChampions[positionkey] !== null">
+        {{selectedChampions[positionkey].name}}
+      </div>
     </div>
   </div>
 
-  <div class="row" id="jg" (click)="onPositionClick($event)" 
+
+  <!-- <div class="row" id="jg" (click)="onPositionClick($event)" 
       [ngClass]="{'Active': activePosition === 'jg', 'Section' : activePosition !== 'jg'}">
     <div class="col-4">
-      <!--img src="../../../../assets/8.9.1/img/sticker/poro-shock.png" class="img-fluid CoinImage"/-->
+      <img src="../../../../assets/8.9.1/img/sticker/poro-shock.png" class="img-fluid CoinImage"/>
     </div>
     <div class="col-8" *ngIf="playersType === 'Friendly'">
         Jungle
@@ -33,7 +51,7 @@
   <div class="row" id="mid" (click)="onPositionClick($event)" 
       [ngClass]="{'Active': activePosition === 'mid', 'Section' : activePosition !== 'mid'}">
     <div class="col-4">
-      <!--img src="../../../../assets/8.9.1/img/sticker/poro-angry.png" class="img-fluid CoinImage"/-->
+      <img src="../../../../assets/8.9.1/img/sticker/poro-angry.png" class="img-fluid CoinImage"/>
     </div>
     <div class="col-8" *ngIf="playersType === 'Friendly'">
       Mid
@@ -46,7 +64,7 @@
   <div class="row" id="sup" (click)="onPositionClick($event)" 
       [ngClass]="{'Active': activePosition === 'sup', 'Section' : activePosition !== 'sup'}">
     <div class="col-4">
-      <!--img src="../../../../assets/8.9.1/img/sticker/poro-poo.png" class="img-fluid CoinImage"/-->
+      <img src="../../../../assets/8.9.1/img/sticker/poro-poo.png" class="img-fluid CoinImage"/>
     </div>
     <div class="col-8" *ngIf="playersType === 'Friendly'">
       Support
@@ -59,7 +77,7 @@
   <div class="row" id="bot" (click)="onPositionClick($event)" 
       [ngClass]="{'Active': activePosition === 'bot', 'Section' : activePosition !== 'bot'}">
     <div class="col-4">
-      <!--img src="../../../../assets/8.9.1/img/sticker/poro-coolguy.png" class="img-fluid CoinImage"/-->
+      <img src="../../../../assets/8.9.1/img/sticker/poro-coolguy.png" class="img-fluid CoinImage"/>
     </div>
     <div class="col-8" *ngIf="playersType === 'Friendly'">
       Bottom
@@ -69,4 +87,4 @@
     </div>
   </div>
 </div>
-
+ -->

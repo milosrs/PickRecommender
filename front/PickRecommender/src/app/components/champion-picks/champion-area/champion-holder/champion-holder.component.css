@@ -2,7 +2,7 @@
     font-size: 10px;
     color: wheat;
     cursor:  default;
-    justify-content: left;
+    justify-content: right;
 }
 
 .ChampImage {
@@ -10,4 +10,10 @@
     width: 80%;
     height: 8%;
     cursor: pointer;
+}
+
+.ChampSelect:hover {
+    cursor: pointer;
+    border-style: inset;
+    border-color: teal;
 }

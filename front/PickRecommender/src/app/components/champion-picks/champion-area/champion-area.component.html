@@ -1,5 +1,5 @@
 <div class="Wrapper" *ngIf="selectedPosition !== null && selectedPosition !== undefined">
-<div class="container-fluid ScrollableArea" >
+<div class="container-fluid" >
   <div class="row Header">
     <div class="col-7">
       <p>{{selectedPosition['type']}} 
@@ -8,10 +8,10 @@
     </div>
       <div class="paddedarea col-5">
         <input type="text" placeholder="Filter by name" [(ngModel)]='filter' 
-          ng-change="filterChamps()"/>
+          (input)="filterChamps()"/>
       </div>
   </div>
-  <div class='row ChampionGrid'>
+  <div class='row ChampionGrid ScrollableArea'>
       <champion-holder *ngFor='let champion of filteredChampList'
         [champion]='champion'
         (championSelectionEvent)='selectChampion($event)'></champion-holder>
@@ -22,6 +22,6 @@
 
 <div class="container-fluid ScrollableArea" *ngIf="selectedPosition === null || selectedPosition === undefined">
   <div class="row">
-      <h3>PUSI KITU JEBEM TI LEBA :D VERZIONE: {{champs.version}}</h3>
+      <h3>Champion Picker v:{{champs.version}}</h3>
   </div>
 </div>

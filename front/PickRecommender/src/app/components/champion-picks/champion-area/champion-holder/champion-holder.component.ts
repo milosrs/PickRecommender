@@ -25,4 +25,7 @@ export class ChampionHolderComponent implements OnInit {
     this.championSelectionEvent.emit(this.champion);
   }
 
+  createImagePath() {
+    return this.service.getImageLocation('../../../../../', this.champion.imageInfo.full);
+  }
 }

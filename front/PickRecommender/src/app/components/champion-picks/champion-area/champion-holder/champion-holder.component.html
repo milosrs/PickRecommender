@@ -1,6 +1,6 @@
 <div class='container-fluid ChampSelect' (click)='championSelect($event)'>
-  <div class="row">
-    <img src='../../../../../assets/10313949_625944910835372_9141079209084941818_n.jpg' class="img ChampImage"/>
+  <div class="row" style="justify-content: center;">
+    <img src='{{createImagePath()}}' class="img ChampImage"/>
   </div>
   <div class="row Text">
       <div class='col-3'>{{champion.name}}</div>

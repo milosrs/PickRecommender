@@ -5,6 +5,7 @@ import { HelperFunctions } from '../../shared/util/helper-functions';
 import { AuthService } from '../../services/auth.service';
 import { Token } from '../../model/token';
 import { PlayerPositionComponent } from './player-position/player-position.component';
+import { ChampionPicks } from '../../model/champion-picks';
 
 @Component({
   selector: 'champion-picks',
@@ -43,18 +44,20 @@ export class ChampionPicksComponent implements OnInit {
 
   generate() {
     const toSend = {
-      'Friendly': null,
-      'Opponent': null,
+      'Friendly': [],
+      'Opponent': [],
     };
 
     if(this.shouldGenerate()) {
       this.playerPosComponent.forEach(c => {
-        toSend[c.getPlayersType()].push(c.getPickedChamps());
+        toSend[c.getPlayersType()].push(c.getPickedChampsIdList());
       });
+      console.log(toSend);
     } else {
       alert('You must pick all positions for every team. Please, do this and try again.');
     }
     
+    this.championService.generate(new ChampionPicks(toSend['Friendly'], toSend['Opponent']));
   }
 
   shouldGenerate() {
@@ -66,6 +69,18 @@ export class ChampionPicksComponent implements OnInit {
     });
 
     return shouldEnable;
+  }
+
+  setSelectedChampions(selectedChampions: any) {
+    const childArray = this.playerPosComponent.toArray();
+
+    for(let i = 0; i < childArray.length; i++) {
+      if(selectedChampions['type'] === childArray[i].getPlayersType()) {
+        delete selectedChampions['type'];
+        childArray[i].setPickedChamps(selectedChampions);
+        return;
+      }
+    }
   }
 
   getTest() {

@@ -141,17 +141,21 @@ export class HelperFunctions {
   public static filterArrayItems(arrayOfitems, key, criterion, filterType) {
     let ret = [];
 
-    arrayOfitems.array.forEach(element => {
+    criterion = criterion.toLowerCase();
+
+    arrayOfitems.forEach(element => {
+      const val = element[key].toLowerCase();
+
       if(filterType == Constants.FilterType.CONTAINS) {
-        if(element[key].contains(criterion)) {
+        if(val.includes(criterion)) {
           ret.push(element);
         }
       } else if (filterType == Constants.FilterType.ENDS) {
-        if(element[key].endsWith(criterion)) {
+        if(val.endsWith(criterion)) {
           ret.push(element);
         }
       } else if (filterType == Constants.FilterType.STARTS) {
-        if(element[key].startsWith(criterion)) {
+        if(val.startsWith(criterion)) {
           ret.push(element);
         }
       }

@@ -16,7 +16,7 @@ export class ChampionService extends AbstractService<Champion, number> {
 
   private token: Token;
   private champViewList: ChampionViewList;
-  private imageLocation = '{0}assets/8.9.1/img/champion/{1}.png';
+  private imageLocation = '{0}assets/8.9.1/img/champion/{1}';
 
   constructor(protected http: HttpClient, protected auth: AuthService) {
     super(http, 'champions', auth);
