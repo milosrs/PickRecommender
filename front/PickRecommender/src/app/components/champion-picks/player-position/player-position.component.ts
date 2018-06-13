@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChampionService } from '../../../services/champion.service';
+import { HelperFunctions } from '../../../shared/util/helper-functions';
 
 @Component({
   selector: 'player-position',
@@ -8,7 +9,7 @@ import { ChampionService } from '../../../services/champion.service';
 })
 export class PlayerPositionComponent implements OnInit {
   
-  public keyz = ['top','jg','mid','sup','bot'];
+  
   public selectedChampions = {
     'top' : null,
     'jg' : null,
@@ -27,16 +28,25 @@ export class PlayerPositionComponent implements OnInit {
   private selectAudio;
   @Input() private playersType: string;
   @Input() private customCss: object;
+  @Input() private keyz: string[];
+  @Input() private header: string;
+  @Input() private shouldUseDefaultKeys: boolean;
   @Output() private positionClickEvent: EventEmitter<any> = new EventEmitter<any>();
-  
+
   constructor(private champService: ChampionService) {
     // this.selectAudio = new Audio();
     // this.selectAudio.src = '../../../../assets/selectPosition.wav';
     // this.selectAudio.load();
-    console.log(this.selectedChampions);
+    
   }
 
   ngOnInit() {
+    console.log(this.shouldUseDefaultKeys);
+    console.log(this.customCss);
+    console.log(this.header);
+    if(HelperFunctions.isEmptyValue(this.keyz) && this.shouldUseDefaultKeys) {
+      this.keyz = ['top','jg','mid','sup','bot'];
+    }
   }
 
   onPositionClick(e) {
@@ -44,6 +54,10 @@ export class PlayerPositionComponent implements OnInit {
       'type' : this.playersType,
       'id' : e.currentTarget.id
     };
+    
+    if(HelperFunctions.isEmptyValue(this.playersType)){
+      this.activePosition = e.currentTarget.id;
+    }
     // this.selectAudio.play();
     this.positionClickEvent.emit(emitObj);
   }

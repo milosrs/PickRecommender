@@ -1,7 +1,15 @@
 <div class="container-fluid Wrapper" [ngStyle]="customCss">
 
-  <div class="row Header">
+  <div class="row Header" *ngIf="playersType != null && playersType != undefined">
     {{playersType}} Players
+  </div>
+
+  <div class="row Header" *ngIf="playersType == null || playersType == undefined && header == null || header == undefined">
+    What is your position?
+  </div>
+
+  <div class="row Header" *ngIf="playersType == null || playersType == undefined && header !== null || header !== undefined">
+    {{header}}
   </div>
 
   <div *ngFor='let positionkey of keyz'>  
@@ -22,7 +30,8 @@
         <img src="../../../../assets/8.9.1/img/sticker/poro-coolguy.png" class="img-fluid CoinImage" 
               *ngIf="positionkey === 'bot'"/>
       </div>
-      <div class="col-8" *ngIf="selectedChampions[positionkey] === null && playersType === 'Friendly'">
+      <div class="col-8" 
+          *ngIf="selectedChampions[positionkey] === null && playersType === 'Friendly' ">
         {{positions[positionkey][0]}}
       </div>
       <div class="col-8" *ngIf="selectedChampions[positionkey] === null && playersType === 'Opponent'">
@@ -30,6 +39,10 @@
       </div>
       <div class="col-8" *ngIf="selectedChampions[positionkey] !== null">
         {{selectedChampions[positionkey].name}}
+      </div>
+      <div class="col-8" 
+          *ngIf="playersType === null || playersType === undefined">
+          {{positions[positionkey][0]}}
       </div>
     </div>
   </div>

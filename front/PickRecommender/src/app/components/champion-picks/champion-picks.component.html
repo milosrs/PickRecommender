@@ -2,7 +2,9 @@
   <div class="row">
     
     <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'green', 'padding': '1% 1% 1% 1%'}">
-      <player-position
+       <!--Promeni shouldUseDefaultKeys u true kada zavrsis komponentu-->
+      <player-position    
+        [shouldUseDefaultKeys]="true"
         [playersType]="'Friendly'"
         [customCss]="{'background-color' : 'green'}"
         (positionClickEvent)='changeSelectedPosition($event)'></player-position>
@@ -16,6 +18,7 @@
 
     <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'red', 'padding': '1% 1% 1% 1%'}">
         <player-position
+          [shouldUseDefaultKeys]="true"
           [playersType]="'Opponent'"
           [customCss]="{'background-color' : 'red'}"
           (positionClickEvent)='changeSelectedPosition($event)'></player-position>

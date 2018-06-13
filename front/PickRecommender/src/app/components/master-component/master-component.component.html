@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <div class="row" *ngIf="playerPosition == null || playerPosition == undefined || shouldShowOrder == false">
+    
+    <div class="col-3">
+      <div class="row">
+        <player-position
+          [shouldUseDefaultKeys]="true"
+          [customCss]="{'background-color' : 'green'}"
+          (positionClickEvent)='selectPlayerPosition($event)'></player-position>
+      </div>
+
+      <div class="row CenteredButton">
+        <button class="btn btn-success" (click)="pickPosition()">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="playerPosition !== null && playerPosition !== undefined && shouldShowOrder == true">
+    
+    <div class="col-3" >
+      <div class="row">
+        <player-position
+          [shouldUseDefaultKeys]="trueValue"
+          [header]="'Select picking order'"
+          [customCss]="{'background-color' : 'green'}"
+          (positionClickEvent)='null'></player-position>
+      </div>
+    </div>
+
+    <div class="col-3">
+      <div class="row">
+        <player-position
+          [shouldUseDefaultKeys]="falseValue"
+          [header]="'You can see it here'"
+          [customCss]="{'background-color' : 'green'}"
+          (positionClickEvent)='null'></player-position>
+      </div>
+    </div>
+
+    <div class="col-3">
+      <h4>Who has the first pick?</h4>
+      <select>
+        <option value="'Friendly'">Friendly team</option>
+        <option value="'Opponent'">Opponent team</option>
+      </select>
+    </div>
+
+    <div class="col-3">
+      <button class="btn btn-success AlignedBtn">Go to champion picks page!</button>
+    </div>
+  </div>
+</div>
