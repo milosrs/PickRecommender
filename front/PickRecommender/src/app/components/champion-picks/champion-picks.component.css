@@ -3,5 +3,10 @@
 }
 
 .CenteredBtn {
+    margin-top: 3%;
     justify-content: center;
+}
+
+.PlayerPos {
+    max-height: 200px;    
 }

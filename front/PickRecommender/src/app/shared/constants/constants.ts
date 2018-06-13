@@ -50,4 +50,10 @@ export class Constants {
     THEATRE: 'Theatre',
     CINEMA: 'Cinema'
   }
+
+  public static readonly FilterType = {
+    CONTAINS: 'contains',
+    STARTS: 'startsWith',
+    ENDS: 'endsWith'
+  }
 }

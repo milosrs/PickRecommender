@@ -1,23 +1,27 @@
 <div class="Wrapper" *ngIf="selectedPosition !== null && selectedPosition !== undefined">
 <div class="container-fluid ScrollableArea" >
-  <div class="row">
-      <h6>Select {{selectedPosition['type']}} 
+  <div class="row Header">
+    <div class="col-7">
+      <p>{{selectedPosition['type']}} 
           {{selectedPosition['type']=='Friendly' ? positions[selectedPosition['id']][0]
-                                                 : positions[selectedPosition['id']][1]}}</h6>
+                                                 : positions[selectedPosition['id']][1]}}</p>
+    </div>
+      <div class="paddedarea col-5">
+        <input type="text" placeholder="Filter by name" [(ngModel)]='filter' 
+          ng-change="filterChamps()"/>
+      </div>
   </div>
   <div class='row ChampionGrid'>
-      <champion-holder *ngFor='let champion of champList'
+      <champion-holder *ngFor='let champion of filteredChampList'
         [champion]='champion'
         (championSelectionEvent)='selectChampion($event)'></champion-holder>
   </div>
 </div>
-  <div class="row paddedarea">
-      <textarea rows="1" cols="20" placeholder="Filter by name" [(ngModel)]='filter'></textarea>
-  </div>
+  
 </div>
 
 <div class="container-fluid ScrollableArea" *ngIf="selectedPosition === null || selectedPosition === undefined">
   <div class="row">
-      <h3>Welcome to champion picks, patch version: {{champs.version}}</h3>
+      <h3>PUSI KITU JEBEM TI LEBA :D VERZIONE: {{champs.version}}</h3>
   </div>
 </div>

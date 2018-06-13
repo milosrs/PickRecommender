@@ -1,5 +1,6 @@
 import {ListItem} from '../model/list-item';
 import {Request} from '../model/request';
+import { Constants } from '../constants/constants';
 
 export class HelperFunctions {
   public static isEmptyValue(toCheck: any): boolean {
@@ -135,5 +136,27 @@ export class HelperFunctions {
 
   public static deleteItemFromArray(arrayOfItems, item) {
     return arrayOfItems = arrayOfItems.splice(arrayOfItems.indexOf(item), 1);
+  }
+
+  public static filterArrayItems(arrayOfitems, key, criterion, filterType) {
+    let ret = [];
+
+    arrayOfitems.array.forEach(element => {
+      if(filterType == Constants.FilterType.CONTAINS) {
+        if(element[key].contains(criterion)) {
+          ret.push(element);
+        }
+      } else if (filterType == Constants.FilterType.ENDS) {
+        if(element[key].endsWith(criterion)) {
+          ret.push(element);
+        }
+      } else if (filterType == Constants.FilterType.STARTS) {
+        if(element[key].startsWith(criterion)) {
+          ret.push(element);
+        }
+      }
+    });
+
+    return ret;
   }
 }

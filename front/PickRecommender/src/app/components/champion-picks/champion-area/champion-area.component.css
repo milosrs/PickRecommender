@@ -5,13 +5,14 @@
 }
 
 .paddedarea {
-    padding-left: 2%;
+    font-size: 10px;
 }
 
 .ChampionGrid {
     display: grid;
     grid-template-columns: 16.666666667% 16.666666667% 16.666666667% 16.666666667% 16.666666667% 16.666666667%;
     justify-content: space-evenly;
+    max-height: 250px;
 }
 
 .Wrapper {

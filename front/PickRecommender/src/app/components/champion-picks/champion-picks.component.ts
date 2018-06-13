@@ -47,17 +47,17 @@ export class ChampionPicksComponent implements OnInit {
       'Opponent': null,
     };
 
-    if(this.shouldEnable()) {
+    if(this.shouldGenerate()) {
       this.playerPosComponent.forEach(c => {
         toSend[c.getPlayersType()].push(c.getPickedChamps());
       });
     } else {
-      alert('Lol u cant do this');
+      alert('You must pick all positions for every team. Please, do this and try again.');
     }
     
   }
 
-  shouldEnable() {
+  shouldGenerate() {
     let shouldEnable = true;
 
     this.playerPosComponent.forEach(c => {

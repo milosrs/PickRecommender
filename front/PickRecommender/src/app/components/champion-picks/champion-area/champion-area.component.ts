@@ -4,6 +4,7 @@ import { ChampionViewList } from '../../../model/champion-view-list';
 import { Champion } from '../../../model/champion';
 import { HelperFunctions } from '../../../shared/util/helper-functions';
 import { PlayerPositionComponent } from '../player-position/player-position.component';
+import { Constants } from '../../../shared/constants/constants';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class ChampionAreaComponent implements OnInit {
   }
   private champs: ChampionViewList;
   private champList: Champion[];
+  private filteredChampList: Champion[];
   private filter: string;
   @Input() private selectedPosition:any;
   @ViewChildren(PlayerPositionComponent) private ppc: QueryList<PlayerPositionComponent>;;
@@ -46,6 +48,7 @@ export class ChampionAreaComponent implements OnInit {
                   this.champs = new ChampionViewList(this.mock['keys'], this.mock['data'], this.mock['version'],this.mock['type'],this.mock['format']);
                 });*/
     this.createInfoForEveryChampion();
+    this.filteredChampList = this.champList;
   }
 
   createInfoForEveryChampion() {
@@ -60,6 +63,11 @@ export class ChampionAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  filterChamps() {
+      this.filteredChampList = HelperFunctions.filterArrayItems(this.champList, 'name', 
+                                                                this.filter, Constants.FilterType.CONTAINS);
   }
 
   selectChampion(champion) {

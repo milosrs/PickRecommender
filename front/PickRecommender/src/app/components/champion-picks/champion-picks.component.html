@@ -1,21 +1,25 @@
 <div class="container-fluid" [ngStyle]="{'margin-top' : '2%'}" *ngIf="isUserLoggedIn()">
   <div class="row">
-    <div class="col-3" [ngStyle]="{'background-color' : 'green', 'padding': '1% 1% 1% 1%'}">
+    
+    <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'green', 'padding': '1% 1% 1% 1%'}">
       <player-position
         [playersType]="'Friendly'"
         [customCss]="{'background-color' : 'green'}"
         (positionClickEvent)='changeSelectedPosition($event)'></player-position>
     </div>
+    
     <div class="col-6">
       <champion-area
         [selectedPosition]='selectedPosition'></champion-area>
     </div>
-    <div class="col-3" [ngStyle]="{'background-color' : 'red', 'padding': '1% 1% 1% 1%'}">
+
+    <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'red', 'padding': '1% 1% 1% 1%'}">
         <player-position
           [playersType]="'Opponent'"
           [customCss]="{'background-color' : 'red'}"
           (positionClickEvent)='changeSelectedPosition($event)'></player-position>
     </div>
+
   </div>
   <div class="row CenteredBtn">
     <button class="btn btn-success" (click)='generate()'>Generate!</button>
