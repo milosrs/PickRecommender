@@ -44,3 +44,16 @@
     background: darkblue;
     color: greenyellow;
 }
+
+.MyPosition {
+    margin-top: 1%;
+    border-radius: 2%;
+    border-style: inset;
+    border-color: black;
+    border-collapse: separate;
+    padding-top: 0.75px;
+    padding-bottom: 0.3px;
+    cursor: default;
+    background: goldenrod;
+    color: blueviolet;
+}

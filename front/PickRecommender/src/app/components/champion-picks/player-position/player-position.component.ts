@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChampionService } from '../../../services/champion.service';
 import { HelperFunctions } from '../../../shared/util/helper-functions';
+import { Constants } from '../../../shared/constants/constants';
+import { SummonerService } from '../../../services/summoner.service';
 
 @Component({
   selector: 'player-position',
@@ -9,7 +11,7 @@ import { HelperFunctions } from '../../../shared/util/helper-functions';
 })
 export class PlayerPositionComponent implements OnInit {
   
-  
+  private positions = Constants.positions;
   public selectedChampions = {
     'top' : null,
     'jg' : null,
@@ -17,15 +19,11 @@ export class PlayerPositionComponent implements OnInit {
     'sup' : null,
     'bot' : null,
   };
-  public positions = {
-    'top' : ['Top', 'Position1'],
-    'jg' : ['Jungle', 'Position2'],
-    'mid': ['Mid', 'Position3'],
-    'sup' : ['Support', 'Position4'],
-    'bot' : ['Bottom', 'Position5'],
-  };
+  
   public activePosition: string;
   private selectAudio;
+  private selectedPosition: string;
+
   @Input() private playersType: string;
   @Input() private customCss: object;
   @Input() private keyz: string[];
@@ -33,19 +31,16 @@ export class PlayerPositionComponent implements OnInit {
   @Input() private shouldUseDefaultKeys: boolean;
   @Output() private positionClickEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private champService: ChampionService) {
+  constructor(private champService: ChampionService, private summonerService: SummonerService) {
     // this.selectAudio = new Audio();
     // this.selectAudio.src = '../../../../assets/selectPosition.wav';
     // this.selectAudio.load();
-    
+    this.selectedPosition = summonerService.getSelectedPosition();  
   }
 
   ngOnInit() {
-    console.log(this.shouldUseDefaultKeys);
-    console.log(this.customCss);
-    console.log(this.header);
     if(HelperFunctions.isEmptyValue(this.keyz) && this.shouldUseDefaultKeys) {
-      this.keyz = ['top','jg','mid','sup','bot'];
+      this.keyz = ['top','jg','mid','bot','sup'];
     }
   }
 
@@ -85,7 +80,7 @@ export class PlayerPositionComponent implements OnInit {
 
   getPickedChampsIdList() {
     let pickedChamps = {};
-    const keys = Object.getOwnPropertyNames(this.positions);
+    const keys = Object.getOwnPropertyNames(Constants.positions);
 
     for(let i = 0; i < keys.length; i++) {
       pickedChamps[keys[i]] = this.selectedChampions[keys[i]].id;

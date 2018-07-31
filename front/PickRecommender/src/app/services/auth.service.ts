@@ -16,13 +16,12 @@ import { Summoner } from '../model/summoner';
 export class AuthService {
 
   private logger = new Subject<boolean>();
-  private readonly emptyToken = '{}';
+  private readonly emptyToken = new Token('', '', undefined);
   loggedUserToken: Token;
   headers = new HttpHeaders({'Content-Type': 'application/json' });
   appUrl = 'http://localhost:8081/';
 
   constructor(protected http: HttpClient, protected router: Router) {
-    this.loggedUserToken = new Token('', '');
   }
 
   init() {
@@ -38,6 +37,8 @@ export class AuthService {
         this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
       }
     }
+
+    console.log(this.loggedUserToken);
   }
 
   storeToken() {
@@ -72,11 +73,17 @@ export class AuthService {
   }
 
   getJSONAuthHeader(): HttpHeaders {
-    const tokenStr = this.loggedUserToken === null ? '' : this.loggedUserToken.token;
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + tokenStr
-    });
+    let tokenStr = null;
+
+    if(!HelperFunctions.isEmptyValue(this.loggedUserToken)){
+      tokenStr = this.loggedUserToken === null ? '' : this.loggedUserToken.token;
+      return new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenStr
+      });
+    } else {
+      return null;
+    }
   }
   getFORMHeader(): HttpHeaders {
     return new HttpHeaders({
@@ -96,6 +103,7 @@ export class AuthService {
   getJSONHeader(): HttpHeaders {
     return this.headers;
   }
+  
   getToken(): Token {
     let token = null;
     const storage = window.localStorage.getItem('currentUser');
@@ -109,7 +117,7 @@ export class AuthService {
       this.storeToken();
       token = this.loggedUserToken;
     }
-    // console.log('Token: ' + token);
+    
     return token;
   }
 
@@ -118,6 +126,8 @@ export class AuthService {
   }
 
   isLoggedInSimple(): boolean {
-    return this.getToken() !== null;
+    const token = this.getToken();
+    console.log(this.getToken());
+    return token !== this.emptyToken && !HelperFunctions.isEmptyValue(token);
   }
 }

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants } from '../../shared/constants/constants';
+import { HelperFunctions } from '../../shared/util/helper-functions';
+import { Router } from '../../../../node_modules/@angular/router';
+import { SummonerService } from '../../services/summoner.service';
 
 @Component({
   selector: 'master-component',
@@ -6,51 +10,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./master-component.component.css']
 })
 export class MasterComponentComponent implements OnInit {
-  /* HAX - Angular 6 workaround */
-  private trueValue = true;
-  private falseValue = false;
-  /* HAX -  Angular 6 workaround */
 
   private playerPosition: string;
-  private pickSituation: any;
+  private playerPositionFull: string;
   private firstPick: string;
-  public positions = {
-    'top' : 'Top',
-    'jg' : 'Jungle',
-    'mid': 'Mid',
-    'sup' : 'Support',
-    'bot' : 'Bottom'
-  };
-  private keyz = ['top','jg','mid','sup','bot'];
-  private positionOrder: any;
-  private positionOrderKeys: string[];
-
-  private shouldShowOrder: boolean;
   
-  constructor() { }
+  constructor(private router: Router, private summoner: SummonerService) { }
 
   ngOnInit() {
-    this.positionOrderKeys = [];
-    this.positionOrder = [];
-    this.shouldShowOrder = false;
-    console.log(this.playerPosition);
+    this.firstPick = null;
+    this.playerPosition = null;
   }
 
   selectPlayerPosition(selection) {
     this.playerPosition = selection['id'];
-    this.shouldShowOrder = false;
-  }
-
-  pickPosition(e) {
-    this.shouldShowOrder = true;
-    alert('NEXT!');
+    this.playerPositionFull = Constants.positions[this.playerPosition][0];
   }
 
   onPositionClick(e) {
     const id = e.currentTarget.id;
-    
-    this.positionOrder[id] = this.positions[id];
-    delete this.positions[id];
-    this.positionOrderKeys.push(id);
+    this.summoner.setSelectedPosition(id);
+  }
+
+  canProceed() {
+    return HelperFunctions.isEmptyValue(this.playerPosition) && 
+          HelperFunctions.isEmptyValue(this.firstPick);
+  }
+
+  showMainPage() {
+    this.router.navigate(['/picker']);
   }
 }

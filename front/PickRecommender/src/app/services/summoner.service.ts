@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 export class SummonerService extends AbstractService<Champion, number> {
 
   private imageLocation = '{0}assets/8.9.1/img/champion/{1}.png';
+  private selectedPosition: string;
 
   constructor(protected http: HttpClient, protected auth: AuthService) {
     super(http, 'champions', auth);
@@ -21,5 +22,13 @@ export class SummonerService extends AbstractService<Champion, number> {
 
   getImageLocation(whereInFolders:string, championName: string): string {
     return this.imageLocation.replace('{0}', whereInFolders).replace('{1}', championName);
+  }
+
+  getSelectedPosition() {
+    return this.selectedPosition;
+  }
+
+  setSelectedPosition(position: string) {
+    this.selectedPosition = position;
   }
 }

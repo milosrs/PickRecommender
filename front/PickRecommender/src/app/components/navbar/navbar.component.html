@@ -1,6 +1,6 @@
 <div class="ScaleDown"> 
     <nav class="navbar navbar-collapse navbar-toggleable-md navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Pick Recommender</a>
+        <a class="navbar-brand" [routerLink]="'/'">Pick Recommender</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,19 +8,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item py-0">
-              <a class="nav-link" href="/login">Login</a>
+              <a class="nav-link" [routerLink]="'/login'">Login</a>
             </li>
             <li class="nav-item py-0">
-                <a class="nav-link" href="/register">Register</a>
+                <a class="nav-link" [routerLink]="'/register'">Register</a>
             </li>
             <li class="nav-item py-0">
-                <a class="nav-link" href="/profile">Profile</a>
+                <a class="nav-link" [routerLink]="'/profile'">Profile</a>
             </li>
             <li class="nav-item py-0">
-                <a class="nav-link" href="">Picker</a>
+                <a class="nav-link" [routerLink]="'/'">Picker</a>
             </li>
             <li class="nav-item py-0">
-                <a class="nav-link" href="">Logout</a>
+                <a class="nav-link" [routerLink]="'/login'">Logout</a>
             </li>
           </ul>
         </div>

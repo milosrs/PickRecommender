@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChampionPicksComponent } from './components/champion-picks/champion-picks.component';
@@ -18,17 +17,16 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlayerPositionComponent } from './components/champion-picks/player-position/player-position.component';
 import { ChampionAreaComponent } from './components/champion-picks/champion-area/champion-area.component';
 
-import { AbstractService } from './services/abstract.service';
 import { AuthService } from './services/auth.service';
 import { ChampionService } from './services/champion.service';
 import { SummonerService } from './services/summoner.service';
 import { ChampionHolderComponent } from './components/champion-picks/champion-area/champion-holder/champion-holder.component';
 import { MasterComponentComponent } from './components/master-component/master-component.component';
+import { ErrorpageComponent } from './components/errorpage/errorpage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     RegistrationComponent,
     LoginComponent,
     ChampionPicksComponent,
@@ -39,7 +37,8 @@ import { MasterComponentComponent } from './components/master-component/master-c
     PlayerPositionComponent,
     ChampionAreaComponent,
     ChampionHolderComponent,
-    MasterComponentComponent
+    MasterComponentComponent,
+    ErrorpageComponent
   ],
   imports: [
     BrowserModule,

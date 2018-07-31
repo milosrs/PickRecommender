@@ -1,6 +1,8 @@
 <h1 align="center">
-  Log in with your information
+  Login to use our services
 </h1>
+
+<h6 align="center">Dont have an account on our service? Please, <a [routerLink]="'/register'">register</a> </h6>
 
 <div *ngIf="errorMessage !== null" class="errorContainer" align="center">
   <div class="alert alert-danger alert-dismissible" role="alert">

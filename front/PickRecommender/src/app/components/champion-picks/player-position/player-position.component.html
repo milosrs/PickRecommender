@@ -14,7 +14,9 @@
 
   <div *ngFor='let positionkey of keyz'>  
     <div class="row" id="{{positionkey}}" (click)="onPositionClick($event)" 
-        [ngClass]="{'Active': activePosition === positionkey, 'Section' : activePosition !== positionkey}">
+        [ngClass]="{'Active': activePosition === positionkey, 
+                    'Section' : activePosition !== positionkey,
+                    'MyPosition': selectedPosition === positionkey}">
       <div class="col-4" *ngIf="selectedChampions[positionkey] !== null">
         <img src="{{createImagePath(selectedChampions[positionkey].imageInfo.full)}}" class="img-fluid CoinImage" />
       </div>
@@ -25,10 +27,10 @@
               *ngIf="positionkey === 'jg'"/>
         <img src="../../../../assets/8.9.1/img/sticker/poro-angry.png" class="img-fluid CoinImage" 
               *ngIf="positionkey === 'mid'"/>
-        <img src="../../../../assets/8.9.1/img/sticker/poro-poo.png" class="img-fluid CoinImage" 
-              *ngIf="positionkey === 'sup'"/>
         <img src="../../../../assets/8.9.1/img/sticker/poro-coolguy.png" class="img-fluid CoinImage" 
               *ngIf="positionkey === 'bot'"/>
+        <img src="../../../../assets/8.9.1/img/sticker/poro-poo.png" class="img-fluid CoinImage" 
+             *ngIf="positionkey === 'sup'"/>
       </div>
       <div class="col-8" 
           *ngIf="selectedChampions[positionkey] === null && playersType === 'Friendly' ">

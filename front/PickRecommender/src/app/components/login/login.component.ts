@@ -2,7 +2,6 @@ import { Component, OnInit, NgModule, EventEmitter, Input, Output } from '@angul
 import { HelperFunctions } from '../../shared/util/helper-functions';
 import { Message } from '../../shared/model/message';
 import { Router } from '@angular/router';
-import { HomeComponent } from '../home/home.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgForm } from '@angular/forms';

@@ -1,11 +1,16 @@
 .CenteredBtn {
-    margin-top: 3%;
+    margin-top: 5px;
     justify-content: center;
 }
 
 .AlignedBtn {
-    margin-top: 50%;
+    margin-top: 10px;
     justify-content: center;
+}
+
+.Prettify {
+    font-size: 1.105em;
+    color: chartreuse;
 }
 
 .CoinImage {

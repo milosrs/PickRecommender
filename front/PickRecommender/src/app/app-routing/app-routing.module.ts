@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/login/login.component';
 import { RegistrationComponent } from '../components/registration/registration.component';
-import { HomeComponent } from '../components/home/home.component';
+import { MasterComponentComponent } from '../components/master-component/master-component.component';
+import { LoginGuard } from './guards/login.guard';
+import { ChampionPicksComponent } from '../components/champion-picks/champion-picks.component';
 
 const routes: Routes = [
   {
@@ -16,8 +18,14 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomeComponent
+    component: MasterComponentComponent
+    //canActivate: [LoginGuard]
   },
+  {
+    path: 'picker',
+    component: ChampionPicksComponent
+    //canActivate: [LoginGuard]
+  }
 ];
 
 @NgModule({
