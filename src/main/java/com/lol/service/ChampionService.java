@@ -14,4 +14,6 @@ public interface ChampionService {
 	public Champion getOneFullInfo(String champKey, String token) throws IOException;
 	
 	public List<Champion> generateRecommendations(ChampionPositionIdList picks);
+
+	public void executeDroolsTest();
 }

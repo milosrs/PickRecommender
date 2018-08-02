@@ -27,6 +27,11 @@ public class ChampionController {
 	@Autowired
 	private ChampionService championService;
 	
+	@GetMapping("/test")
+	public void test() {
+		championService.executeDroolsTest();
+	}
+	
 	@GetMapping("/forList")
 	public ResponseEntity<?> getChampionInfoForList(@RequestHeader("Authorization") String token) {
 		try {

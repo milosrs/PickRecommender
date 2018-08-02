@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kie.api.builder.KieRepository;
+import org.kie.api.internal.utils.KieService;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ChampionServiceImpl implements ChampionService {
 	private SummonerRepository summonerRepository;
 	
 	@Autowired
-	private KieContainer kieContainer;
+	private KieSession kieSession;
 	
 	@Autowired
 	private ChampionInfoBean championInfo;
@@ -84,5 +85,11 @@ public class ChampionServiceImpl implements ChampionService {
 		for(String pick: picks) {
 			toPopulate.add(championInfo.getChampionDataByKey(pick));
 		}
+	}
+
+	@Override
+	public void executeDroolsTest() {
+		kieSession.insert(new ChampionListDto());
+		kieSession.fireAllRules();
 	}
 }

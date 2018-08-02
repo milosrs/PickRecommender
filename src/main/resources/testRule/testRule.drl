@@ -2,8 +2,7 @@
 package testRule
 
 //list any import classes here.
-
-
+import com.lol.model.champions.ChampionListDto;
 
 //declare any global variables here
 
@@ -13,9 +12,9 @@ package testRule
 rule "Your First Rule"
 
     when
-        //conditions
+       $cl: ChampionListDto(version == null)
     then
-        //actions
+        System.out.println("Hello!");
 
 end
 
