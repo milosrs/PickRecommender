@@ -1,26 +1,34 @@
 package com.lol.model.champions;
 
-import java.util.Map;
+import java.util.List;
 
 public class ChampionPositionIdList {
-	private Map<String, Map<String, Integer>> picks;
+	private List<String> friendlyTeamIds;
+	private List<String> opponentTeamIds;
 
 	public ChampionPositionIdList() {
 		super();
 	}
 
-	public ChampionPositionIdList(Map<String, Map<String, Integer>> picks) {
+	public ChampionPositionIdList(List<String> friendlyTeamId, List<String> opponentTeamId) {
 		super();
-		this.picks = picks;
+		this.friendlyTeamIds = friendlyTeamId;
+		this.opponentTeamIds = opponentTeamId;
 	}
 
-	public Map<String, Map<String, Integer>> getPicks() {
-		return picks;
+	public List<String> getFriendlyTeamIds() {
+		return friendlyTeamIds;
 	}
 
-	public void setPicks(Map<String, Map<String, Integer>> picks) {
-		this.picks = picks;
+	public void setFriendlyTeamIds(List<String> friendlyTeamId) {
+		this.friendlyTeamIds = friendlyTeamId;
 	}
-	
-	
+
+	public List<String> getOpponentTeamIds() {
+		return opponentTeamIds;
+	}
+
+	public void setOpponentTeamIds(List<String> opponentTeamId) {
+		this.opponentTeamIds = opponentTeamId;
+	}
 }

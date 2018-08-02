@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
+    <kbase name="rules" packages="rules">
+        <ksession name="ksession-rules"/>
+    </kbase>
+    <kbase name="agenda-group" packages="rules2">
+        <ksession name="agenda-rules"/>
+    </kbase>
+    
+    <kbase name="declared" packages="declaredTypes">
+        <ksession name="declared-types"/>
+    </kbase>
+    
+    <kbase name="propertyreactive" packages="propertyReactive">
+        <ksession name="propertyReactiveKsession"/>
+    </kbase>
+    
+</kmodule>

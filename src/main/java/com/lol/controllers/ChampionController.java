@@ -1,9 +1,7 @@
 package com.lol.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.websocket.server.PathParam;
 
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lol.model.PickTypes;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
 import com.lol.model.champions.ChampionPositionIdList;
@@ -61,26 +58,10 @@ public class ChampionController {
 	public ResponseEntity<?> generateRecommendedChampions(@RequestBody ChampionPositionIdList picks,
 														  @RequestHeader("Authorization") String token) throws IOException {
 		token = token.substring(7);
-		List<Champion> friendlyChampions = new ArrayList<Champion>();
-		List<Champion> enemyChampions = new ArrayList<Champion>();
-		List<Champion> recommendations = null;
-		
-		for(String key : picks.getPicks().keySet()) {
-			if(key == PickTypes.FRIEND.getType()) {
-				addChampToList(friendlyChampions, picks.getPicks().get(key), token);
-			} else if (key == PickTypes.OPPONENT.getType()) {
-				addChampToList(enemyChampions, picks.getPicks().get(key), token);
-			}
-		}
+		List<Champion> recommendations = championService.generateRecommendations(picks);
 		
 		return ResponseEntity.ok(recommendations);
 	}
 	
-	private void addChampToList(List<Champion> list, Map<String, Integer> positionIdMap, String userToken) throws IOException {
-		for(String position : positionIdMap.keySet()) {
-			Integer key = positionIdMap.get(position);
-			
-			list.add(championService.getOneFullInfo(key.toString(), userToken));		
-		}
-	}
+	
 }

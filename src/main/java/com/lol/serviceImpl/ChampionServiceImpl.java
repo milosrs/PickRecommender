@@ -1,12 +1,21 @@
 package com.lol.serviceImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import org.kie.api.builder.KieRepository;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lol.ChampionInfoBean;
+import com.lol.model.PickTypes;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
+import com.lol.model.champions.ChampionPositionIdList;
 import com.lol.model.summoner.SummonerAuth;
 import com.lol.repository.SummonerRepository;
 import com.lol.requestSender.ChampionRequestSender;
@@ -25,26 +34,55 @@ public class ChampionServiceImpl implements ChampionService {
 	@Autowired
 	private SummonerRepository summonerRepository;
 	
+	@Autowired
+	private KieContainer kieContainer;
+	
+	@Autowired
+	private ChampionInfoBean championInfo;
+	
 	@Override
 	public ChampionListDto getAllForList(String token) throws IOException {
-		ChampionListDto list = null;
-		String username = jwtTokenUtil.getUsernameFromToken(token);
-		SummonerAuth summoner = summonerRepository.getByUsername(username);
+		ChampionListDto ret = null;
 		
-		list = requestSender.sendRequest(summoner.getRealm());
+		if(isAccountValid(token)) {
+			ret = championInfo.getChampionData();
+		}
 				
-		return list;
+		return ret;
 	}
 
 	@Override
 	public Champion getOneFullInfo(String champKey, String token) throws IOException {
-		Champion champ = null;
+		Champion ret = null;
+		
+		if(isAccountValid(token)) {
+			ret = championInfo.getChampionDataByKey(champKey);
+		}
+				
+		return ret;
+	}
+	
+	public boolean isAccountValid(String token) {
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		SummonerAuth summoner = summonerRepository.getByUsername(username);
 		
-		champ = requestSender.sendRequest(champKey, summoner.getRealm());
-				
-		return champ;
+		return summoner != null;
 	}
 
+	@Override
+	public List<Champion> generateRecommendations(ChampionPositionIdList picks) {
+		List<Champion> friendlyChampions = new ArrayList<Champion>();
+		List<Champion> enemyChampions = new ArrayList<Champion>();
+		
+		populateList(picks.getFriendlyTeamIds(), friendlyChampions);
+		populateList(picks.getOpponentTeamIds(), enemyChampions);
+		
+		return null;
+	}
+	
+	private void populateList(List<String> picks, List<Champion> toPopulate) {
+		for(String pick: picks) {
+			toPopulate.add(championInfo.getChampionDataByKey(pick));
+		}
+	}
 }
