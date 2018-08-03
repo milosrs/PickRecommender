@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lol.ChampionInfoBean;
+import com.lol.Test;
 import com.lol.model.PickTypes;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
@@ -89,7 +90,13 @@ public class ChampionServiceImpl implements ChampionService {
 
 	@Override
 	public void executeDroolsTest() {
-		kieSession.insert(new ChampionListDto());
+		ChampionListDto help = new ChampionListDto();
+		Test test = new Test();
+		help.setVersion(null);
+	
+		kieSession.insert(help);
+		kieSession.insert(test);
 		kieSession.fireAllRules();
+		System.out.println("Test value: " + test.getTest());
 	}
 }

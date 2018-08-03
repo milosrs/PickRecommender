@@ -22,13 +22,13 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 @Configuration
 public class DroolsConfig {
-	private static final String RULES_PATH = new ClassPathResource("testRule").getPath();
+	private static final String RULES_PATH = new ClassPathResource("testRule").getPath() + "/";
 	
 	@Bean
 	public KieFileSystem kieFileSystem() throws IOException {
-	    KieFileSystem kieFileSystem = kieServices().newKieFileSystem();
+	    KieFileSystem kieFileSystem = getKieServices().newKieFileSystem();
 	    for (Resource file : getRuleFiles()) {
-	        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + "/" + file.getFilename(), "UTF-8"));
+	        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + file.getFilename(), "UTF-8"));
 	    }        
 	    return kieFileSystem;
 	}
@@ -40,16 +40,34 @@ public class DroolsConfig {
 
 	@Bean
 	public KieContainer kieContainer() throws IOException {
-	    return kieServices().getKieClasspathContainer();
+	    final KieRepository kieRepository = getKieServices().getRepository();
+
+	    kieRepository.addKieModule(new KieModule() {
+	        public ReleaseId getReleaseId() {
+	            return kieRepository.getDefaultReleaseId();
+	        }
+	    });
+
+	    KieBuilder kieBuilder = getKieServices().newKieBuilder(kieFileSystem()); 
+	    kieBuilder.buildAll();
+
+	    return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());
 	}
 
-	private KieServices kieServices() {
+	private KieServices getKieServices() {
 	    return KieServices.Factory.get();
 	}
 
 	@Bean
+	public KieBase kieBase() throws IOException {
+	    return kieContainer().getKieBase();
+	}
+
+	@Bean
 	public KieSession kieSession() throws IOException {
-	    return kieContainer().newKieSession("ksession-rules");
+	    KieSession session = kieContainer().newKieSession("ksession-rules");
+	    System.out.println("Session object: " + session);
+	    return session;
 	}
 
 	@Bean
