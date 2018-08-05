@@ -4,25 +4,24 @@ package testRule
 //list any import classes here.
 import com.lol.model.champions.ChampionListDto;
 import com.lol.Test;
-//declare any global variables here
+import java.lang.System;
 
+//declare any global variables here
 
 rule "Your First Rule"
 
     when
        $cl: ChampionListDto(version == null)
     then
-    	$cl.setVersion("ASDF");
         System.out.println("Hello!");
-
+        $cl.setVersion("8.15");
 end
 
 rule "Your Second Rule"
     //include attributes such as "salience" here...
     when
-        $test: Test(test == 1)
+        $t: Test(test == 1)
     then
-        $test.setTest(3);
-        System.out.println("Hello from rules!");
-
+        $t.setTest(15);
+        System.out.println("Second rule: " + $t.getTest());
 end

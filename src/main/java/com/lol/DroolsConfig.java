@@ -13,6 +13,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.spring.KModuleBeanFactoryPostProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -22,56 +23,14 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 @Configuration
 public class DroolsConfig {
-	private static final String RULES_PATH = new ClassPathResource("testRule").getPath() + "/";
-	
-	@Bean
-	public KieFileSystem kieFileSystem() throws IOException {
-	    KieFileSystem kieFileSystem = getKieServices().newKieFileSystem();
-	    for (Resource file : getRuleFiles()) {
-	        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + file.getFilename(), "UTF-8"));
-	    }        
-	    return kieFileSystem;
-	}
 
-	private Resource[] getRuleFiles() throws IOException {
-	    ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-	    return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.*");
-	}
-
-	@Bean
-	public KieContainer kieContainer() throws IOException {
-	    final KieRepository kieRepository = getKieServices().getRepository();
-
-	    kieRepository.addKieModule(new KieModule() {
-	        public ReleaseId getReleaseId() {
-	            return kieRepository.getDefaultReleaseId();
-	        }
-	    });
-
-	    KieBuilder kieBuilder = getKieServices().newKieBuilder(kieFileSystem()); 
-	    kieBuilder.buildAll();
-
-	    return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());
-	}
-
-	private KieServices getKieServices() {
-	    return KieServices.Factory.get();
-	}
-
-	@Bean
-	public KieBase kieBase() throws IOException {
-	    return kieContainer().getKieBase();
-	}
+	@Autowired
+	private KieContainer kieContainer;
 
 	@Bean
 	public KieSession kieSession() throws IOException {
-	    KieSession session = kieContainer().newKieSession("ksession-rules");
+	    KieSession session = kieContainer.newKieSession("league-rules");
 	    System.out.println("Session object: " + session);
 	    return session;
-	}
-
-	@Bean
-	public KModuleBeanFactoryPostProcessor kiePostProcessor() {
-	    return new KModuleBeanFactoryPostProcessor();
 	}
 }

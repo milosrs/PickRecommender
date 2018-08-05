@@ -19,7 +19,13 @@ public class ChampionRequestSender extends RiotRequestSender<String, ChampionLis
 	public ChampionListDto sendRequest(String realm) throws IOException {
 		String fullUrl = this.urlBuilder.buildUrl(realm, RequestUrl.CHAMPIONS_ALL_FOR_SHOW, null);
 		String resultString = this.sendGET(fullUrl);
-		ChampionListDto result = convertToEntity(resultString);
+		ChampionListDto result = null;
+		
+		try {
+			result = convertToEntity(resultString);
+		} catch(Exception e) {
+			System.out.println("Error converting entities.");
+		}
 		
 		return result;
 	}
@@ -27,7 +33,13 @@ public class ChampionRequestSender extends RiotRequestSender<String, ChampionLis
 	public Champion sendRequest(String id, String realm) throws IOException {
 		String fullUrl = this.urlBuilder.buildUrl(realm, RequestUrl.CHAMPIONS_BY_ID, id);
 		String resultString = this.sendGET(fullUrl);
-		Champion result = convertToChampEntity(resultString);
+		Champion result = null;
+		
+		try {
+			result = convertToChampEntity(resultString);
+		} catch(Exception e) {
+			System.out.println("Error converting entities.");
+		}
 		
 		return result;
 	}

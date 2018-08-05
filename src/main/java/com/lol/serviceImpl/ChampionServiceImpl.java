@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kie.api.builder.KieRepository;
-import org.kie.api.internal.utils.KieService;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +97,6 @@ public class ChampionServiceImpl implements ChampionService {
 		kieSession.insert(test);
 		kieSession.fireAllRules();
 		System.out.println("Test value: " + test.getTest());
+		kieSession.dispose();
 	}
 }
