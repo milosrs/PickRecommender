@@ -1,7 +1,8 @@
 <div class="container-fluid Wrapper" [ngStyle]="customCss">
 
   <div class="row Header" *ngIf="playersType != null && playersType != undefined">
-    {{playersType}} Players
+    {{playersType}} Players 
+    {{firstPick === playersType ? ' - First Pick' : ''}}
   </div>
 
   <div class="row Header" *ngIf="(playersType == null || playersType == undefined) && (header == null || header == undefined)">
@@ -9,14 +10,14 @@
   </div>
 
   <div class="row Header" *ngIf="(playersType == null || playersType == undefined) && (header !== null || header !== undefined)">
-    {{header}}
+    {{header}} {{firstPick}}
   </div>
 
   <div *ngFor='let positionkey of keyz'>  
     <div class="row" id="{{positionkey}}" (click)="onPositionClick($event)" 
         [ngClass]="{'Active': activePosition === positionkey, 
                     'Section' : activePosition !== positionkey,
-                    'MyPosition': selectedPosition === positionkey}">
+                    'MyPosition': myPosition === positionkey}">
       <div class="col-4" *ngIf="selectedChampions[positionkey] !== null">
         <img src="{{createImagePath(selectedChampions[positionkey].imageInfo.full)}}" class="img-fluid CoinImage" />
       </div>
@@ -34,7 +35,7 @@
       </div>
       <div class="col-8" 
           *ngIf="selectedChampions[positionkey] === null && playersType === 'Friendly' ">
-        {{positions[positionkey][0]}}
+          {{myPosition === positionkey ? 'Your position - ' : ''}} {{positions[positionkey][0]}}
       </div>
       <div class="col-8" *ngIf="selectedChampions[positionkey] === null && playersType === 'Opponent'">
         {{positions[positionkey][1]}}
@@ -48,58 +49,3 @@
       </div>
     </div>
   </div>
-
-
-  <!-- <div class="row" id="jg" (click)="onPositionClick($event)" 
-      [ngClass]="{'Active': activePosition === 'jg', 'Section' : activePosition !== 'jg'}">
-    <div class="col-4">
-      <img src="../../../../assets/8.9.1/img/sticker/poro-shock.png" class="img-fluid CoinImage"/>
-    </div>
-    <div class="col-8" *ngIf="playersType === 'Friendly'">
-        Jungle
-    </div>
-    <div class="col-8" *ngIf="playersType !== 'Friendly'">
-      Position 2
-    </div>
-  </div>
-
-  <div class="row" id="mid" (click)="onPositionClick($event)" 
-      [ngClass]="{'Active': activePosition === 'mid', 'Section' : activePosition !== 'mid'}">
-    <div class="col-4">
-      <img src="../../../../assets/8.9.1/img/sticker/poro-angry.png" class="img-fluid CoinImage"/>
-    </div>
-    <div class="col-8" *ngIf="playersType === 'Friendly'">
-      Mid
-    </div>
-    <div class="col-8" *ngIf="playersType !== 'Friendly'">
-      Position 3
-    </div>
-  </div>
-
-  <div class="row" id="sup" (click)="onPositionClick($event)" 
-      [ngClass]="{'Active': activePosition === 'sup', 'Section' : activePosition !== 'sup'}">
-    <div class="col-4">
-      <img src="../../../../assets/8.9.1/img/sticker/poro-poo.png" class="img-fluid CoinImage"/>
-    </div>
-    <div class="col-8" *ngIf="playersType === 'Friendly'">
-      Support
-    </div>
-    <div class="col-8" *ngIf="playersType !== 'Friendly'">
-      Position 4
-    </div>
-  </div>
-
-  <div class="row" id="bot" (click)="onPositionClick($event)" 
-      [ngClass]="{'Active': activePosition === 'bot', 'Section' : activePosition !== 'bot'}">
-    <div class="col-4">
-      <img src="../../../../assets/8.9.1/img/sticker/poro-coolguy.png" class="img-fluid CoinImage"/>
-    </div>
-    <div class="col-8" *ngIf="playersType === 'Friendly'">
-      Bottom
-    </div>
-    <div class="col-8" *ngIf="playersType !== 'Friendly'">
-      Position 5
-    </div>
-  </div>
-</div>
- -->

@@ -6,6 +6,7 @@ import { RegistrationComponent } from '../components/registration/registration.c
 import { MasterComponentComponent } from '../components/master-component/master-component.component';
 import { LoginGuard } from './guards/login.guard';
 import { ChampionPicksComponent } from '../components/champion-picks/champion-picks.component';
+import { EmptyInfoGuard } from './guards/empty-info.guard';
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
   {
     path: 'picker',
     component: ChampionPicksComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard, EmptyInfoGuard]
   }
 ];
 

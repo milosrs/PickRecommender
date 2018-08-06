@@ -5,9 +5,10 @@ import { HelperFunctions } from '../../shared/util/helper-functions';
 import { AuthService } from '../../services/auth.service';
 import { Token } from '../../model/token';
 import { PlayerPositionComponent } from './player-position/player-position.component';
-import { ChampionPicks } from '../../model/champion-picks';
 import { Champion } from '../../model/champion';
 import { ChampionAreaComponent } from './champion-area/champion-area.component';
+import { PickGeneratorInfo } from '../../model/pick-generator-info';
+import { Router } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'champion-picks',
@@ -18,13 +19,17 @@ export class ChampionPicksComponent implements OnInit {
   
   private token: Token;
   private selectedPosition: any = null;
+  private playerPosition: string;
+  private firstPick: any = null;
   private selectedChampions;
   @ViewChildren(PlayerPositionComponent) playerPosComponent: QueryList<PlayerPositionComponent>;
 
-  constructor(protected championService: ChampionService, protected auth: AuthService) { }
+  constructor(protected championService: ChampionService, protected auth: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.token = this.auth.getToken();
+    this.playerPosition = this.championService.getPlayerPosition();
+    this.firstPick = this.championService.getFirstPick();
   }
 
   isUserLoggedIn() {
@@ -47,27 +52,27 @@ export class ChampionPicksComponent implements OnInit {
       'Friendly': [],
       'Opponent': [],
     };
+    let generate = null;
+    debugger;
 
     this.playerPosComponent.forEach(c => {
-      toSend[c.getPlayersType()].push(c.getPickedChampsIdList());
+      toSend[c.getPlayersType()] = c.getPickedChampsIdList();
     });
-    console.log(toSend);
-    
+
     if(!HelperFunctions.isEmptyValue(this.auth.getToken().username)) {
-      this.championService.generate(new ChampionPicks(toSend['Friendly'], toSend['Opponent'], this.auth.getToken().username));
+      const keys = Object.keys(toSend['Opponent']);
+      let opponents = [];
+
+      for(let i = 0; i < keys.length; i++) {
+        opponents.push(toSend['Opponent'][keys[i]]);
+      }
+      generate = new PickGeneratorInfo(toSend['Friendly'], opponents, this.playerPosition, 
+                                       this.firstPick, this.auth.getToken().username);
+      console.log(generate);
     }
-  }
-
-  shouldGenerate() {
-    let shouldEnable = true;
-    let numberOfPickedChamps = 0;
-
-    this.playerPosComponent.forEach(c => {
-      shouldEnable = shouldEnable &&
-                     c.getNumberOfPickedChampions() > 0;
-    });
-
-    return shouldEnable;
+    
+    this.championService.generate(generate)
+      .subscribe(resp => {console.log(resp)});
   }
 
   setSelectedChampions(selectedChampions: any) {
@@ -84,5 +89,11 @@ export class ChampionPicksComponent implements OnInit {
 
   getTest() {
     this.auth.test();
+  }
+
+  reset() {
+    this.championService.setFirstPick(null);
+    this.championService.setPlayerPosition(null);
+    this.router.navigate(['/']);
   }
 }

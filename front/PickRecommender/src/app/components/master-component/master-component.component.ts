@@ -3,6 +3,7 @@ import { Constants } from '../../shared/constants/constants';
 import { HelperFunctions } from '../../shared/util/helper-functions';
 import { Router } from '../../../../node_modules/@angular/router';
 import { SummonerService } from '../../services/summoner.service';
+import { ChampionService } from '../../services/champion.service';
 
 @Component({
   selector: 'master-component',
@@ -15,7 +16,7 @@ export class MasterComponentComponent implements OnInit {
   private playerPositionFull: string;
   private firstPick: string;
   
-  constructor(private router: Router, private summoner: SummonerService) { }
+  constructor(private router: Router, private summoner: SummonerService, private championService: ChampionService) { }
 
   ngOnInit() {
     this.firstPick = null;
@@ -29,7 +30,7 @@ export class MasterComponentComponent implements OnInit {
 
   onPositionClick(e) {
     const id = e.currentTarget.id;
-    this.summoner.setSelectedPosition(id);
+    this.championService.setPlayerPosition(id);
   }
 
   canProceed() {
@@ -38,6 +39,8 @@ export class MasterComponentComponent implements OnInit {
   }
 
   showMainPage() {
+    this.championService.setPlayerPosition(this.playerPosition);
+    this.championService.setFirstPick(this.firstPick);
     this.router.navigate(['/picker']);
   }
 }

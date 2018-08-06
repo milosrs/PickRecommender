@@ -22,20 +22,20 @@ export class PlayerPositionComponent implements OnInit {
   
   public activePosition: string;
   private selectAudio;
-  private selectedPosition: string;
 
   @Input() private playersType: string;
   @Input() private customCss: object;
   @Input() private keyz: string[];
   @Input() private header: string;
   @Input() private shouldUseDefaultKeys: boolean;
+  @Input() private myPosition;
+  @Input() private firstPick;
   @Output() private positionClickEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private champService: ChampionService, private summonerService: SummonerService) {
     // this.selectAudio = new Audio();
     // this.selectAudio.src = '../../../../assets/selectPosition.wav';
     // this.selectAudio.load();
-    this.selectedPosition = summonerService.getSelectedPosition();  
   }
 
   ngOnInit() {
@@ -83,7 +83,9 @@ export class PlayerPositionComponent implements OnInit {
     const keys = Object.getOwnPropertyNames(Constants.positions);
 
     for(let i = 0; i < keys.length; i++) {
-      pickedChamps[keys[i]] = this.selectedChampions[keys[i]].id;
+      if(!HelperFunctions.isEmptyValue(this.selectedChampions[keys[i]])) {
+        pickedChamps[keys[i]] = this.selectedChampions[keys[i]].id;
+      }
     }
 
     return pickedChamps;

@@ -4,6 +4,8 @@
     <div class="col-3 PlayerPos">
        <!--Promeni shouldUseDefaultKeys u true kada zavrsis komponentu-->
       <player-position
+        [myPosition]="playerPosition"
+        [firstPick]="firstPick"
         [shouldUseDefaultKeys]="true"
         [playersType]="'Friendly'"
         [customCss]="{'background-color' : 'green'}"
@@ -20,6 +22,7 @@
 
     <div class="col-3 PlayerPos">
         <player-position
+          [firstPick]="firstPick"
           [shouldUseDefaultKeys]="true"
           [playersType]="'Opponent'"
           [customCss]="{'background-color' : 'red'}"
@@ -28,6 +31,7 @@
 
   </div>
   <div class="row CenteredBtn">
+    <button class="btn btn-warning" (click)="reset()">Back</button>
     <button class="btn btn-success" (click)='generate()'>Generate!</button>
   </div>
 </div>
