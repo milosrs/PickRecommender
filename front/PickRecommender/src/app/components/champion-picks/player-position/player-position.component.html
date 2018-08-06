@@ -4,11 +4,11 @@
     {{playersType}} Players
   </div>
 
-  <div class="row Header" *ngIf="playersType == null || playersType == undefined && header == null || header == undefined">
+  <div class="row Header" *ngIf="(playersType == null || playersType == undefined) && (header == null || header == undefined)">
     What is your position?
   </div>
 
-  <div class="row Header" *ngIf="playersType == null || playersType == undefined && header !== null || header !== undefined">
+  <div class="row Header" *ngIf="(playersType == null || playersType == undefined) && (header !== null || header !== undefined)">
     {{header}}
   </div>
 

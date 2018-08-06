@@ -5,6 +5,7 @@ import { Champion } from '../../../model/champion';
 import { HelperFunctions } from '../../../shared/util/helper-functions';
 import { PlayerPositionComponent } from '../player-position/player-position.component';
 import { Constants } from '../../../shared/constants/constants';
+import { Router } from '../../../../../node_modules/@angular/router';
 
 
 @Component({
@@ -35,27 +36,15 @@ export class ChampionAreaComponent implements OnInit {
     'bot' : null,
   }
   private champs: ChampionViewList;
-  private champList: Champion[];
   private filteredChampList: Champion[];
   private filter: string;
+
+  @Input() private champList: Champion[];
   @Input() private selectedPosition:any;
+  @Input() private version: string;
   @Output() private championSelectEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(protected champService: ChampionService) {
-    this.champList = [];
-    this.champs = new ChampionViewList('','','','','');
-    this.champs = new ChampionViewList(this.mock['keys'], this.mock['data'], this.mock['version'],this.mock['type'],this.mock['format']);
-    /*champService.getAllForList()
-                .subscribe(data => {
-                  this.champs = data as ChampionViewList;
-                  console.log(this.champs);
-                },
-                err => {
-                  console.log(err);
-                  this.champs = new ChampionViewList(this.mock['keys'], this.mock['data'], this.mock['version'],this.mock['type'],this.mock['format']);
-                });*/
-    this.createInfoForEveryChampion();
-    this.filteredChampList = this.champList;
+  constructor(protected championService: ChampionService, protected router: Router) {
   }
 
   createInfoForEveryChampion() {
@@ -69,12 +58,25 @@ export class ChampionAreaComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.selectedPosition);
+    if(HelperFunctions.isEmptyValue(this.selectedPosition)) {
+        this.router.navigate[''];
+    }
+    this.championService.getAllForList().subscribe(resp => {
+        this.champList = resp as Champion[];
+        this.champList = HelperFunctions.sortArrayByKey(this.champList, 'name');
+        this.filteredChampList = this.champList;
+      });
+  
+      this.championService.getVersion().subscribe(resp => {
+        this.version = resp as string
+      });
   }
 
   filterChamps() {
     this.filteredChampList = HelperFunctions.filterArrayItems(this.champList, 'name', 
                                                                 this.filter, Constants.FilterType.CONTAINS);
-    console.log(this.filteredChampList);
+    this.champList = HelperFunctions.sortArrayByKey(this.champList, 'name');
   }
 
   selectChampion(champion) {

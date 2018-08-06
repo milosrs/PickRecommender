@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { Token } from '../../model/token';
 import { PlayerPositionComponent } from './player-position/player-position.component';
 import { ChampionPicks } from '../../model/champion-picks';
+import { Champion } from '../../model/champion';
+import { ChampionAreaComponent } from './champion-area/champion-area.component';
 
 @Component({
   selector: 'champion-picks',
@@ -14,7 +16,6 @@ import { ChampionPicks } from '../../model/champion-picks';
 })
 export class ChampionPicksComponent implements OnInit {
   
-  private champList: ChampionViewList;
   private token: Token;
   private selectedPosition: any = null;
   private selectedChampions;
@@ -23,7 +24,6 @@ export class ChampionPicksComponent implements OnInit {
   constructor(protected championService: ChampionService, protected auth: AuthService) { }
 
   ngOnInit() {
-    this.championService.getAllForList();
     this.token = this.auth.getToken();
   }
 
@@ -48,24 +48,23 @@ export class ChampionPicksComponent implements OnInit {
       'Opponent': [],
     };
 
-    if(this.shouldGenerate()) {
-      this.playerPosComponent.forEach(c => {
-        toSend[c.getPlayersType()].push(c.getPickedChampsIdList());
-      });
-      console.log(toSend);
-    } else {
-      alert('You must pick all positions for every team. Please, do this and try again.');
-    }
+    this.playerPosComponent.forEach(c => {
+      toSend[c.getPlayersType()].push(c.getPickedChampsIdList());
+    });
+    console.log(toSend);
     
-    this.championService.generate(new ChampionPicks(toSend['Friendly'], toSend['Opponent']));
+    if(!HelperFunctions.isEmptyValue(this.auth.getToken().username)) {
+      this.championService.generate(new ChampionPicks(toSend['Friendly'], toSend['Opponent'], this.auth.getToken().username));
+    }
   }
 
   shouldGenerate() {
     let shouldEnable = true;
+    let numberOfPickedChamps = 0;
 
     this.playerPosComponent.forEach(c => {
-      shouldEnable = shouldEnable && 
-                     !HelperFunctions.containsEmptyValues(c.getPickedChamps());
+      shouldEnable = shouldEnable &&
+                     c.getNumberOfPickedChampions() > 0;
     });
 
     return shouldEnable;

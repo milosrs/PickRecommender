@@ -25,7 +25,7 @@
       <div class="form-group row">
         <label for="password1" class="col-sm-4 control-label"> Password: </label>
         <div class="col-sm-8">
-          <input type="password" class="form-control" id="password1" placeholder="You can use any password, we collect your League profile information from Riot directly."
+          <input type="password" class="form-control" id="password1" placeholder="Some creative password :P"
                   name="password" [(ngModel)]="regInfo.password" minlength="6" required #password1="ngModel">
         </div>
       </div>
@@ -36,7 +36,8 @@
           <input type="password" class="form-control" id="password2" placeholder="Password again :D"
                   name="repeatPW" [(ngModel)]="repeatPW" #password2="ngModel" required>
         </div>
-        <div [hidden]="repeatPW == regInfo.password || password2.pristine" class="alert alert-danger">
+        <div [hidden]="repeatPW == regInfo.password || password2.pristine" class="alert alert-danger col-sm-2"
+        style="font-size: 0.65em">
           Passwords don't match.
         </div>
       </div>
@@ -59,8 +60,8 @@
   </form>
 </div>
 
-<h6 align="center">Registering requires your real summoner name, and realm.
-    Password doesnt need to match your Riot account. </h6>
+<h6 align="center" class="alert alert-success">Registering requires your real summoner name, and realm.
+    Password doesn't need to match your Riot accounts password. You can use any password, we collect your League profile information from Riot directly. </h6>
 
 <div align="center" *ngIf="registered">
   <div align="center" class="alert alert-success">

@@ -18,13 +18,13 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: MasterComponentComponent
-    //canActivate: [LoginGuard]
+    component: MasterComponentComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: 'picker',
-    component: ChampionPicksComponent
-    //canActivate: [LoginGuard]
+    component: ChampionPicksComponent,
+    canActivate: [LoginGuard]
   }
 ];
 

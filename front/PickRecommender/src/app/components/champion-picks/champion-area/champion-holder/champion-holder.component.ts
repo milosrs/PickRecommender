@@ -17,7 +17,7 @@ export class ChampionHolderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.imagePath = this.service.getImageLocation('../../../../../', this.champion.imageInfo['full']);
+    this.imagePath = this.service.getImageLocation('../../../../../', this.champion.imageInfo.full);
   }
 
   championSelect(event) {

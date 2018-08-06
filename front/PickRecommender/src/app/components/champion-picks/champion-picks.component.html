@@ -1,9 +1,9 @@
 <div class="container-fluid" [ngStyle]="{'margin-top' : '2%'}" *ngIf="isUserLoggedIn()">
   <div class="row">
     
-    <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'green', 'padding': '1% 1% 1% 1%'}">
+    <div class="col-3 PlayerPos">
        <!--Promeni shouldUseDefaultKeys u true kada zavrsis komponentu-->
-      <player-position    
+      <player-position
         [shouldUseDefaultKeys]="true"
         [playersType]="'Friendly'"
         [customCss]="{'background-color' : 'green'}"
@@ -12,11 +12,13 @@
     
     <div class="col-6">
       <champion-area
+        [version]='version'
+        [champList]='champList'
         [selectedPosition]='selectedPosition'
         (championSelectEvent)='setSelectedChampions($event)'></champion-area>
     </div>
 
-    <div class="col-3 PlayerPos" [ngStyle]="{'background-color' : 'red', 'padding': '1% 1% 1% 1%'}">
+    <div class="col-3 PlayerPos">
         <player-position
           [shouldUseDefaultKeys]="true"
           [playersType]="'Opponent'"

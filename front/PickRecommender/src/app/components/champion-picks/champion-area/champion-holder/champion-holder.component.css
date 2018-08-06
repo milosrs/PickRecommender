@@ -1,8 +1,8 @@
 .Text {
-    font-size: 10px;
+    font-size: 0.9em;
     color: wheat;
     cursor:  default;
-    justify-content: right;
+    justify-content: center;
 }
 
 .ChampImage {

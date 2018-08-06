@@ -37,8 +37,6 @@ export class AuthService {
         this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
       }
     }
-
-    console.log(this.loggedUserToken);
   }
 
   storeToken() {
@@ -60,7 +58,6 @@ export class AuthService {
         this.loggedUserToken =  new Token(loginInfo.username, ret['realm'], ret['token']);
         this.storeToken();
         this.logger.next(true);
-        console.log('Token:', this.loggedUserToken);
         this.router.navigateByUrl('');
       });
   }
@@ -72,34 +69,47 @@ export class AuthService {
     this.logger.next(false);
   }
 
-  getJSONAuthHeader(): HttpHeaders {
+  getJSONAuthHeader(contentType?: any): HttpHeaders {
     let tokenStr = null;
 
     if(!HelperFunctions.isEmptyValue(this.loggedUserToken)){
       tokenStr = this.loggedUserToken === null ? '' : this.loggedUserToken.token;
-      return new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + tokenStr
-      });
+
+      if(HelperFunctions.isEmptyValue(contentType)) {
+        return new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + tokenStr
+        });
+      } else {
+        return new HttpHeaders({
+          'Content-Type': contentType,
+          'Authorization': 'Bearer ' + tokenStr
+        });
+      }
+
     } else {
       return null;
     }
   }
+  
   getFORMHeader(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type' : 'application/x-www-form-urlencoded',
     });
   }
+
   getAuthHeader(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.loggedUserToken.token,
     });
   }
+
   getAuthHeaderMultipart(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.loggedUserToken.token,
     });
   }
+
   getJSONHeader(): HttpHeaders {
     return this.headers;
   }
@@ -127,7 +137,6 @@ export class AuthService {
 
   isLoggedInSimple(): boolean {
     const token = this.getToken();
-    console.log(this.getToken());
     return token !== this.emptyToken && !HelperFunctions.isEmptyValue(token);
   }
 }

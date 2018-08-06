@@ -41,6 +41,11 @@ export class ChampionService extends AbstractService<Champion, number> {
     return this.http.post(this.actionUrl + '/generate', championPicks, {headers: headerobj});
    }
 
+   public getVersion() {
+    const headerobj = this.auth.getJSONAuthHeader('text');
+    return this.http.get(this.actionUrl + '/version', {headers: headerobj, responseType: 'text'});
+   }
+
    public getImageLocation(whereInFolders:string, championName: string): string {
     return this.imageLocation.replace('{0}', whereInFolders).replace('{1}', championName);
   }

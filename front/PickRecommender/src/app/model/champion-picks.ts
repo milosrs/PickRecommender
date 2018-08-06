@@ -1,7 +1,7 @@
 import { HelperFunctions } from "../shared/util/helper-functions";
 
 export class ChampionPicks {
-    constructor(public friendlyChampions: any, public opponentChampions: any) {
+    constructor(public friendlyChampions: any, public opponentChampions: any, public summonerUsername: string) {
         if(HelperFunctions.isEmptyValue(friendlyChampions)) {
             this.friendlyChampions = [];
         } else {

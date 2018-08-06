@@ -16,8 +16,8 @@ export class PlayerPositionComponent implements OnInit {
     'top' : null,
     'jg' : null,
     'mid': null,
-    'sup' : null,
     'bot' : null,
+    'sup' : null,
   };
   
   public activePosition: string;
@@ -74,11 +74,11 @@ export class PlayerPositionComponent implements OnInit {
     console.log(this.selectedChampions);
   }
 
-  getPickedChamps() {
+  getPickedChamps():any {
     return this.selectedChampions;
   }
 
-  getPickedChampsIdList() {
+  getPickedChampsIdList(): any {
     let pickedChamps = {};
     const keys = Object.getOwnPropertyNames(Constants.positions);
 
@@ -91,5 +91,18 @@ export class PlayerPositionComponent implements OnInit {
 
   createImagePath(championName: string) {
     return this.champService.getImageLocation('../../../../', championName);
+  }
+
+  getNumberOfPickedChampions():number {
+    let count = 0;
+    const keys = Object.getOwnPropertyNames(Constants.positions);
+
+    for(let i = 0; i < keys.length; i++) {
+      if(!HelperFunctions.isEmptyValue(this.selectedChampions[keys[i]])) {
+        count++;
+      }
+    }
+
+    return count;
   }
 }
