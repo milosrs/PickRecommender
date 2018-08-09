@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lol.ChampionInfoBean;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
-import com.lol.model.champions.ChampionPositionIdList;
+import com.lol.model.viewModel.ChampionPicks;
+import com.lol.model.viewModel.ChampionViewModel;
 import com.lol.service.ChampionService;
 
 @RestController
@@ -26,6 +28,9 @@ public class ChampionController {
 
 	@Autowired
 	private ChampionService championService;
+	
+	@Autowired
+	private ChampionInfoBean champInfoBean;
 	
 	@GetMapping("/test")
 	public void test() {
@@ -37,8 +42,9 @@ public class ChampionController {
 		try {
 			token = token.substring(7);
 			ChampionListDto list = championService.getAllForList(token);
+			List<ChampionViewModel> ret = championService.convertListToViewModel(list);
 			
-			return ResponseEntity.ok(list);
+			return ResponseEntity.ok(ret);
 		} catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching champion info.");
@@ -51,21 +57,31 @@ public class ChampionController {
 		try {
 			token = token.substring(7);
 			Champion champ = championService.getOneFullInfo(championId, token);
+			ChampionViewModel ret = championService.convertChampionToViewModel(champ);
 			
-			return ResponseEntity.ok(champ);
+			return ResponseEntity.ok(ret);
 		} catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching champion info.");
 		}
 	}
 	
+	@GetMapping(value="/version", produces="text/plain")
+	public ResponseEntity<?> getVersion(@RequestHeader("Authorization") String token) {
+		return ResponseEntity.ok(champInfoBean.getChampionData().getVersion());
+	}
+	
 	@PostMapping("/generate")
-	public ResponseEntity<?> generateRecommendedChampions(@RequestBody ChampionPositionIdList picks,
+	public ResponseEntity<?> generateRecommendedChampions(@RequestBody ChampionPicks picks,
 														  @RequestHeader("Authorization") String token) throws IOException {
-		token = token.substring(7);
+		/*token = token.substring(7);
 		List<Champion> recommendations = championService.generateRecommendations(picks);
 		
-		return ResponseEntity.ok(recommendations);
+		return ResponseEntity.ok(recommendations);*/
+		for(String key: picks.getFriendlyTeam().keySet()) {
+			System.out.println(key + ":" + picks.getFriendlyTeam().get(key));
+		}
+		return ResponseEntity.ok("BRAVO!");
 	}
 	
 	

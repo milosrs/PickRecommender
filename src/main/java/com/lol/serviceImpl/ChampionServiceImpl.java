@@ -16,8 +16,9 @@ import com.lol.Test;
 import com.lol.model.PickTypes;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
-import com.lol.model.champions.ChampionPositionIdList;
+import com.lol.model.viewModel.ChampionPicks;
 import com.lol.model.summoner.SummonerAuth;
+import com.lol.model.viewModel.ChampionViewModel;
 import com.lol.repository.SummonerRepository;
 import com.lol.requestSender.ChampionRequestSender;
 import com.lol.security.JWTTokenUtil;
@@ -71,12 +72,12 @@ public class ChampionServiceImpl implements ChampionService {
 	}
 
 	@Override
-	public List<Champion> generateRecommendations(ChampionPositionIdList picks) {
+	public List<Champion> generateRecommendations(ChampionPicks picks) {
 		List<Champion> friendlyChampions = new ArrayList<Champion>();
 		List<Champion> enemyChampions = new ArrayList<Champion>();
 		
-		populateList(picks.getFriendlyTeamIds(), friendlyChampions);
-		populateList(picks.getOpponentTeamIds(), enemyChampions);
+		/*populateList(picks.getFriendlyTeam(), friendlyChampions);
+		populateList(picks.getOpponentTeam(), enemyChampions);*/
 		
 		return null;
 	}
@@ -98,5 +99,23 @@ public class ChampionServiceImpl implements ChampionService {
 		kieSession.fireAllRules();
 		System.out.println("Test value: " + test.getTest());
 		kieSession.dispose();
+	}
+	
+	public List<ChampionViewModel> convertListToViewModel(ChampionListDto championListDto) {
+		List<ChampionViewModel> ret = new ArrayList<ChampionViewModel>();
+		
+		for(String key : championListDto.getKeys().keySet()) {
+			String name = championListDto.getKeys().get(key);
+			Champion champ = championListDto.getData().get(name);
+			ChampionViewModel toAdd = convertChampionToViewModel(champ);
+			
+			ret.add(toAdd);
+		}
+		
+		return ret;
+	}
+	
+	public ChampionViewModel convertChampionToViewModel(Champion champ) {
+		return new ChampionViewModel(champ.getId(), champ.getImage(), champ.getName(), champ.getTitle());
 	}
 }

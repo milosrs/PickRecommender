@@ -1,0 +1,28 @@
+package com.lol.model;
+
+public enum ChampionRolesEnum {
+	CONTROLLER,
+	ENCHANTER,
+	CATCHER,
+	
+	FIGHTER,
+	JUGGERNAUT,
+	DIVER,
+	
+	MAGE,
+	BURST,
+	BATTLEMAGE,
+	ARTILERY,
+	
+	MARKSMAN,
+	
+	SLAYER,
+	ASSASSIN,
+	SKRIMISHER,
+	
+	TANK,
+	VANGUARD,
+	WARDEN,
+	
+	SPECIALIST,
+}
