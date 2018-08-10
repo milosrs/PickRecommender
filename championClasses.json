@@ -2,156 +2,140 @@
 	{
 	    "name": "Aatrox",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["JUGGERNAUT"],
-	   // "playedPositions": ["TOP"]
+	    "subroles": ["JUGGERNAUT"]
 	 },
 	  
 	
 	{
 	    "name": "Ahri",
 	    "mainRole": ["MAGE"],
-	    "subroles": ["BURST"],
-	   // "playedPositions": ["MID"]
+	    "subroles": ["BURST"]
+	 },
+	 
+	 {
+	    "name": "Akali",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
 	 },
 	
 	{
 	    "name": "Alistar",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"],
-	    //"playedPositions": ["SUPPORT"]
+	    "subroles": ["VANGUARD"]
 	 },
 	
 	{
 	    "name": "Amumu",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"],
-	    //"playedPositions": ["JUNGLE"]
+	    "subroles": ["VANGUARD"]
 	 },
 	
 	{
 	    "name": "Anivia",
 	    "mainRole": ["MAGE"],
-	    "subroles": ["BATTLEMAGE"],
-	   // "playedPositions": ["MID"]
+	    "subroles": ["BATTLEMAGE"]
 	 },
 	
 	 {
 	    "name": "Annie",
 	    "mainRole": ["MAGE"],
-	    "subroles": ["BURST"],
-	    //"playedPositions": ["MID", "SUPPORT"]
+	    "subroles": ["BURST"]
 	 },
 	
 	 {
 	    "name": "Ashe",
 	    "mainRole": ["MARKSMAN"],
-	    "subroles": ["MARKSMAN"],
-	   // "playedPositions": ["BOTTOM"]
+	    "subroles": ["MARKSMAN"]
 	 },
 	
 	 {
 	    "name": "Aurelion Sol",
 	    "mainRole": ["MAGE"],
-	    "subroles": ["BATTLEMAGE"],
-	   // "playedPositions": ["MID"]
+	    "subroles": ["BATTLEMAGE"]
 	 },
 	
 	{
 	    "name": "Azir",
 	    "mainRole": ["SPECIALIST"],
-	    "subroles": ["SPECIALIST"],
-	   // "playedPositions": ["MID"]
+	    "subroles": ["SPECIALIST"]
 	 },
 	
 	  {
 	    "name": "Bard",
 	    "mainRole": ["CONTROLLER"],
-	    "subroles": ["CATCHER"],
-	    //"playedPositions": ["SUPPORT"]
+	    "subroles": ["CATCHER"]
 	  },
 	
 	  {
 	    "name": "Blitzcrank",
 	    "mainRole": ["CONTROLLER", "TANK"],
-	    "subroles": ["CATCHER", "VANGUARD"],
-	    //"playedPositions": ["SUPPORT"]
+	    "subroles": ["CATCHER", "VANGUARD"]
 	  },
 	
 	{
 	    "name": "Brand",
 	    "mainRole": ["MAGE"],
-	    "subroles": ["BURST"],
-	    //"playedPositions": ["MID", "SUPPORT"]
+	    "subroles": ["BURST"]
 	 },
 	
 	{
 	    "name": "Braum",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"],
-	    //"playedPositions": ["SUPPORT"]
+	    "subroles": ["VANGUARD"]
 	 },
 	
+	 {
+	    "name": "Caitlyn",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	 
 	{
 	    "name": "Camille",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["DIVER"],
-	    //"playedPositions": ["TOP"]
+	    "subroles": ["DIVER"]
 	 },
 	
 	{
 	    "name": "Cassiopeia",
 	    "mainRole": ["MAGE"],
-	    "subroles": ["BATTLEMAGE"],
-	    //"playedPositions": ["MID"]
+	    "subroles": ["BATTLEMAGE"]
 	 },
 	 
-	  {
-	    "name": "Caitlyn",
-	    "mainRole": ["MARKSMAN"],
-	    "subroles": ["MARKSMAN"],
-	    //"playedPositions": ["BOTTOM"]
-	 },
-	
 	{
 	    "name": "Cho'Gath",
 	    "mainRole": ["SPECIALIST"],
-	    "subroles": ["SPECIALIST"],
-	   // "playedPositions": ["TOP", "JUNGLE"]
+	    "subroles": ["SPECIALIST"]
 	 },
 	
 	 {
 	    "name": "Corki",
 	    "mainRole": ["MARKSMAN"],
-	    "subroles": ["MARKSMAN"],
-	    "playedPositions": ["MID","BOTTOM"]
+	    "subroles": ["MARKSMAN"]
 	 },
 	
 	{
 	    "name": "Darius",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["JUGGERNAUT"],
-	    //"playedPositions": ["TOP"]
+	    "subroles": ["JUGGERNAUT"]
 	 },
 	
 	{
 	    "name": "Diana",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["DIVER"],
-	    //"playedPositions": ["MID", "JUNGLE"]
+	    "subroles": ["DIVER"]
 	 },
 	
 	{
 	    "name": "Dr. Mundo",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["JUGGERNAUT"],
-	    //"playedPositions": ["TOP", "JUNGLE"]
+	    "subroles": ["JUGGERNAUT"]
 	 },
 	
 	 {
 	    "name": "Draven",
 	    "mainRole": ["MARKSMAN"],
-	    "subroles": ["MARKSMAN"],
-	    //"playedPositions": ["BOTTOM"]
+	    "subroles": ["MARKSMAN"]
 	 },
 	
 	{
@@ -299,7 +283,7 @@
 	 },
 	
 	 {
-	    "name": "Kai'sa",
+	    "name": "Kai'Sa",
 	    "mainRole": ["MARKSMAN"],
 	    "subroles": ["MARKSMAN"]
 	 },
@@ -354,7 +338,7 @@
 	 },
 	
 	{
-	    "name": "Kha'zix",
+	    "name": "Kha'Zix",
 	    "mainRole": ["SLAYER"],
 	    "subroles": ["ASSASSIN"]
 	 },
@@ -667,7 +651,7 @@
 	 },
 	
 	{
-	    "name": "Talyah",
+	    "name": "Taliyah",
 	    "mainRole": ["MAGE"],
 	    "subroles": ["BATTLEMAGE"]
 	 },
@@ -757,7 +741,7 @@
 	 },
 	
 	{
-	    "name": "Vel'koz",
+	    "name": "Vel'Koz",
 	    "mainRole": ["MAGE"],
 	    "subroles": ["ARTILLERY"]
 	 },

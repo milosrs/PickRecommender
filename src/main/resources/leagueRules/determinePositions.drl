@@ -7,6 +7,7 @@ import com.lol.Test;
 import java.lang.System;
 import com.lol.model.champions.ChampionsAndRoles;
 import com.lol.model.champions.Champion;
+import com.lol.model.champions.Stats;
 import com.lol.model.ChampionRolesEnum;
 import com.lol.model.PlayerPositions;
 import java.util.List;
@@ -20,14 +21,9 @@ rule "MAGES are mostly MID"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole)
 	then
 		PlayerPositions position = PlayerPositions.MID;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "MARKSMEN are mostly BOTTOM"
@@ -36,14 +32,9 @@ rule "MARKSMEN are mostly BOTTOM"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole)
 	then
 		PlayerPositions position = PlayerPositions.BOTTOM;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "CONTROLLERS are mostly SUPPORT"
@@ -52,14 +43,9 @@ rule "CONTROLLERS are mostly SUPPORT"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "WARDEN TANKS are mostly SUPPORT"
@@ -69,14 +55,9 @@ rule "WARDEN TANKS are mostly SUPPORT"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "JUGGERNAUT FIGHTERS are mostly TOP"
@@ -86,14 +67,9 @@ rule "JUGGERNAUT FIGHTERS are mostly TOP"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "DIVER FIGHTERS are mostly JUNGLE"
@@ -103,14 +79,9 @@ rule "DIVER FIGHTERS are mostly JUNGLE"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
 	then
 		PlayerPositions position = PlayerPositions.JUNGLE;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "SKRIMISHER SLAYERS can be played TOP"
@@ -120,14 +91,9 @@ rule "SKRIMISHER SLAYERS can be played TOP"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "ASSASSIN SLAYERS can be played MID"
@@ -137,14 +103,9 @@ rule "ASSASSIN SLAYERS can be played MID"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
 	then
 		PlayerPositions position = PlayerPositions.MID;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "ARTILLERY MAGES can be played SUPPORT"
@@ -154,31 +115,21 @@ rule "ARTILLERY MAGES can be played SUPPORT"
 		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champ.setPlayedPositions(positions);
 end
 
 rule "Battlemages with Hp Regen > 16.4 can be played TOP"
 	when
 		$stats: Stats(hpregen >= 16.4)
-		$champion: Champion(stats == $stats, $champ: champion)
+		$champion: Champion(stats == $stats)
 		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.MAGE)
 		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.BATTLEMAGE)
 		$champRoles: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole && champion == $champion)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
-		
-		if($champ.getPlayedPositions() == null) {
-			List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
-			positions.add(position);
-			$champ.setPlayedPositions(positions);
-		} else {
-			$champ.getPlayedPositions.add(position);
-		}
+		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
+		positions.add(position);
+		$champRoles.setPlayedPositions(positions);
 end

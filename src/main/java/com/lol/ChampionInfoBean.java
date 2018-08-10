@@ -102,7 +102,10 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 	private void championInfoIntoList() {
 		for(ChampionsAndRoles car : this.champRoles) {
 			for(String key: championData.getData().keySet()) {
-				if(key.equals(car.getName())) {
+				Champion champ = championData.getData().get(key);
+				String champName = car.getName();
+				
+				if(champ.getName().equals(champName)) {
 					car.setChampion(championData.getData().get(key));
 					break;
 				}
@@ -131,13 +134,17 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 	private void printChampNameAndPositions() {
 		for(ChampionsAndRoles car : champRoles) {
 			Champion champ = car.getChampion();
-			String msg = champ.getName() + " is played ";
-			
-			for(PlayerPositions position: car.getPlayedPositions()) {
-				msg += position.toString() + ", ";
+			if(champ != null) {
+				String msg = champ.getName() + " is played ";
+				
+				if(car.getPlayedPositions() != null) {
+					for(PlayerPositions position: car.getPlayedPositions()) {
+						msg += position.toString() + ", ";
+					}	
+				}
+				
+				System.out.println(msg);
 			}
-			
-			System.out.println(msg);
 		}
 	}
 
