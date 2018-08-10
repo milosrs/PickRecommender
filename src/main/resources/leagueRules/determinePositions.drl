@@ -17,8 +17,7 @@ import java.util.ArrayList;
 
 rule "MAGES are mostly MID"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.MAGE)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE)
 	then
 		PlayerPositions position = PlayerPositions.MID;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -28,8 +27,7 @@ end
 
 rule "MARKSMEN are mostly BOTTOM"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.MARKSMAN)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MARKSMAN)
 	then
 		PlayerPositions position = PlayerPositions.BOTTOM;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -39,8 +37,7 @@ end
 
 rule "CONTROLLERS are mostly SUPPORT"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.CONTROLLER)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.CONTROLLER)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -50,9 +47,7 @@ end
 
 rule "WARDEN TANKS are mostly SUPPORT"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.TANK)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.WARDEN)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.WARDEN)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -62,9 +57,7 @@ end
 
 rule "JUGGERNAUT FIGHTERS are mostly TOP"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.FIGHTER)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.JUGGERNAUT)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.JUGGERNAUT)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -74,9 +67,7 @@ end
 
 rule "DIVER FIGHTERS are mostly JUNGLE"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.FIGHTER)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.DIVER)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.DIVER)
 	then
 		PlayerPositions position = PlayerPositions.JUNGLE;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -86,9 +77,7 @@ end
 
 rule "SKRIMISHER SLAYERS can be played TOP"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.SLAYER)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.SKRIMISHER)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.SKRIMISHER)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -98,9 +87,7 @@ end
 
 rule "ASSASSIN SLAYERS can be played MID"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.SLAYER)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.ASSASSIN)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.ASSASSIN)
 	then
 		PlayerPositions position = PlayerPositions.MID;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -110,9 +97,7 @@ end
 
 rule "ARTILLERY MAGES can be played SUPPORT"
 	when
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.MAGE)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.ARTILLERY)
-		$champ: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE && subroles contains ChampionRolesEnum.ARTILLERY)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
@@ -124,9 +109,9 @@ rule "Battlemages with Hp Regen > 16.4 can be played TOP"
 	when
 		$stats: Stats(hpregen >= 16.4)
 		$champion: Champion(stats == $stats)
-		$mainRole: ChampionRolesEnum(this == ChampionRolesEnum.MAGE)
-		$subrole: ChampionRolesEnum(this == ChampionRolesEnum.BATTLEMAGE)
-		$champRoles: ChampionsAndRoles(mainRole contains $mainRole && subroles contains $subrole && champion == $champion)
+		$champRoles: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE
+									 && subroles contains ChampionRolesEnum.BATTLEMAGE
+									 && champion == $champion)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
 		List<PlayerPositions> positions = new ArrayList<PlayerPositions>();
