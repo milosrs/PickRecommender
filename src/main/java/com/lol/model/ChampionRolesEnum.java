@@ -12,7 +12,7 @@ public enum ChampionRolesEnum {
 	MAGE,
 	BURST,
 	BATTLEMAGE,
-	ARTILERY,
+	ARTILLERY,
 	
 	MARKSMAN,
 	
@@ -24,5 +24,9 @@ public enum ChampionRolesEnum {
 	VANGUARD,
 	WARDEN,
 	
-	SPECIALIST,
+	SPECIALIST;
+	
+	public ChampionRolesEnum getValue() {
+		return this;
+	}
 }

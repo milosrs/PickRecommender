@@ -1,0 +1,866 @@
+[
+	{
+	    "name": "Aatrox",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"],
+	   // "playedPositions": ["TOP"]
+	 },
+	  
+	
+	{
+	    "name": "Ahri",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"],
+	   // "playedPositions": ["MID"]
+	 },
+	
+	{
+	    "name": "Alistar",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"],
+	    //"playedPositions": ["SUPPORT"]
+	 },
+	
+	{
+	    "name": "Amumu",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"],
+	    //"playedPositions": ["JUNGLE"]
+	 },
+	
+	{
+	    "name": "Anivia",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"],
+	   // "playedPositions": ["MID"]
+	 },
+	
+	 {
+	    "name": "Annie",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"],
+	    //"playedPositions": ["MID", "SUPPORT"]
+	 },
+	
+	 {
+	    "name": "Ashe",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"],
+	   // "playedPositions": ["BOTTOM"]
+	 },
+	
+	 {
+	    "name": "Aurelion Sol",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"],
+	   // "playedPositions": ["MID"]
+	 },
+	
+	{
+	    "name": "Azir",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"],
+	   // "playedPositions": ["MID"]
+	 },
+	
+	  {
+	    "name": "Bard",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["CATCHER"],
+	    //"playedPositions": ["SUPPORT"]
+	  },
+	
+	  {
+	    "name": "Blitzcrank",
+	    "mainRole": ["CONTROLLER", "TANK"],
+	    "subroles": ["CATCHER", "VANGUARD"],
+	    //"playedPositions": ["SUPPORT"]
+	  },
+	
+	{
+	    "name": "Brand",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"],
+	    //"playedPositions": ["MID", "SUPPORT"]
+	 },
+	
+	{
+	    "name": "Braum",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"],
+	    //"playedPositions": ["SUPPORT"]
+	 },
+	
+	{
+	    "name": "Camille",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"],
+	    //"playedPositions": ["TOP"]
+	 },
+	
+	{
+	    "name": "Cassiopeia",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"],
+	    //"playedPositions": ["MID"]
+	 },
+	 
+	  {
+	    "name": "Caitlyn",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"],
+	    //"playedPositions": ["BOTTOM"]
+	 },
+	
+	{
+	    "name": "Cho'Gath",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"],
+	   // "playedPositions": ["TOP", "JUNGLE"]
+	 },
+	
+	 {
+	    "name": "Corki",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"],
+	    "playedPositions": ["MID","BOTTOM"]
+	 },
+	
+	{
+	    "name": "Darius",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"],
+	    //"playedPositions": ["TOP"]
+	 },
+	
+	{
+	    "name": "Diana",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"],
+	    //"playedPositions": ["MID", "JUNGLE"]
+	 },
+	
+	{
+	    "name": "Dr. Mundo",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"],
+	    //"playedPositions": ["TOP", "JUNGLE"]
+	 },
+	
+	 {
+	    "name": "Draven",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"],
+	    //"playedPositions": ["BOTTOM"]
+	 },
+	
+	{
+	    "name": "Ekko",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Elise",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Evelynn",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	 {
+	    "name": "Ezreal",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Fiddlesticks",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Fiora",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["SKRIMISHER"]
+	 },
+	
+	{
+	    "name": "Fizz",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Galio",
+	    "mainRole": ["MAGE", "TANK"],
+	    "subroles": ["BATTLEMAGE", "WARDEN"]
+	 },
+	
+	{
+	    "name": "Gangplank",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Garen",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Gnar",
+	    "mainRole": ["SPECIALIST", "TANK"],
+	    "subroles": ["SPECIALIST", "VANGUARD"]
+	 },
+	
+	{
+	    "name": "Gragas",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Graves",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Hecarim",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Heimerdinger",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Illaoi",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Irelia",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	  {
+	    "name": "Ivern",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["CATCHER"]
+	  },
+	
+	 {
+	    "name": "Janna",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["ENCHANTER"]
+	 },
+	
+	  {
+	    "name": "Jarvan IV",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Jax",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["SKRIMISHER"]
+	 },
+	
+	{
+	    "name": "Jayce",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["ARTILLERY"]
+	 },
+	
+	 {
+	    "name": "Jhin",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	 {
+	    "name": "Jinx",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	 {
+	    "name": "Kai'sa",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	 {
+	    "name": "Kalista",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	
+	 {
+	    "name": "Karma",
+	    "mainRole": ["CONTROLLER", "MAGE"],
+	    "subroles": ["ENCHANTER", "BURST"]
+	 },
+	
+	{
+	    "name": "Karthus",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Kassadin",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Katarina",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Kayle",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Kayn",
+	    "mainRole": ["FIGHTER", "SLAYER"],
+	    "subroles": ["DIVER", "ASSASSIN", "SKRIMISHER"]
+	 },
+	
+	 {
+	    "name": "Kennen",
+	    "mainRole": ["MARKSMAN","MAGE", "SPECIALIST"],
+	    "subroles": ["MARKSMAN", "BURST", "SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Kha'zix",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	 {
+	    "name": "Kindred",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Kled",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	 {
+	    "name": "Kog'Maw",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "LeBlanc",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"]
+	 },
+	
+	{
+	    "name": "Lee Sin",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Leona",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Lissandra",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE", "BURST"]
+	 },
+	
+	 {
+	    "name": "Lucian",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	
+	 {
+	    "name": "Lulu",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["ENCHANTER"]
+	 },
+	
+	{
+	    "name": "Lux",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["ARTILLERY", "BURST"]
+	 },
+	
+	{
+	    "name": "Malphite",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Malzahar",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Maokai",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Master Yi",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["SKRIMISHER"]
+	 },
+	
+	 {
+	    "name": "Miss Fortune",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Mordekaiser",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Morgana",
+	    "mainRole": ["MAGE", "CONTROLLER"],
+	    "subroles": ["BATTLEMAGE", "CATCHER"]
+	 },
+	
+	  {
+	    "name": "Nami",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["ENCHANTER"]
+	 },
+	
+	{
+	    "name": "Nasus",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Nautilus",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Nidalee",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Nocturne",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Nunu",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Olaf",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Orianna",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"]
+	 },
+	
+	{
+	    "name": "Ornn",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Pantheon",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Poppy",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	  {
+	    "name": "Pyke",
+	    "mainRole": ["CONTROLLER", "SLAYER"],
+	    "subroles": ["CATCHER", "ASSASSIN"]
+	  },
+	
+	{
+	    "name": "Quinn",
+	    "mainRole": ["SPECIALIST", "MARKSMAN"],
+	    "subroles": ["SPECIALIST", "MARKSMAN"]
+	 },
+	
+	  {
+	    "name": "Rakan",
+	    "mainRole": ["CONTROLLER","TANK"],
+	    "subroles": ["CATCHER", "VANGUARD"]
+	  },
+	
+	{
+	    "name": "Rammus",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Rek'Sai",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Renekton",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Rengar",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	 
+	{
+	    "name": "Riven",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["SKRIMISHER"]
+	 },
+	
+	{
+	    "name": "Rumble",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Ryze",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Sejuani",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Shaco",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Shen",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Shyvana",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Singed",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Sion",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	 {
+	    "name": "Sivir",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Skarner",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Sona",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["ENCHANTER"]
+	 },
+	
+	{
+	    "name": "Soraka",
+	    "mainRole": ["CONTROLLER"],
+	    "subroles": ["ENCHANTER"]
+	 },
+	
+	{
+	    "name": "Swain",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Syndra",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"]
+	 },
+	
+	{
+	    "name": "Tahm Kench",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Talyah",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Talon",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	 {
+	    "name": "Taric",
+	    "mainRole": ["CONTROLLER", "TANK"],
+	    "subroles": ["ENCHANTER", "WARDEN"]
+	 },
+	
+	{
+	    "name": "Teemo",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	  {
+	    "name": "Thresh",
+	    "mainRole": ["CONTROLLER", "TANK"],
+	    "subroles": ["CATCHER", "VANGUARD"]
+	  },
+	
+	 {
+	    "name": "Tristana",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Trundle",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Tryndamere",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["SKRIMISHER"]
+	 },
+	
+	{
+	    "name": "Twisted Fate",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"]
+	 },
+	
+	 {
+	    "name": "Twitch",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Udyr",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Urgot",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	 {
+	    "name": "Varus",
+	    "mainRole": ["MARKSMAN", "MAGE"],
+	    "subroles": ["MARKSMAN", "ARTILLERY"]
+	 },
+	
+	 {
+	    "name": "Vayne",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Veigar",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"]
+	 },
+	
+	{
+	    "name": "Vel'koz",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["ARTILLERY"]
+	 },
+	
+	{
+	    "name": "Vi",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Viktor",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Vladimir",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BATTLEMAGE"]
+	 },
+	
+	{
+	    "name": "Volibear",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Warwick",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Wukong",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	 {
+	    "name": "Xayah",
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
+	 },
+	
+	{
+	    "name": "Xerath",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["ARTILLERY"]
+	 },
+	
+	{
+	    "name": "Xin Zhao",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["DIVER"]
+	 },
+	
+	{
+	    "name": "Yasuo",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["SKRIMISHER"]
+	 },
+	
+	{
+	    "name": "Yorick",
+	    "mainRole": ["FIGHTER"],
+	    "subroles": ["JUGGERNAUT"]
+	 },
+	
+	{
+	    "name": "Zac",
+	    "mainRole": ["TANK"],
+	    "subroles": ["VANGUARD"]
+	 },
+	
+	{
+	    "name": "Zed",
+	    "mainRole": ["SLAYER"],
+	    "subroles": ["ASSASSIN"]
+	 },
+	
+	{
+	    "name": "Ziggs",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["ARTILLERY"]
+	 },
+	
+	{
+	    "name": "Zilean",
+	    "mainRole": ["SPECIALIST"],
+	    "subroles": ["SPECIALIST"]
+	 },
+	
+	{
+	    "name": "Zoe",
+	    "mainRole": ["MAGE"],
+	    "subroles": ["BURST"]
+	 },
+	
+	  {
+	    "name": "Zyra",
+	    "mainRole": ["MAGE", "CONTROLLER"],
+	    "subroles": ["BURST", "CATCHER"]
+	 }
+]
