@@ -1,7 +1,7 @@
 package com.lol.model;
 
 public enum PickTypes {
-	FRIEND("Friendly"),
+	FRIENDLY("Friendly"),
 	OPPONENT("Opponent");
 	
 	private String type;

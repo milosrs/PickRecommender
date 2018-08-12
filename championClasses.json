@@ -81,7 +81,7 @@
 	{
 	    "name": "Braum",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"]
+	    "subroles": ["WARDEN"]
 	 },
 	
 	 {
@@ -479,7 +479,7 @@
 	{
 	    "name": "Nunu",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"]
+	    "subroles": ["WARDEN"]
 	 },
 	
 	{
@@ -509,7 +509,7 @@
 	{
 	    "name": "Poppy",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"]
+	    "subroles": ["WARDEN"]
 	 },
 	
 	  {
@@ -587,13 +587,13 @@
 	{
 	    "name": "Shen",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"]
+	    "subroles": ["WARDEN"]
 	 },
 	
 	{
 	    "name": "Shyvana",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["JUGGERNAUT"]
+	    "subroles": ["DIVER"]
 	 },
 	
 	{
@@ -647,7 +647,7 @@
 	{
 	    "name": "Tahm Kench",
 	    "mainRole": ["TANK"],
-	    "subroles": ["VANGUARD"]
+	    "subroles": ["WARDEN"]
 	 },
 	
 	{
@@ -713,7 +713,7 @@
 	{
 	    "name": "Udyr",
 	    "mainRole": ["FIGHTER"],
-	    "subroles": ["JUGGERNAUT"]
+	    "subroles": ["DIVER"]
 	 },
 	
 	{
@@ -724,8 +724,8 @@
 	
 	 {
 	    "name": "Varus",
-	    "mainRole": ["MARKSMAN", "MAGE"],
-	    "subroles": ["MARKSMAN", "ARTILLERY"]
+	    "mainRole": ["MARKSMAN"],
+	    "subroles": ["MARKSMAN"]
 	 },
 	
 	 {

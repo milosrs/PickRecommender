@@ -161,26 +161,6 @@ rule "ARTILLERY MAGES can be played SUPPORT"
 		$champ.setPlayedPositions(positions);
 end
 
-rule "Battlemages with Hp Regen >= 6.6 can be played TOP"
-	when
-		$stats: Stats(hpregen >= 6.6)
-		$champion: Champion(stats == $stats)
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE
-									 && subroles contains ChampionRolesEnum.BATTLEMAGE
-									 && champion == $champion)
-	then
-		PlayerPositions position = PlayerPositions.TOP;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
-		
-		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
-		}
-		
-		positions.add(position);
-		
-		$champ.setPlayedPositions(positions);
-end
-
 rule "SPECIALISTS can be played TOP and MID"
 	when
 	$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST)
@@ -199,11 +179,28 @@ rule "SPECIALISTS can be played TOP and MID"
 		$champ.setPlayedPositions(positions);
 end
 
+rule "Battlemages with Hp Regen >= 6.6 can be played TOP"
+	when
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE
+									 && subroles contains ChampionRolesEnum.BATTLEMAGE
+									 && champion.stats.hpregen >= 6.6)
+	then
+		PlayerPositions position = PlayerPositions.TOP;
+		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		
+		if(positions == null) {
+			positions = new ArrayList<PlayerPositions>();
+		}
+		
+		positions.add(position);
+		
+		$champ.setPlayedPositions(positions);
+end
+
 rule "SPECIALISTS range > 400 and AD > 55 can be played BOTTOM AND JUNGLE"
 	when
-		$stats: Stats(attackrange > 400 && attackdamage >= 55)
-		$champion: Champion(stats == $stats)
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && champion == $champion)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && 
+									champion.stats.attackrange > 400 && champion.stats.attackdamage > 55)
 	then
 		PlayerPositions position1 = PlayerPositions.BOTTOM;
 		PlayerPositions position2 = PlayerPositions.JUNGLE;
@@ -219,11 +216,10 @@ rule "SPECIALISTS range > 400 and AD > 55 can be played BOTTOM AND JUNGLE"
 		$champ.setPlayedPositions(positions);
 end
 
-rule "SPECIALISTS range > 400 and AD < 52 and armor > 20 are SUPPORTS"
+rule "SPECIALISTS attackrange > 400 and AD < 52 and armor > 20 are SUPPORTS"
 	when
-		$stats: Stats(attackrange > 400 && attackdamage < 52 && armor > 20)
-		$champion: Champion(stats == $stats)
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && champion == $champion)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && 
+								  champion.stats.attackrange > 400 && champion.stats.attackdamage < 52 && champion.stats.armor > 20)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
 		List<PlayerPositions> positions = $champ.getPlayedPositions();
@@ -239,11 +235,8 @@ end
 
 rule "VANGUARD TANKS AD > 59.8 and armor+mr > 67 are SUPPORTS"
 	when
-		$stats: Stats(attackdamage > 59.8 && armor + spellblock > 67)
-		$champion: Champion(stats == $stats)
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK &&
-								  subroles contains ChampionRolesEnum.VANGUARD && 
-								  champion == $champion)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD && 
+								  champion.stats.attackdamage > 59.8 && (champion.stats.armor + champion.stats.spellblock) > 67)
 	then
 		PlayerPositions position = PlayerPositions.SUPPORT;
 		List<PlayerPositions> positions = $champ.getPlayedPositions();
@@ -259,11 +252,8 @@ end
 
 rule "VANGUARD TANKS AD >= 62 are TOP"
 	when
-		$stats: Stats(attackdamage >= 62)
-		$champion: Champion(stats == $stats)
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK &&
-								  subroles contains ChampionRolesEnum.VANGUARD && 
-								  champion == $champion)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD && 
+								  champion.stats.attackdamage >= 62)
 	then
 		PlayerPositions position = PlayerPositions.TOP;
 		List<PlayerPositions> positions = $champ.getPlayedPositions();
@@ -325,6 +315,22 @@ rule "SKRIMISHER SLAYERS that are MID"
 								  || name == "Master Yi" || name == "Tryndamere"))
 	then
 		PlayerPositions position = PlayerPositions.MID;
+		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		
+		if(positions == null) {
+			positions = new ArrayList<PlayerPositions>();
+		}
+		
+		positions.add(position);
+		
+		$champ.setPlayedPositions(positions);
+end
+
+rule "Ivern and Kindred are Jungle because of passive"
+	when
+		$champ: ChampionsAndRoles(name == "Ivern" || name == "Kindred")
+	then
+		PlayerPositions position = PlayerPositions.JUNGLE;
 		List<PlayerPositions> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {

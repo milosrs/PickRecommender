@@ -174,5 +174,10 @@ public class Stats {
 		this.critperlevel = critperlevel;
 	}
 	
-	
+	@Override
+	public String toString() {
+		String msg = "HPRegen: " + hpregen + "\nArmor:" + armor + "\nSpell Block: " + spellblock;
+		System.out.println(msg);
+		return msg;
+	}
 }

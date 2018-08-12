@@ -33,4 +33,11 @@ public class DroolsConfig {
 	    System.out.println("Session object: " + session);
 	    return session;
 	}
+	
+	@Bean
+	public KieSession countersSession() throws IOException {
+	    KieSession session = kieContainer.newKieSession("counter-rules");
+	    System.out.println("Session object: " + session);
+	    return session;
+	}
 }

@@ -37,6 +37,9 @@ public class ChampionServiceImpl implements ChampionService {
 	private SummonerRepository summonerRepository;
 	
 	@Autowired
+	private KieSession countersSession;
+	
+	@Autowired
 	private KieSession kieSession;
 	
 	@Autowired
@@ -75,17 +78,39 @@ public class ChampionServiceImpl implements ChampionService {
 	public List<Champion> generateRecommendations(ChampionPicks picks) {
 		List<Champion> friendlyChampions = new ArrayList<Champion>();
 		List<Champion> enemyChampions = new ArrayList<Champion>();
+		List<Champion> recommendations = new ArrayList<Champion>();
 		
-		/*populateList(picks.getFriendlyTeam(), friendlyChampions);
-		populateList(picks.getOpponentTeam(), enemyChampions);*/
-		
-		return null;
-	}
-	
-	private void populateList(List<String> picks, List<Champion> toPopulate) {
-		for(String pick: picks) {
-			toPopulate.add(championInfo.getChampionDataByKey(pick));
+		for(String key : picks.getFriendlyTeam().keySet()) {
+			friendlyChampions.add(convertIdToChampion(picks.getFriendlyTeam().get(key)));
 		}
+		
+		for(Integer key: picks.getOpponentTeam()) {
+			enemyChampions.add(convertIdToChampion(key));
+		}
+		
+		countersSession.insert(friendlyChampions);
+		countersSession.insert(enemyChampions);
+		countersSession.setGlobal("recommendations", recommendations);
+		countersSession.setGlobal("firstPick", picks.getFirstPick());
+		countersSession.setGlobal("playerPosition", picks.getPlayerPosition());
+		countersSession.fireAllRules();
+		
+		recommendations = (List<Champion>) countersSession.getGlobal("recommendations");
+		
+		return recommendations;
+	}
+
+	private Champion convertIdToChampion(Integer idToAdd) {
+		Champion toRet = null;
+		
+		for(String id: championInfo.getChampionData().getKeys().keySet()) {
+			if(idToAdd == Integer.parseInt(id)) {
+				toRet = championInfo.getChampionDataByKey(id);
+				break;
+			}
+		}
+		
+		return toRet;
 	}
 
 	@Override

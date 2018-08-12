@@ -1,0 +1,25 @@
+//created on: Aug 12, 2018
+package counterRules;
+
+//list any import classes here.
+import com.lol.model.PickTypes;
+import com.lol.model.PlayerPositions;
+import com.lol.model.champions.Champion;
+import java.util.List;
+import java.util.ArrayList;
+
+
+//declare any global variables here
+global PlayerPositions playerPosition;
+global PickTypes firstPick;
+global List<Champions> recommendations;
+
+
+rule "Your First Rule"
+
+    when
+        exists(Object())
+    then
+        System.out.println("Hello from rule number 1");
+
+end

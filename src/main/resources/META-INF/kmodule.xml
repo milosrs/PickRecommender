@@ -9,4 +9,8 @@
 	<kbase name="rules" packages="leagueRules">
     	<ksession name="league-rules" />
     </kbase>
+    
+    <kbase name="counterRules" packages="counterRules">
+    	<ksession name="counter-rules"/>
+    </kbase>
 </kmodule>
