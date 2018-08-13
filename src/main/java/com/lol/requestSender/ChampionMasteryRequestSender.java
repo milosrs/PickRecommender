@@ -17,7 +17,7 @@ public class ChampionMasteryRequestSender extends RiotRequestSender<Long, List<C
 	public List<ChampionMasteryDto> sendRequest(Long sendInfo) throws IOException {
 		String fullUrl = this.urlBuilder.buildUrl(this.urlBuilder.getRealm(), RequestUrl.MASTERY_BY_SUMMONER, sendInfo.toString());
 		String resultString = this.sendGET(fullUrl);
-		ChampionMasteryDto ret = convertToEntity(resultString);
+		List<ChampionMasteryDto> ret = convertToEntity(resultString);
 		
 		return ret;
 	}
