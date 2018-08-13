@@ -105,7 +105,7 @@ public class SummonerServiceImpl implements SummonerService {
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			logger.info("token : " + token);
 				
-			return new JWTAuthenticationResponse(token, summoner.getUsername(), summoner.getRealm());
+			return new JWTAuthenticationResponse(token, summoner.getUsername(), summoner.getRealm(), summonerObj.getId());
 		} else {
 			return null;
 		}

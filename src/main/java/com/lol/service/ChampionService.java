@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
-import com.lol.model.viewModel.ChampionPicks;
+import com.lol.model.summoner.SummonerDto;
+import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.viewModel.ChampionViewModel;
 
 public interface ChampionService {
@@ -14,9 +15,7 @@ public interface ChampionService {
 	
 	public Champion getOneFullInfo(String champKey, String token) throws IOException;
 	
-	public List<Champion> generateRecommendations(ChampionPicks picks);
-
-	public void executeDroolsTest();
+	public List<Champion> generateRecommendations(ChampionPicksViewModel picks, SummonerDto summoner);
 	
 	public List<ChampionViewModel> convertListToViewModel(ChampionListDto championListDto);
 	

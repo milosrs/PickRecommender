@@ -2,15 +2,15 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <!-- <kbase name="rules" packages="rules">
-    	<ksession name="rulesSession" />
-    </kbase>  -->
-
 	<kbase name="rules" packages="leagueRules">
     	<ksession name="league-rules" />
     </kbase>
     
     <kbase name="counterRules" packages="counterRules">
     	<ksession name="counter-rules"/>
+    </kbase>
+    
+    <kbase name="runeRules" packages="runeRules">
+    	<ksession name="rune-rules"/>
     </kbase>
 </kmodule>

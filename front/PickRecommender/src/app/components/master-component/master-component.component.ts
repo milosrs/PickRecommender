@@ -13,6 +13,8 @@ import { ChampionService } from '../../services/champion.service';
 export class MasterComponentComponent implements OnInit {
 
   private playerPosition: string;
+  private positionOrder: string[];
+  private positions = Constants.positions;
   private playerPositionFull: string;
   private firstPick: string;
   
@@ -21,6 +23,7 @@ export class MasterComponentComponent implements OnInit {
   ngOnInit() {
     this.firstPick = null;
     this.playerPosition = null;
+    this.positionOrder = [];
   }
 
   selectPlayerPosition(selection) {
@@ -34,13 +37,31 @@ export class MasterComponentComponent implements OnInit {
   }
 
   canProceed() {
-    return HelperFunctions.isEmptyValue(this.playerPosition) && 
-          HelperFunctions.isEmptyValue(this.firstPick);
+    return !HelperFunctions.isEmptyValue(this.playerPosition) && 
+          !HelperFunctions.isEmptyValue(this.firstPick) &&
+          this.positionOrder.length === 5;
   }
 
   showMainPage() {
     this.championService.setPlayerPosition(this.playerPosition);
     this.championService.setFirstPick(this.firstPick);
+    this.championService.setFriendlyPlayersOrder(this.positionOrder);
     this.router.navigate(['/picker']);
+  }
+
+  sortPlayerPosition(selection) {
+    const pos = selection['id'];
+
+    if(this.positionOrder.indexOf(pos) < 0) {
+      this.positionOrder.push(pos);
+    }
+  }
+
+  removePosition(pos) {
+    const index = this.positionOrder.indexOf(pos);
+
+    if(index > -1) {
+      this.positionOrder.splice(index, 1);
+    }
   }
 }

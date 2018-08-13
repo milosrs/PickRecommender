@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lol.model.ChampionRolesEnum;
-import com.lol.model.PlayerPositions;
+import com.lol.model.MapPositionsEnum;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
 import com.lol.model.champions.ChampionsAndRoles;
@@ -140,7 +140,7 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 				String msg = champ.getName() + " is played ";
 				
 				if(car.getPlayedPositions() != null) {
-					for(PlayerPositions position: car.getPlayedPositions()) {
+					for(MapPositionsEnum position: car.getPlayedPositions()) {
 						msg += position.toString() + ", ";
 					}	
 				}

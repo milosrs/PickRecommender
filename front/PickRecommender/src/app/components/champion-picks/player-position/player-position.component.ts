@@ -12,13 +12,7 @@ import { SummonerService } from '../../../services/summoner.service';
 export class PlayerPositionComponent implements OnInit {
   
   private positions = Constants.positions;
-  public selectedChampions = {
-    'top' : null,
-    'jg' : null,
-    'mid': null,
-    'bot' : null,
-    'sup' : null,
-  };
+  public selectedChampions = {};
   
   public activePosition: string;
   private selectAudio;
@@ -41,19 +35,33 @@ export class PlayerPositionComponent implements OnInit {
   ngOnInit() {
     if(HelperFunctions.isEmptyValue(this.keyz) && this.shouldUseDefaultKeys) {
       this.keyz = ['top','jg','mid','bot','sup'];
+      this.selectedChampions = {
+        'top' : null,
+        'jg' : null,
+        'mid': null,
+        'bot' : null,
+        'sup' : null,
+      };
+    } else {
+      this.selectedChampions = {};
+
+      for(let i = 0; i < this.keyz.length; i++) {
+        this.selectedChampions[this.keyz[i]] = null;
+      }
     }
   }
 
   onPositionClick(e) {
     const emitObj = {
       'type' : this.playersType,
-      'id' : e.currentTarget.id
+      'id' : e.currentTarget.id,
+      'fullName' : Constants.positions[e.currentTarget.id][0]
     };
     
     if(HelperFunctions.isEmptyValue(this.playersType)){
       this.activePosition = e.currentTarget.id;
     }
-    // this.selectAudio.play();
+    
     this.positionClickEvent.emit(emitObj);
   }
 
@@ -71,7 +79,6 @@ export class PlayerPositionComponent implements OnInit {
 
   setPickedChamps(selectedChampions: any) {
     this.selectedChampions = selectedChampions;
-    console.log(this.selectedChampions);
   }
 
   getPickedChamps():any {
@@ -80,11 +87,13 @@ export class PlayerPositionComponent implements OnInit {
 
   getPickedChampsIdList(): any {
     let pickedChamps = {};
-    const keys = Object.getOwnPropertyNames(Constants.positions);
+    const keys = Object.getOwnPropertyNames(this.selectedChampions);
 
     for(let i = 0; i < keys.length; i++) {
       if(!HelperFunctions.isEmptyValue(this.selectedChampions[keys[i]])) {
         pickedChamps[keys[i]] = this.selectedChampions[keys[i]].id;
+      } else {
+        pickedChamps[keys[i]] = null;
       }
     }
 

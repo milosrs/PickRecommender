@@ -1,0 +1,21 @@
+//created on: Aug 13, 2018
+package runeRules
+
+//list any import classes here.
+import java.lang.System;
+import com.lol.model.champions.ChampionsAndRoles;
+import com.lol.model.ChampionRolesEnum;
+import com.lol.model.MapPositionsEnum;
+import com.lol.model.TeamTypesEnum;
+import com.lol.model.champions.Champion;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import com.lol.model.recommendation.PlayerGenerativeData;
+
+rule "Runes test rule"
+	when
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE)
+	then
+		System.out.println("Hello from runes!");
+end

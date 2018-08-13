@@ -30,14 +30,21 @@ public class DroolsConfig {
 	@Bean
 	public KieSession kieSession() throws IOException {
 	    KieSession session = kieContainer.newKieSession("league-rules");
-	    System.out.println("Session object: " + session);
+	    System.out.println("Champion positions session: " + session);
 	    return session;
 	}
 	
 	@Bean
 	public KieSession countersSession() throws IOException {
 	    KieSession session = kieContainer.newKieSession("counter-rules");
-	    System.out.println("Session object: " + session);
+	    System.out.println("Champion counters session: " + session);
+	    return session;
+	}
+	
+	@Bean
+	public KieSession runesSession() throws IOException {
+	    KieSession session = kieContainer.newKieSession("rune-rules");
+	    System.out.println("Runes session: " + session);
 	    return session;
 	}
 }

@@ -22,6 +22,7 @@ export class ChampionPicksComponent implements OnInit {
   private playerPosition: string;
   private firstPick: any = null;
   private selectedChampions;
+  private positionOrder: string[];
   @ViewChildren(PlayerPositionComponent) playerPosComponent: QueryList<PlayerPositionComponent>;
 
   constructor(protected championService: ChampionService, protected auth: AuthService, private router: Router) { }
@@ -30,6 +31,7 @@ export class ChampionPicksComponent implements OnInit {
     this.token = this.auth.getToken();
     this.playerPosition = this.championService.getPlayerPosition();
     this.firstPick = this.championService.getFirstPick();
+    this.positionOrder = this.championService.getFriendlyPlayersOrder();
   }
 
   isUserLoggedIn() {

@@ -3,13 +3,13 @@ package testRule
 
 //list any import classes here.
 import com.lol.model.champions.ChampionListDto;
-import com.lol.Test;
 import java.lang.System;
 import com.lol.model.champions.ChampionsAndRoles;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.Stats;
 import com.lol.model.ChampionRolesEnum;
-import com.lol.model.PlayerPositions;
+import com.lol.model.MapPositionsEnum;
+import com.lol.model.TeamTypesEnum;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -19,11 +19,11 @@ rule "MAGES are mostly MID"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE)
 	then
-		PlayerPositions position = PlayerPositions.MID;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.MID;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -35,11 +35,11 @@ rule "MARKSMEN are mostly BOTTOM"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MARKSMAN)
 	then
-		PlayerPositions position = PlayerPositions.BOTTOM;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.BOTTOM;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -51,11 +51,11 @@ rule "CONTROLLERS are mostly SUPPORT"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.CONTROLLER)
 	then
-		PlayerPositions position = PlayerPositions.SUPPORT;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -67,11 +67,11 @@ rule "WARDEN TANKS are mostly SUPPORT"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.WARDEN)
 	then
-		PlayerPositions position = PlayerPositions.SUPPORT;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -83,11 +83,11 @@ rule "JUGGERNAUT FIGHTERS are mostly TOP"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.JUGGERNAUT)
 	then
-		PlayerPositions position = PlayerPositions.TOP;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.TOP;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -99,12 +99,12 @@ rule "DIVER FIGHTERS are JUNGLE and TOP"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.DIVER)
 	then
-		PlayerPositions position1 = PlayerPositions.JUNGLE;
-		PlayerPositions position2 = PlayerPositions.TOP;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position1 = MapPositionsEnum.JUNGLE;
+		MapPositionsEnum position2 = MapPositionsEnum.TOP;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position1);
@@ -117,11 +117,11 @@ rule "SKRIMISHER SLAYERS can be played TOP"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.SKRIMISHER)
 	then
-		PlayerPositions position = PlayerPositions.TOP;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.TOP;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -133,11 +133,11 @@ rule "ASSASSIN SLAYERS can be played MID"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.ASSASSIN)
 	then
-		PlayerPositions position = PlayerPositions.MID;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.MID;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -149,11 +149,11 @@ rule "ARTILLERY MAGES can be played SUPPORT"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE && subroles contains ChampionRolesEnum.ARTILLERY)
 	then
-		PlayerPositions position = PlayerPositions.SUPPORT;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -165,12 +165,12 @@ rule "SPECIALISTS can be played TOP and MID"
 	when
 	$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST)
 	then
-		PlayerPositions position1 = PlayerPositions.TOP;
-		PlayerPositions position2 = PlayerPositions.MID;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position1 = MapPositionsEnum.TOP;
+		MapPositionsEnum position2 = MapPositionsEnum.MID;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position1);
@@ -185,11 +185,11 @@ rule "Battlemages with Hp Regen >= 6.6 can be played TOP"
 									 && subroles contains ChampionRolesEnum.BATTLEMAGE
 									 && champion.stats.hpregen >= 6.6)
 	then
-		PlayerPositions position = PlayerPositions.TOP;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.TOP;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -202,12 +202,12 @@ rule "SPECIALISTS range > 400 and AD > 55 can be played BOTTOM AND JUNGLE"
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && 
 									champion.stats.attackrange > 400 && champion.stats.attackdamage > 55)
 	then
-		PlayerPositions position1 = PlayerPositions.BOTTOM;
-		PlayerPositions position2 = PlayerPositions.JUNGLE;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position1 = MapPositionsEnum.BOTTOM;
+		MapPositionsEnum position2 = MapPositionsEnum.JUNGLE;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position1);
@@ -221,11 +221,11 @@ rule "SPECIALISTS attackrange > 400 and AD < 52 and armor > 20 are SUPPORTS"
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && 
 								  champion.stats.attackrange > 400 && champion.stats.attackdamage < 52 && champion.stats.armor > 20)
 	then
-		PlayerPositions position = PlayerPositions.SUPPORT;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -238,11 +238,11 @@ rule "VANGUARD TANKS AD > 59.8 and armor+mr > 67 are SUPPORTS"
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD && 
 								  champion.stats.attackdamage > 59.8 && (champion.stats.armor + champion.stats.spellblock) > 67)
 	then
-		PlayerPositions position = PlayerPositions.SUPPORT;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -255,11 +255,11 @@ rule "VANGUARD TANKS AD >= 62 are TOP"
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD && 
 								  champion.stats.attackdamage >= 62)
 	then
-		PlayerPositions position = PlayerPositions.TOP;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.TOP;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -275,11 +275,11 @@ rule "VANGUARD TANKS that are JUNGLE"
 								  subroles contains ChampionRolesEnum.VANGUARD && 
 								  (name == "Zac" || name == "Gragas" || name == "Rammus" || name == "Sejuani" || name == "Amumu"))
 	then
-		PlayerPositions position = PlayerPositions.JUNGLE;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.JUNGLE;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -294,11 +294,11 @@ rule "SLAYERS that are JUNGLE"
 								  || name == "Nocturne" || name == "Shaco" || name == "Jax" 
 								  || name == "Master Yi" || name == "Tryndamere"))
 	then
-		PlayerPositions position = PlayerPositions.JUNGLE;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.JUNGLE;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -314,11 +314,11 @@ rule "SKRIMISHER SLAYERS that are MID"
 								  || name == "Nocturne" || name == "Shaco" || name == "Jax" 
 								  || name == "Master Yi" || name == "Tryndamere"))
 	then
-		PlayerPositions position = PlayerPositions.MID;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.MID;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);
@@ -330,11 +330,11 @@ rule "Ivern and Kindred are Jungle because of passive"
 	when
 		$champ: ChampionsAndRoles(name == "Ivern" || name == "Kindred")
 	then
-		PlayerPositions position = PlayerPositions.JUNGLE;
-		List<PlayerPositions> positions = $champ.getPlayedPositions();
+		MapPositionsEnum position = MapPositionsEnum.JUNGLE;
+		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
 		
 		if(positions == null) {
-			positions = new ArrayList<PlayerPositions>();
+			positions = new ArrayList<MapPositionsEnum>();
 		}
 		
 		positions.add(position);

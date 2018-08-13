@@ -3,16 +3,16 @@ package com.lol.model.champions;
 import java.util.List;
 
 import com.lol.model.ChampionRolesEnum;
-import com.lol.model.PlayerPositions;
+import com.lol.model.MapPositionsEnum;
 
 public class ChampionsAndRoles {
 	private String name;
 	private Champion champion;
 	private List<ChampionRolesEnum> mainRole;
 	private List<ChampionRolesEnum> subroles;
-	private List<PlayerPositions> playedPositions;
+	private List<MapPositionsEnum> playedPositions;
 	
-	public ChampionsAndRoles(Champion champion, List<ChampionRolesEnum> mainRole, List<ChampionRolesEnum> subroles, List<PlayerPositions> playedPositions, String name) {
+	public ChampionsAndRoles(Champion champion, List<ChampionRolesEnum> mainRole, List<ChampionRolesEnum> subroles, List<MapPositionsEnum> playedPositions, String name) {
 		super();
 		this.champion = champion;
 		this.mainRole = mainRole;
@@ -49,11 +49,11 @@ public class ChampionsAndRoles {
 		this.subroles = subroles;
 	}
 
-	public List<PlayerPositions> getPlayedPositions() {
+	public List<MapPositionsEnum> getPlayedPositions() {
 		return playedPositions;
 	}
 
-	public void setPlayedPositions(List<PlayerPositions> playedPositions) {
+	public void setPlayedPositions(List<MapPositionsEnum> playedPositions) {
 		this.playedPositions = playedPositions;
 	}
 	

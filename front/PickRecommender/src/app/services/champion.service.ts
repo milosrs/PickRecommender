@@ -19,6 +19,7 @@ export class ChampionService extends AbstractService<Champion, number> {
   private playerPosition: string;
   private teamFirstPick: string;
   private imageLocation = '{0}assets/8.9.1/img/champion/{1}';
+  private friendlyPlayersOrder: string[];
 
   constructor(protected http: HttpClient, protected auth: AuthService) {
     super(http, 'champions', auth);
@@ -66,5 +67,13 @@ export class ChampionService extends AbstractService<Champion, number> {
 
   public setFirstPick(fp) {
     this.teamFirstPick = fp;
+  }
+
+  public getFriendlyPlayersOrder() {
+    return this.friendlyPlayersOrder;
+  }
+
+  public setFriendlyPlayersOrder(order: string[]) {
+    this.friendlyPlayersOrder = order;
   }
 }

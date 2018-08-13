@@ -58,7 +58,6 @@ export class ChampionAreaComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.selectedPosition);
     if(HelperFunctions.isEmptyValue(this.selectedPosition)) {
         this.router.navigate[''];
     }
@@ -80,7 +79,6 @@ export class ChampionAreaComponent implements OnInit {
   }
 
   selectChampion(champion) {
-    console.log('Holder Emmited This champ: ',champion.name,'---> This is team: ', this.selectedPosition['type']);
     if(this.selectedPosition['type'] === 'Friendly') {
         this.friendlyChampions['type'] = this.selectedPosition['type'];
         this.friendlyChampions[this.selectedPosition['id']] = champion;

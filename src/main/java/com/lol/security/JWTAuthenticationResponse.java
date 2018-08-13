@@ -11,11 +11,13 @@ public class JWTAuthenticationResponse implements Serializable {
     private final String token;
     private String username;
     private String realm;
+    private Long id;
 
-    public JWTAuthenticationResponse(String token, String username, String realm) {
+    public JWTAuthenticationResponse(String token, String username, String realm, Long id) {
         this.token = token;
         this.username = username;
         this.realm = realm;
+        this.id = id;
     }
 
     public String getToken() {
@@ -29,4 +31,8 @@ public class JWTAuthenticationResponse implements Serializable {
     public String getRealm() {
     	return this.realm;
     }
+
+	public Long getId() {
+		return id;
+	}
 }

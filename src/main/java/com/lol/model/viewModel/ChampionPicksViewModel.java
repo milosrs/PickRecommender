@@ -5,18 +5,18 @@ import com.lol.model.champions.Champion;
 import java.util.List;
 import java.util.Map;
 
-public class ChampionPicks {
+public class ChampionPicksViewModel {
 
 	private Map<String, Integer> friendlyTeam;
 	private List<Integer> opponentTeam;
 	private String playerPosition;
 	private String firstPick;
 	
-	public ChampionPicks() {
+	public ChampionPicksViewModel() {
 		super();
 	}
 
-	public ChampionPicks(Map<String, Integer> friendlyTeam, List<Integer> opponentTeam, String playerPosition,
+	public ChampionPicksViewModel(Map<String, Integer> friendlyTeam, List<Integer> opponentTeam, String playerPosition,
 			String firstPick) {
 		super();
 		this.friendlyTeam = friendlyTeam;

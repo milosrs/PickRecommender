@@ -2,6 +2,7 @@ package com.lol.serviceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,15 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lol.ChampionInfoBean;
-import com.lol.Test;
-import com.lol.model.PickTypes;
+import com.lol.model.MapPositionsEnum;
+import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
-import com.lol.model.viewModel.ChampionPicks;
+import com.lol.model.recommendation.PlayerGenerativeData;
+import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.summoner.SummonerAuth;
+import com.lol.model.summoner.SummonerDto;
 import com.lol.model.viewModel.ChampionViewModel;
 import com.lol.repository.SummonerRepository;
+import com.lol.requestSender.ChampionMasteryRequestSender;
 import com.lol.requestSender.ChampionRequestSender;
+import com.lol.requestSender.SummonerServiceRequestSender;
 import com.lol.security.JWTTokenUtil;
 import com.lol.service.ChampionService;
 
@@ -29,6 +34,12 @@ public class ChampionServiceImpl implements ChampionService {
 
 	@Autowired
 	private ChampionRequestSender requestSender;
+	
+	@Autowired
+	private ChampionMasteryRequestSender champMasteryRequestSender;
+	
+	@Autowired
+	private SummonerServiceRequestSender summonerRequestSender;
 	
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
@@ -74,28 +85,41 @@ public class ChampionServiceImpl implements ChampionService {
 		return summoner != null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<Champion> generateRecommendations(ChampionPicks picks) {
-		List<Champion> friendlyChampions = new ArrayList<Champion>();
+	public List<Champion> generateRecommendations(ChampionPicksViewModel picks, SummonerDto summoner) {
+		MapPositionsEnum[] positionOrder = new MapPositionsEnum[5];
+		Map<MapPositionsEnum, Champion> friendlyChampions = new HashMap<MapPositionsEnum, Champion>();
 		List<Champion> enemyChampions = new ArrayList<Champion>();
 		List<Champion> recommendations = new ArrayList<Champion>();
+		int i = 0;
 		
 		for(String key : picks.getFriendlyTeam().keySet()) {
-			friendlyChampions.add(convertIdToChampion(picks.getFriendlyTeam().get(key)));
+			friendlyChampions.put(MapPositionsEnum.enumFactory(key.toUpperCase()), convertIdToChampion(picks.getFriendlyTeam().get(key)));
+			positionOrder[i++] = MapPositionsEnum.enumFactory(key.toUpperCase());
 		}
 		
 		for(Integer key: picks.getOpponentTeam()) {
 			enemyChampions.add(convertIdToChampion(key));
 		}
 		
-		countersSession.insert(friendlyChampions);
-		countersSession.insert(enemyChampions);
+		PlayerGenerativeData playerGenData = new PlayerGenerativeData(friendlyChampions, enemyChampions,
+				MapPositionsEnum.valueOf(picks.getPlayerPosition().toUpperCase()),
+				TeamTypesEnum.valueOf(picks.getFirstPick().toUpperCase()), positionOrder);
+		
+		countersSession.insert(playerGenData);
 		countersSession.setGlobal("recommendations", recommendations);
-		countersSession.setGlobal("firstPick", picks.getFirstPick());
-		countersSession.setGlobal("playerPosition", picks.getPlayerPosition());
 		countersSession.fireAllRules();
 		
-		recommendations = (List<Champion>) countersSession.getGlobal("recommendations");
+		Object droolsRet = countersSession.getGlobal("recommendations");
+		
+		if(droolsRet instanceof List){
+		    if(((List)droolsRet).size()>0 && (((List)droolsRet).get(0) instanceof Champion)){
+		    	recommendations = (List<Champion>) droolsRet;
+		    }
+		}
+		
+		countersSession.dispose();
 		
 		return recommendations;
 	}
@@ -103,27 +127,17 @@ public class ChampionServiceImpl implements ChampionService {
 	private Champion convertIdToChampion(Integer idToAdd) {
 		Champion toRet = null;
 		
-		for(String id: championInfo.getChampionData().getKeys().keySet()) {
-			if(idToAdd == Integer.parseInt(id)) {
-				toRet = championInfo.getChampionDataByKey(id);
-				break;
+		if(idToAdd != null) {
+			for(String id: championInfo.getChampionData().getKeys().keySet()) {
+				if(idToAdd == Integer.parseInt(id)) {
+					toRet = championInfo.getChampionDataByKey(id);
+					break;
+				}
 			}
 		}
 		
+		
 		return toRet;
-	}
-
-	@Override
-	public void executeDroolsTest() {
-		ChampionListDto help = new ChampionListDto();
-		Test test = new Test();
-		help.setVersion(null);
-	
-		kieSession.insert(help);
-		kieSession.insert(test);
-		kieSession.fireAllRules();
-		System.out.println("Test value: " + test.getTest());
-		kieSession.dispose();
 	}
 	
 	public List<ChampionViewModel> convertListToViewModel(ChampionListDto championListDto) {

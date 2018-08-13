@@ -1,12 +1,12 @@
 package com.lol.model;
 
-public enum PickTypes {
+public enum TeamTypesEnum {
 	FRIENDLY("Friendly"),
 	OPPONENT("Opponent");
 	
 	private String type;
 	
-	PickTypes(String type) {
+	TeamTypesEnum(String type) {
 		this.type = type;
 	}
 	

@@ -39,7 +39,7 @@ public class JWTAuthenticationTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		getHeadersInfo(request);
+		//getHeadersInfo(request);
     	final String requestHeader = request.getHeader(this.tokenHeader);
         String username = null;
         String authToken = null;

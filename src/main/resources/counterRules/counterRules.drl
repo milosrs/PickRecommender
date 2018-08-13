@@ -2,24 +2,23 @@
 package counterRules;
 
 //list any import classes here.
-import com.lol.model.PickTypes;
-import com.lol.model.PlayerPositions;
+import java.lang.System;
+import com.lol.model.ChampionRolesEnum;
+import com.lol.model.MapPositionsEnum;
+import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Map;
+import com.lol.model.recommendation.PlayerGenerativeData;
 
 //declare any global variables here
-global PlayerPositions playerPosition;
-global PickTypes firstPick;
 global List<Champions> recommendations;
 
 
-rule "Your First Rule"
-
+rule "If player has first pick, recommend his best for that position"
     when
-        exists(Object())
+        PlayerGenerativeData(firstPick == TeamTypesEnum.FRIENDLY && playerPosition == friendlyTeamPositionOrder[0])
     then
-        System.out.println("Hello from rule number 1");
-
+        System.out.println("Player has the first pick, ah yea ah yeaaaa");
 end

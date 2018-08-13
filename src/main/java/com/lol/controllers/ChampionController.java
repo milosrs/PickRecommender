@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lol.ChampionInfoBean;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
-import com.lol.model.viewModel.ChampionPicks;
+import com.lol.model.summoner.SummonerDto;
+import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.viewModel.ChampionViewModel;
+import com.lol.requestSender.SummonerServiceRequestSender;
+import com.lol.security.JWTTokenUtil;
 import com.lol.service.ChampionService;
+import com.lol.service.SummonerService;
 
 @RestController
 @RequestMapping("/champions")
@@ -32,10 +36,14 @@ public class ChampionController {
 	@Autowired
 	private ChampionInfoBean champInfoBean;
 	
-	@GetMapping("/test")
-	public void test() {
-		championService.executeDroolsTest();
-	}
+	@Autowired
+	private SummonerServiceRequestSender summmonerRequestSender;
+	
+	@Autowired
+	private SummonerService summonerService;
+	
+	@Autowired
+	private JWTTokenUtil jwtTokenUtil;
 	
 	@GetMapping("/forList")
 	public ResponseEntity<?> getChampionInfoForList(@RequestHeader("Authorization") String token) {
@@ -72,16 +80,13 @@ public class ChampionController {
 	}
 	
 	@PostMapping("/generate")
-	public ResponseEntity<?> generateRecommendedChampions(@RequestBody ChampionPicks picks,
+	public ResponseEntity<?> generateRecommendedChampions(@RequestBody ChampionPicksViewModel picks,
 														  @RequestHeader("Authorization") String token) throws IOException {
-		/*token = token.substring(7);
-		List<Champion> recommendations = championService.generateRecommendations(picks);
+		token = token.substring(7);
+		SummonerDto summoner = summmonerRequestSender.sendRequest(summonerService.getByUsername(jwtTokenUtil.getUsernameFromToken(token)));
+		List<Champion> recommendations = championService.generateRecommendations(picks, summoner);
 		
-		return ResponseEntity.ok(recommendations);*/
-		for(String key: picks.getFriendlyTeam().keySet()) {
-			System.out.println(key + ":" + picks.getFriendlyTeam().get(key));
-		}
-		return ResponseEntity.ok("BRAVO!");
+		return ResponseEntity.ok(recommendations);
 	}
 	
 	

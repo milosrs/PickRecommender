@@ -11,7 +11,18 @@
       </div>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
+        <div class="row">
+          <player-position
+            [header]="'Friendly team positions order'"
+            [shouldUseDefaultKeys]="true"
+            [customCss]="{'background-color' : 'green'}"
+            (positionClickEvent)='sortPlayerPosition($event)'>
+          </player-position>
+        </div>
+      </div>
+
+    <div class="col-3">
       <h4>Who has the first pick?</h4>
       <select [(ngModel)]="firstPick">
         <option value="Friendly">Friendly team</option>
@@ -19,13 +30,22 @@
       </select>
     </div>
 
-      <div class="col-4">
+      <div class="col-3">
         <h3>Your position: <b class="Prettify">{{playerPositionFull}}</b></h3>
+        <h3>Positions order: </h3>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" 
+                *ngFor="let position of positionOrder">
+                <strong>{{positions[position][0]}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" 
+                        (click)="removePosition(position)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
       </div>
 
     </div>
   </div>
 
 <div class="row AlignedBtn">
-  <button class="btn btn-success" [disabled]="canProceed()" (click)="showMainPage()">Go to champion picks page!</button>
+  <button class="btn btn-success" [disabled]="!canProceed()" (click)="showMainPage()">Go to champion picks page!</button>
 </div>

@@ -55,7 +55,7 @@ export class AuthService {
   login(loginInfo: AuthenticationRequest) {
     return this.http.post<Token>(this.appUrl + 'auth/login', loginInfo)
       .subscribe(ret => {
-        this.loggedUserToken =  new Token(loginInfo.username, ret['realm'], ret['token']);
+        this.loggedUserToken =  new Token(loginInfo.username, ret['realm'], ret['id'], ret['token']);
         this.storeToken();
         this.logger.next(true);
         this.router.navigateByUrl('');

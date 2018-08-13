@@ -4,9 +4,10 @@
     <div class="col-3 PlayerPos">
        <!--Promeni shouldUseDefaultKeys u true kada zavrsis komponentu-->
       <player-position
+        [keyz]="positionOrder"
         [myPosition]="playerPosition"
         [firstPick]="firstPick"
-        [shouldUseDefaultKeys]="true"
+        [shouldUseDefaultKeys]="false"
         [playersType]="'Friendly'"
         [customCss]="{'background-color' : 'green'}"
         (positionClickEvent)='changeSelectedPosition($event)'></player-position>
