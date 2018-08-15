@@ -6,11 +6,12 @@ import java.util.Map;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
+import com.lol.model.champions.ChampionsAndRoles;
 
 public class PlayerGenerativeData {
 	private MapPositionsEnum[] friendlyTeamPositionOrder;
-	private Map<MapPositionsEnum, Champion> friendlyTeam;
-	private List<Champion> opponentTeam;
+	private Map<MapPositionsEnum, ChampionsAndRoles> friendlyTeam;
+	private List<ChampionsAndRoles> opponentTeam;
 	private MapPositionsEnum playerPosition;
 	private TeamTypesEnum firstPick;
 	
@@ -18,7 +19,7 @@ public class PlayerGenerativeData {
 		super();
 	}
 
-	public PlayerGenerativeData(Map<MapPositionsEnum, Champion> friendlyTeam, List<Champion> opponentTeam,
+	public PlayerGenerativeData(Map<MapPositionsEnum, ChampionsAndRoles> friendlyTeam, List<ChampionsAndRoles> opponentTeam,
 			MapPositionsEnum playerPosition, TeamTypesEnum firstPick, MapPositionsEnum[] friendlyTeamPositionOrder) {
 		super();
 		this.friendlyTeam = friendlyTeam;
@@ -28,19 +29,19 @@ public class PlayerGenerativeData {
 		this.friendlyTeamPositionOrder = friendlyTeamPositionOrder;
 	}
 
-	public Map<MapPositionsEnum, Champion> getFriendlyTeam() {
+	public Map<MapPositionsEnum, ChampionsAndRoles> getFriendlyTeam() {
 		return friendlyTeam;
 	}
 
-	public void setFriendlyTeam(Map<MapPositionsEnum, Champion> friendlyTeam) {
+	public void setFriendlyTeam(Map<MapPositionsEnum, ChampionsAndRoles> friendlyTeam) {
 		this.friendlyTeam = friendlyTeam;
 	}
 
-	public List<Champion> getOpponentTeam() {
+	public List<ChampionsAndRoles> getOpponentTeam() {
 		return opponentTeam;
 	}
 
-	public void setOpponentTeam(List<Champion> opponentTeam) {
+	public void setOpponentTeam(List<ChampionsAndRoles> opponentTeam) {
 		this.opponentTeam = opponentTeam;
 	}
 

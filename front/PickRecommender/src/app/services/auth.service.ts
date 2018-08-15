@@ -30,11 +30,11 @@ export class AuthService {
     if (!HelperFunctions.isEmptyValue(item)) {
       if (!HelperFunctions.containsEmptyValues(item) && item === this.emptyToken) {
         const ls = JSON.parse(window.localStorage.getItem('currentUser'));
-        this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
+        this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['id'], ls['token']);
       }
       if(HelperFunctions.containsEmptyValues(this.loggedUserToken)) {
         const ls = JSON.parse(window.localStorage.getItem('currentUser'));
-        this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
+        this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['id'], ls['token']);
       }
     }
   }
@@ -123,7 +123,7 @@ export class AuthService {
       token = this.loggedUserToken;
     } else if (!HelperFunctions.containsEmptyValues(storage) && storage !== emptyToken) {
       const ls = JSON.parse(window.localStorage.getItem('currentUser'));
-      this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['token']);
+      this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['id'], ls['token']);
       this.storeToken();
       token = this.loggedUserToken;
     }

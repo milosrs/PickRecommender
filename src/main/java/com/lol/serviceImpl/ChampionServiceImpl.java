@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lol.ChampionInfoBean;
+import com.lol.facts.AllChampionsAndRoles;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
+import com.lol.model.champions.ChampionsAndRoles;
 import com.lol.model.recommendation.PlayerGenerativeData;
 import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.summoner.SummonerAuth;
@@ -88,26 +90,20 @@ public class ChampionServiceImpl implements ChampionService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<Champion> generateRecommendations(ChampionPicksViewModel picks, SummonerDto summoner) {
-		MapPositionsEnum[] positionOrder = new MapPositionsEnum[5];
-		Map<MapPositionsEnum, Champion> friendlyChampions = new HashMap<MapPositionsEnum, Champion>();
-		List<Champion> enemyChampions = new ArrayList<Champion>();
 		List<Champion> recommendations = new ArrayList<Champion>();
-		int i = 0;
+		MapPositionsEnum[] positionOrder = fillFriendlyPositions(picks);
+		Map<MapPositionsEnum, ChampionsAndRoles> friendlyChampions = fillFriendlyChampRoles(picks);
+		List<ChampionsAndRoles> enemyChampions = fillEnemyChampRoles(picks);
 		
-		for(String key : picks.getFriendlyTeam().keySet()) {
-			friendlyChampions.put(MapPositionsEnum.enumFactory(key.toUpperCase()), convertIdToChampion(picks.getFriendlyTeam().get(key)));
-			positionOrder[i++] = MapPositionsEnum.enumFactory(key.toUpperCase());
-		}
-		
-		for(Integer key: picks.getOpponentTeam()) {
-			enemyChampions.add(convertIdToChampion(key));
-		}
-		
+		AllChampionsAndRoles acar = new AllChampionsAndRoles(championInfo.getChampRoles());
 		PlayerGenerativeData playerGenData = new PlayerGenerativeData(friendlyChampions, enemyChampions,
 				MapPositionsEnum.valueOf(picks.getPlayerPosition().toUpperCase()),
 				TeamTypesEnum.valueOf(picks.getFirstPick().toUpperCase()), positionOrder);
 		
 		countersSession.insert(playerGenData);
+		countersSession.insert(summoner);
+		countersSession.insert(acar);
+		countersSession.setGlobal("championMasteryRequestSender", champMasteryRequestSender);
 		countersSession.setGlobal("recommendations", recommendations);
 		countersSession.fireAllRules();
 		
@@ -123,21 +119,57 @@ public class ChampionServiceImpl implements ChampionService {
 		
 		return recommendations;
 	}
-
-	private Champion convertIdToChampion(Integer idToAdd) {
-		Champion toRet = null;
+	
+	private ChampionsAndRoles findChampInList(Champion champ) {
+		ChampionsAndRoles toAdd = null;
 		
-		if(idToAdd != null) {
-			for(String id: championInfo.getChampionData().getKeys().keySet()) {
-				if(idToAdd == Integer.parseInt(id)) {
-					toRet = championInfo.getChampionDataByKey(id);
+		for(ChampionsAndRoles champRole: championInfo.getChampRoles()) {
+			if(champ != null) {
+				if(champRole.getChampion().getId() == champ.getId()) {
+					toAdd = champRole;
 					break;
 				}
 			}
 		}
 		
+		return toAdd;
+	}
+	
+	private List<ChampionsAndRoles> fillEnemyChampRoles(ChampionPicksViewModel picks) {
+		List<ChampionsAndRoles> enemyChampions = new ArrayList<ChampionsAndRoles>();
 		
-		return toRet;
+		for(Integer key: picks.getOpponentTeam()) {
+			Champion champ = championInfo.getChampionDataById(key);
+			ChampionsAndRoles toAdd = findChampInList(champ);
+			enemyChampions.add(toAdd);
+		}
+		
+		return enemyChampions;
+	}
+	
+	private Map<MapPositionsEnum, ChampionsAndRoles> fillFriendlyChampRoles(ChampionPicksViewModel picks) {
+		Map<MapPositionsEnum, ChampionsAndRoles> friendlyChampions = new HashMap<MapPositionsEnum, ChampionsAndRoles>();
+		
+		for(String key : picks.getFriendlyTeam().keySet()) {
+			Integer id = picks.getFriendlyTeam().get(key);
+			Champion champ = championInfo.getChampionDataById(id);
+			ChampionsAndRoles toAdd = findChampInList(champ);
+			
+			friendlyChampions.put(MapPositionsEnum.enumFactory(key.toUpperCase()), toAdd);
+		}
+		
+		return friendlyChampions;
+	}
+	
+	private MapPositionsEnum[] fillFriendlyPositions(ChampionPicksViewModel picks) {
+		int i = 0;
+		MapPositionsEnum[] positionOrder = new MapPositionsEnum[5];
+		
+		for(String key : picks.getFriendlyTeam().keySet()) {
+			positionOrder[i++] = MapPositionsEnum.enumFactory(key.toUpperCase());
+		}
+		
+		return positionOrder;
 	}
 	
 	public List<ChampionViewModel> convertListToViewModel(ChampionListDto championListDto) {

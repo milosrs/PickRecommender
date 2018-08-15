@@ -170,6 +170,30 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 	}
 
 	public Champion getChampionDataByKey(String champKey) {
-		return championData.getData().get(champKey);
+		return champKey == null ? null : championData.getData().get(champKey);
 	}
+	
+	public Champion getChampionDataById(Integer champKey) {
+		Champion toRet = null;
+		
+		if(champKey != null) {
+			for(ChampionsAndRoles info : champRoles) {
+				if(info.getChampion().getId() == champKey) {
+					toRet = info.getChampion();
+					break;
+				}
+			}
+		}
+		
+		return toRet;
+	}
+
+	public List<ChampionsAndRoles> getChampRoles() {
+		return champRoles;
+	}
+
+	public void setChampRoles(List<ChampionsAndRoles> champRoles) {
+		this.champRoles = champRoles;
+	}
+	
 }

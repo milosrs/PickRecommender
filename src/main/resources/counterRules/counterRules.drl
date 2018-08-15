@@ -3,22 +3,74 @@ package counterRules;
 
 //list any import classes here.
 import java.lang.System;
+
+import com.lol.facts.PlayerPicksFirst;
+import com.lol.facts.AllChampionsAndRoles;
+
 import com.lol.model.ChampionRolesEnum;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
+import com.lol.model.champions.ChampionsAndRoles;
+import com.lol.model.championMastery.ChampionMasteryDto;
+import com.lol.model.recommendation.PlayerGenerativeData;
+import com.lol.requestSender.ChampionMasteryRequestSender;
+import com.lol.model.summoner.SummonerDto;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import com.lol.model.recommendation.PlayerGenerativeData;
-
+ 
 //declare any global variables here
 global List<Champions> recommendations;
-
+global ChampionMasteryRequestSender championMasteryRequestSender;
+global List<ChampionsAndRoles> allChampions;
 
 rule "If player has first pick, recommend his best for that position"
+	no-loop
     when
         PlayerGenerativeData(firstPick == TeamTypesEnum.FRIENDLY && playerPosition == friendlyTeamPositionOrder[0])
+        $summoner: SummonerDto()
+        $allChampions: AllChampionsAndRoles(allChampions.size > 0)
     then
-        System.out.println("Player has the first pick, ah yea ah yeaaaa");
+        List<ChampionMasteryDto> champsWithExp = championMasteryRequestSender.sendRequest($summoner.getId());
+        List<ChampionsAndRoles> extractedChamps = new ArrayList<ChampionsAndRoles>();
+        PlayerPicksFirst fact = new PlayerPicksFirst();
+        
+        for(ChampionMasteryDto cm : champsWithExp) {
+        	if(cm.getChampionLevel() > 2) {
+        		for(ChampionsAndRoles champ : $allChampions.getAllChampions()) {
+        			if(champ.getChampion().getId() == cm.getChampionId()) {
+        				extractedChamps.add(champ);
+        			}
+        		}
+        		
+        		System.out.println("He can play with champ lvl: " + cm.getChampionLevel());
+        	}
+        }
+        
+        fact.setChamps(extractedChamps);
+        insert(fact);
+        update(fact);
+end
+
+rule "Get champions played for player position"
+	when
+		$playerData: PlayerGenerativeData()
+		$extractedChamps: PlayerPicksFirst(champs.size > 0)
+	then
+		for(ChampionsAndRoles champ : $extractedChamps.getChamps()) {
+			if(champ.getPlayedPositions().contains($playerData.getPlayerPosition())) {
+				recommendations.add(champ.getChampion());
+			}
+		}
+end
+
+rule "Player plays bottom, oponnents picked a marksman"
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.BOTTOM)
+		$enemyMarksman: ChampionsAndRoles(playedPositions contains MapPositionsEnum.BOTTOM) from $playerData.opponentTeam
+		$acar: AllChampionsAndRoles()
+	then
+		System.out.println("Player is playing against ADC");
 end
