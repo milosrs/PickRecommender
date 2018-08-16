@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Constants } from '../../shared/constants/constants';
 import { HelperFunctions } from '../../shared/util/helper-functions';
-import { Router } from '../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { SummonerService } from '../../services/summoner.service';
 import { ChampionService } from '../../services/champion.service';
 

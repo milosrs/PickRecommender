@@ -1,6 +1,7 @@
 package com.lol.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -85,8 +86,14 @@ public class ChampionController {
 		token = token.substring(7);
 		SummonerDto summoner = summmonerRequestSender.sendRequest(summonerService.getByUsername(jwtTokenUtil.getUsernameFromToken(token)));
 		List<Champion> recommendations = championService.generateRecommendations(picks, summoner);
+		List<ChampionViewModel> ret = new ArrayList<ChampionViewModel>();
 		
-		return ResponseEntity.ok(recommendations);
+		for(Champion c : recommendations) {
+			ChampionViewModel toAdd = championService.convertChampionToViewModel(c);
+			ret.add(toAdd);
+		}
+		
+		return ResponseEntity.ok(ret);
 	}
 	
 	

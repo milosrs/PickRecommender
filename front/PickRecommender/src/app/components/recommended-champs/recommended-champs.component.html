@@ -1,3 +1,19 @@
-<p>
-  recommended-champs works!
-</p>
+<div class="container-fluid">
+
+  <div class="row">
+      <h3 align="center">These are recommended champions, forged just for you.</h3>
+      <h5 align="center">Pick a champion and recommended <strong>runes</strong> and <strong>summoner spells</strong> will appear.</h5>
+  </div>
+
+  <div class="row">
+      <champion-area
+        [shouldWaitForPositionSelection]="false"
+        [champList]='champList'
+        (championSelectEvent)='setSelectedChampions($event)'></champion-area>
+  </div>
+
+
+  <div class="row">
+    <h4 *ngIf="selectedChampion !== null"> Here goes rune and summoner spell component </h4>
+  </div>
+</div>

@@ -44,8 +44,6 @@ rule "If player has first pick, recommend his best for that position"
         				extractedChamps.add(champ);
         			}
         		}
-        		
-        		System.out.println("He can play with champ lvl: " + cm.getChampionLevel());
         	}
         }
         

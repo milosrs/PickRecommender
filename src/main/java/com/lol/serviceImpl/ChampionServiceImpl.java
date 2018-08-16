@@ -50,6 +50,8 @@ public class ChampionServiceImpl implements ChampionService {
 	private SummonerRepository summonerRepository;
 	
 	@Autowired
+	private KieContainer kieContainer;
+	
 	private KieSession countersSession;
 	
 	@Autowired
@@ -100,13 +102,8 @@ public class ChampionServiceImpl implements ChampionService {
 				MapPositionsEnum.valueOf(picks.getPlayerPosition().toUpperCase()),
 				TeamTypesEnum.valueOf(picks.getFirstPick().toUpperCase()), positionOrder);
 		
-		countersSession.insert(playerGenData);
-		countersSession.insert(summoner);
-		countersSession.insert(acar);
-		countersSession.setGlobal("championMasteryRequestSender", champMasteryRequestSender);
-		countersSession.setGlobal("recommendations", recommendations);
-		countersSession.fireAllRules();
 		
+		fireContersSession(playerGenData, acar, summoner);
 		Object droolsRet = countersSession.getGlobal("recommendations");
 		
 		if(droolsRet instanceof List){
@@ -118,6 +115,17 @@ public class ChampionServiceImpl implements ChampionService {
 		countersSession.dispose();
 		
 		return recommendations;
+	}
+	
+	private void fireContersSession(PlayerGenerativeData playerGenData, AllChampionsAndRoles acar, SummonerDto summoner) {
+		List<Champion> recommendations = new ArrayList<Champion>();
+		countersSession = kieContainer.newKieSession("counter-rules");
+		countersSession.insert(playerGenData);
+		countersSession.insert(summoner);
+		countersSession.insert(acar);
+		countersSession.setGlobal("championMasteryRequestSender", champMasteryRequestSender);
+		countersSession.setGlobal("recommendations", recommendations);
+		countersSession.fireAllRules();
 	}
 	
 	private ChampionsAndRoles findChampInList(Champion champ) {

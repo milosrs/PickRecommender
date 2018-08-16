@@ -8,7 +8,7 @@ import { PlayerPositionComponent } from './player-position/player-position.compo
 import { Champion } from '../../model/champion';
 import { ChampionAreaComponent } from './champion-area/champion-area.component';
 import { PickGeneratorInfo } from '../../model/pick-generator-info';
-import { Router } from '../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'champion-picks',
@@ -55,7 +55,6 @@ export class ChampionPicksComponent implements OnInit {
       'Opponent': [],
     };
     let generate = null;
-    debugger;
 
     this.playerPosComponent.forEach(c => {
       toSend[c.getPlayersType()] = c.getPickedChampsIdList();
@@ -74,7 +73,11 @@ export class ChampionPicksComponent implements OnInit {
     }
     
     this.championService.generate(generate)
-      .subscribe(resp => {console.log(resp)});
+      .subscribe(resp => {
+        console.log(resp);
+        this.championService.setRecommendations(resp as Champion[]);
+        this.router.navigate(['recommendations']);
+      });
   }
 
   setSelectedChampions(selectedChampions: any) {

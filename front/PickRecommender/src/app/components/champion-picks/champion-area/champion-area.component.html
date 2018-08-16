@@ -1,8 +1,8 @@
-<div class="Wrapper" *ngIf="selectedPosition !== null && selectedPosition !== undefined">
+<div class="Wrapper" *ngIf="(selectedPosition !== null && selectedPosition !== undefined) || !shouldWaitForPositionSelection">
 <div class="container-fluid" >
   <div class="row Header">
     <div class="col-7">
-      <p>{{selectedPosition['type']}} 
+      <p *ngIf="shouldShowCaption !== null && shouldShowCaption">{{selectedPosition['type']}} 
           {{selectedPosition['type']=='Friendly' ? positions[selectedPosition['id']][0]
                                                  : positions[selectedPosition['id']][1]}}</p>
     </div>
@@ -20,8 +20,11 @@
   
 </div>
 
-<div class="container-fluid ScrollableArea" *ngIf="selectedPosition === null || selectedPosition === undefined">
+<div class="container-fluid ScrollableArea" *ngIf="(selectedPosition === null || selectedPosition === undefined) && shouldWaitForPositionSelection">
   <div class="row">
-      <h3>Patch version: {{version}}</h3>
+      <h3 align="center" *ngIf="version !== null && version !== undefined">Patch version: {{version}}</h3>
+  </div>
+  <div class="row">
+      <h5 align="center">Pick a position to see champions</h5>
   </div>
 </div>

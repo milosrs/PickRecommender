@@ -6,7 +6,7 @@ public enum RequestUrl {
 	CHAMPIONS_ALL_FOR_SHOW("static-data/champions?locale=en_US&champListData=keys&tags=all&dataById=false"),
 	CHAMPIONS_BY_ID("static-data/champions/"),
 	VERSIONS("static-data/versions/"),
-	MASTERY_BY_SUMMONER("champion-mastery/v3/champion-masteries/by-summoner/");
+	MASTERY_BY_SUMMONER("champion-mastery/champion-masteries/by-summoner/");
 	
 	private String url;
 	

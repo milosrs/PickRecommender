@@ -35,13 +35,6 @@ public class DroolsConfig {
 	}
 	
 	@Bean
-	public KieSession countersSession() throws IOException {
-	    KieSession session = kieContainer.newKieSession("counter-rules");
-	    System.out.println("Champion counters session: " + session);
-	    return session;
-	}
-	
-	@Bean
 	public KieSession runesSession() throws IOException {
 	    KieSession session = kieContainer.newKieSession("rune-rules");
 	    System.out.println("Runes session: " + session);

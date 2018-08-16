@@ -7,6 +7,8 @@ import { MasterComponentComponent } from '../components/master-component/master-
 import { LoginGuard } from './guards/login.guard';
 import { ChampionPicksComponent } from '../components/champion-picks/champion-picks.component';
 import { EmptyInfoGuard } from './guards/empty-info.guard';
+import { RecommendedChampsComponent } from '../components/recommended-champs/recommended-champs.component';
+import { EmptyRecommendationsGuard } from './guards/empty-recommendations.guard';
 
 const routes: Routes = [
   {
@@ -26,6 +28,11 @@ const routes: Routes = [
     path: 'picker',
     component: ChampionPicksComponent,
     canActivate: [LoginGuard, EmptyInfoGuard]
+  },
+  {
+    path: 'recommendations',
+    component: RecommendedChampsComponent,
+    canActivate: [EmptyRecommendationsGuard]
   }
 ];
 
