@@ -11,6 +11,7 @@ import com.lol.model.ChampionRolesEnum;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
+import com.lol.model.champions.Stats;
 import com.lol.model.champions.ChampionsAndRoles;
 import com.lol.model.championMastery.ChampionMasteryDto;
 import com.lol.model.recommendation.PlayerGenerativeData;
@@ -70,5 +71,26 @@ rule "Player plays bottom, oponnents picked a marksman"
 		$enemyMarksman: ChampionsAndRoles(playedPositions contains MapPositionsEnum.BOTTOM) from $playerData.opponentTeam
 		$acar: AllChampionsAndRoles()
 	then
-		System.out.println("Player is playing against ADC");
+		for(ChampionsAndRoles charo: $acar.getAllChampions()) {
+			if(charo.getPlayedPositions().contains(MapPositionsEnum.BOTTOM)) {
+				Champion champ = charo.getChampion();
+				Champion enemy = $enemyMarksman.getChampion();
+				Stats stats = champ.getStats();
+				Stats enemyStats = enemy.getStats();
+				
+				double totalAd = stats.getAttackdamage() + stats.getAttackdamageperlevel() * 18;
+				double range = stats.getAttackrange();
+				double hpEarlyGame = stats.getHp() + stats.getHpperlevel() * 8;
+				
+				double totalAdEnemy = enemyStats.getAttackdamage() + enemyStats.getAttackdamageperlevel() * 18;
+				double rangeEnemy = enemyStats.getAttackrange();
+				double hpEarlyGameEnemy = enemyStats.getHp() + enemyStats.getHpperlevel() * 8;
+				
+				if((totalAd > totalAdEnemy && range > rangeEnemy) || (totalAd > totalAdEnemy && hpEarlyGame > hpEarlyGameEnemy) ||
+					(totalAd > totalAdEnemy && range > rangeEnemy && hpEarlyGame > hpEarlyGameEnemy) ||
+					(range > rangeEnemy)) {
+					recommendations.add(champ);
+				}
+			}
+		}
 end

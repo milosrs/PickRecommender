@@ -99,7 +99,7 @@ public class ChampionServiceImpl implements ChampionService {
 		
 		AllChampionsAndRoles acar = new AllChampionsAndRoles(championInfo.getChampRoles());
 		PlayerGenerativeData playerGenData = new PlayerGenerativeData(friendlyChampions, enemyChampions,
-				MapPositionsEnum.valueOf(picks.getPlayerPosition().toUpperCase()),
+				MapPositionsEnum.enumFactory(picks.getPlayerPosition().toUpperCase()),
 				TeamTypesEnum.valueOf(picks.getFirstPick().toUpperCase()), positionOrder);
 		
 		
