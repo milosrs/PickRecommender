@@ -21,11 +21,14 @@ import com.lol.model.summoner.SummonerDto;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
- 
+import java.lang.Number;
+
+import com.lol.util.Utils; 
 //declare any global variables here
 global List<Champions> recommendations;
 global ChampionMasteryRequestSender championMasteryRequestSender;
 global List<ChampionsAndRoles> allChampions;
+global Utils utils;
 
 rule "If player has first pick, recommend his best for that position"
 	no-loop
@@ -53,6 +56,42 @@ rule "If player has first pick, recommend his best for that position"
         update(fact);
 end
 
+rule "Player plays a position that enemy team hasn't covered"
+	when
+		$playerData: PlayerGenerativeData($position: playerPosition)
+		$summoner: SummonerDto()
+		$allChampions: AllChampionsAndRoles(allChampions.size > 0)
+		Number(intVal == 0) from accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name playedPositions contains $position
+			) from $allChampions,
+				init(int count = 0),
+				action(count++),
+				reverse(count--),
+				result(count)
+			)
+	then
+		List<ChampionMasteryDto> champsWithExp = championMasteryRequestSender.sendRequest($summoner.getId());
+        List<ChampionsAndRoles> extractedChamps = new ArrayList<ChampionsAndRoles>();
+        PlayerPicksFirst fact = new PlayerPicksFirst();
+        
+        for(ChampionMasteryDto cm : champsWithExp) {
+        	if(cm.getChampionLevel() > 2) {
+        		for(ChampionsAndRoles champ : $allChampions.getAllChampions()) {
+        			if(champ.getChampion().getId() == cm.getChampionId()) {
+        				extractedChamps.add(champ);
+        			}
+        		}
+        	}
+        }
+        
+        fact.setChamps(extractedChamps);
+        insert(fact);
+        update(fact);
+end
+		 
 rule "Get champions played for player position"
 	when
 		$playerData: PlayerGenerativeData()
@@ -66,31 +105,297 @@ rule "Get champions played for player position"
 end
 
 rule "Player plays bottom, oponnents picked a marksman"
+	no-loop
 	when
 		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.BOTTOM)
-		$enemyMarksman: ChampionsAndRoles(playedPositions contains MapPositionsEnum.BOTTOM) from $playerData.opponentTeam
-		$acar: AllChampionsAndRoles()
+		$enemyMarksman: ChampionsAndRoles(playedPositions contains MapPositionsEnum.BOTTOM && playedPositions.size == 1,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				playedPositions contains MapPositionsEnum.BOTTOM && name != $enemyMarksman.name 
+				&& utils.isAdcEligible($champion, $enemyMarksman.getChampion())
+			) from $allChampions,
+			$list: collectList($champion)) 
 	then
-		for(ChampionsAndRoles charo: $acar.getAllChampions()) {
-			if(charo.getPlayedPositions().contains(MapPositionsEnum.BOTTOM)) {
-				Champion champ = charo.getChampion();
-				Champion enemy = $enemyMarksman.getChampion();
-				Stats stats = champ.getStats();
-				Stats enemyStats = enemy.getStats();
-				
-				double totalAd = stats.getAttackdamage() + stats.getAttackdamageperlevel() * 18;
-				double range = stats.getAttackrange();
-				double hpEarlyGame = stats.getHp() + stats.getHpperlevel() * 8;
-				
-				double totalAdEnemy = enemyStats.getAttackdamage() + enemyStats.getAttackdamageperlevel() * 18;
-				double rangeEnemy = enemyStats.getAttackrange();
-				double hpEarlyGameEnemy = enemyStats.getHp() + enemyStats.getHpperlevel() * 8;
-				
-				if((totalAd > totalAdEnemy && range > rangeEnemy) || (totalAd > totalAdEnemy && hpEarlyGame > hpEarlyGameEnemy) ||
-					(totalAd > totalAdEnemy && range > rangeEnemy && hpEarlyGame > hpEarlyGameEnemy) ||
-					(range > rangeEnemy)) {
-					recommendations.add(champ);
-				}
-			}
-		}
+		recommendations.addAll($list);
+end
+
+rule "Player plays top, oponnents have a top battlemage, and no tanks/fighters -> DIVER-VANGUARD"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.TOP)
+		not ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && subroles contains ChampionRolesEnum.VANGUARD
+							&& mainRole contains ChampionRolesEnum.FIGHTER) from $playerData.opponentTeam
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && 
+										subroles contains ChampionRolesEnum.BATTLEMAGE,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				playedPositions contains MapPositionsEnum.TOP && name != $enemyChamp.name && 
+				(subroles contains ChampionRolesEnum.DIVER || subroles contains ChampionRolesEnum.VANGUARD)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays top, oponnents have a top skrimisher and no more tops -> SPECIALIST/ DIVER(TOP)/ JUGGERNAUT(TOP) "
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.TOP)
+		not ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP) from $playerData.opponentTeam
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && subroles contains ChampionRolesEnum.SKRIMISHER,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.TOP &&
+				(subroles contains ChampionRolesEnum.SPECIALIST ||
+				 (subroles contains ChampionRolesEnum.DIVER && playedPositions.size() == 1) ||
+				 (subroles contains ChampionRolesEnum.JUGGERNAUT && playedPositions.size() == 1))
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays top, oponnents have a TOP ONLY DIVER/JUGGERNAUT - SPECIALIST/VANGUARD "
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.TOP)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && 
+										(subroles contains ChampionRolesEnum.DIVER ||
+										subroles contains ChampionRolesEnum.JUGGERNAUT),
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.TOP &&
+				(subroles contains ChampionRolesEnum.SPECIALIST || subroles contains ChampionRolesEnum.VANGUARD)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays top, oponnents have a TOP MARKSMAN - MAGES/ASSASSINS "
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.TOP)
+		not ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && 
+							!(mainRole contains ChampionRolesEnum.MARKSMAN)) from $playerData.opponentTeam
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && 
+										(mainRole contains ChampionRolesEnum.MARKSMAN),
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.TOP &&
+				(mainRole contains ChampionRolesEnum.MAGE || subroles contains ChampionRolesEnum.ASSASSIN)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player Support, opponents have Controller Catcher support -> WARDEN,VANGUARD"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.SUPPORT)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.SUPPORT &&
+										subroles contains ChampionRolesEnum.CATCHER,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.SUPPORT &&
+				(subroles contains ChampionRolesEnum.VANGUARD || subroles contains ChampionRolesEnum.WARDEN)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player Support, opponents have MAGE CONTROLLER support -> ENCHANTER/CATCHER/VANGUARD"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.SUPPORT)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.SUPPORT && 
+										mainRole contains ChampionRolesEnum.MAGE && 
+										mainRole contains ChampionRolesEnum.CONTROLLER,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.SUPPORT &&
+				(subroles contains ChampionRolesEnum.ENCHANTER || 
+				 subroles contains ChampionRolesEnum.CATCHER || 
+				 subroles contains ChampionRolesEnum.VANGUARD)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player Support, opponents have ENCHANTER CONTROLLER support -> CATCHER/VANGUARD"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.SUPPORT)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.SUPPORT &&
+										subroles contains ChampionRolesEnum.ENCHANTER,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.SUPPORT &&
+				(subroles contains ChampionRolesEnum.CATCHER || 
+				 subroles contains ChampionRolesEnum.VANGUARD)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player Support, opponents have CATCHER support -> WARDEN/VANGUARD"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.SUPPORT)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.SUPPORT && 
+										subroles contains ChampionRolesEnum.CATCHER,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.SUPPORT &&
+				(subroles contains ChampionRolesEnum.WARDEN || 
+				 subroles contains ChampionRolesEnum.VANGUARD)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player Support, opponents have WARDEN support -> MAGE CONTROLLER"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.SUPPORT)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.SUPPORT && 
+										subroles contains ChampionRolesEnum.WARDEN,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.SUPPORT &&
+				(mainRole contains ChampionRolesEnum.MAGE && 
+				 mainRole contains ChampionRolesEnum.CONTROLLER)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays JUNGLE, oponnents have a jungle DIVER/JUGGERNAUT - SPECIALIST/VANGUARD "
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.JUNGLE)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.JUNGLE && 
+										(subroles contains ChampionRolesEnum.DIVER ||
+										subroles contains ChampionRolesEnum.JUGGERNAUT),
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.JUNGLE &&
+				(subroles contains ChampionRolesEnum.SPECIALIST || subroles contains ChampionRolesEnum.VANGUARD)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays JUNGLE, oponnents have a JUNGLE MARKSMAN - MAGES/ASSASSINS "
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.JUNGLE)
+		ChampionsAndRoles(playedPositions contains MapPositionsEnum.BOTTOM && 
+							mainRole contains ChampionRolesEnum.MARKSMAN) from $playerData.opponentTeam
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.TOP && 
+										(mainRole contains ChampionRolesEnum.MARKSMAN),
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.JUNGLE &&
+				(mainRole contains ChampionRolesEnum.MAGE || subroles contains ChampionRolesEnum.ASSASSIN)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays JUNGLE, oponnents have a MAGE/ASSASSIN JUNGLE - VANGUARD"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.JUNGLE)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.JUNGLE && 
+										(mainRole contains ChampionRolesEnum.MAGE ||
+							 			 subroles contains ChampionRolesEnum.ASSASSIN),
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.JUNGLE &&
+				(subroles contains ChampionRolesEnum.VANGUARD || mainRole contains ChampionRolesEnum.SPECIALIST)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
+end
+
+rule "Player plays MID, oponnents have a MAGE MID - ASSASSIN MID"
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.MID)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.MID && 
+										(mainRole contains ChampionRolesEnum.MAGE),
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.MID &&
+				(subroles contains ChampionRolesEnum.ASSASSIN)
+			) from $allChampions,
+			$list: collectList($champion)) 
+	then
+		recommendations.addAll($list);
 end

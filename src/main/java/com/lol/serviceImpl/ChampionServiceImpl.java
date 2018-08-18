@@ -30,10 +30,14 @@ import com.lol.requestSender.ChampionRequestSender;
 import com.lol.requestSender.SummonerServiceRequestSender;
 import com.lol.security.JWTTokenUtil;
 import com.lol.service.ChampionService;
+import com.lol.util.Utils;
 
 @Service
 public class ChampionServiceImpl implements ChampionService {
 
+	@Autowired
+	private Utils utils;
+	
 	@Autowired
 	private ChampionRequestSender requestSender;
 	
@@ -103,7 +107,7 @@ public class ChampionServiceImpl implements ChampionService {
 				TeamTypesEnum.valueOf(picks.getFirstPick().toUpperCase()), positionOrder);
 		
 		
-		fireContersSession(playerGenData, acar, summoner);
+		fireCountersSession(playerGenData, acar, summoner);
 		Object droolsRet = countersSession.getGlobal("recommendations");
 		
 		if(droolsRet instanceof List){
@@ -117,12 +121,13 @@ public class ChampionServiceImpl implements ChampionService {
 		return recommendations;
 	}
 	
-	private void fireContersSession(PlayerGenerativeData playerGenData, AllChampionsAndRoles acar, SummonerDto summoner) {
+	private void fireCountersSession(PlayerGenerativeData playerGenData, AllChampionsAndRoles acar, SummonerDto summoner) {
 		List<Champion> recommendations = new ArrayList<Champion>();
 		countersSession = kieContainer.newKieSession("counter-rules");
 		countersSession.insert(playerGenData);
 		countersSession.insert(summoner);
 		countersSession.insert(acar);
+		countersSession.setGlobal("utils", utils);
 		countersSession.setGlobal("championMasteryRequestSender", champMasteryRequestSender);
 		countersSession.setGlobal("recommendations", recommendations);
 		countersSession.fireAllRules();

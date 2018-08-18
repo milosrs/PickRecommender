@@ -17,7 +17,8 @@ import java.util.ArrayList;
 
 rule "MAGES are mostly MID"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE &&
+									playedPositions not contains MapPositionsEnum.MID)
 	then
 		MapPositionsEnum position = MapPositionsEnum.MID;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -33,7 +34,8 @@ end
 
 rule "MARKSMEN are mostly BOTTOM"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MARKSMAN)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MARKSMAN &&
+									playedPositions not contains MapPositionsEnum.BOTTOM)
 	then
 		MapPositionsEnum position = MapPositionsEnum.BOTTOM;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -49,7 +51,8 @@ end
 
 rule "CONTROLLERS are mostly SUPPORT"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.CONTROLLER)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.CONTROLLER &&
+									playedPositions not contains MapPositionsEnum.SUPPORT)
 	then
 		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -65,7 +68,8 @@ end
 
 rule "WARDEN TANKS are mostly SUPPORT"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.WARDEN)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.WARDEN &&
+									playedPositions not contains MapPositionsEnum.SUPPORT)
 	then
 		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -81,7 +85,8 @@ end
 
 rule "JUGGERNAUT FIGHTERS are mostly TOP"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.JUGGERNAUT)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.JUGGERNAUT &&
+									playedPositions not contains MapPositionsEnum.TOP)
 	then
 		MapPositionsEnum position = MapPositionsEnum.TOP;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -97,7 +102,9 @@ end
 
 rule "DIVER FIGHTERS are JUNGLE and TOP"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.DIVER)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.FIGHTER && subroles contains ChampionRolesEnum.DIVER &&
+									playedPositions not contains MapPositionsEnum.JUNGLE &&
+									playedPositions not contains MapPositionsEnum.TOP)
 	then
 		MapPositionsEnum position1 = MapPositionsEnum.JUNGLE;
 		MapPositionsEnum position2 = MapPositionsEnum.TOP;
@@ -115,7 +122,8 @@ end
 
 rule "SKRIMISHER SLAYERS can be played TOP"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.SKRIMISHER)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.SKRIMISHER &&
+									playedPositions not contains MapPositionsEnum.TOP)
 	then
 		MapPositionsEnum position = MapPositionsEnum.TOP;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -131,7 +139,8 @@ end
 
 rule "ASSASSIN SLAYERS can be played MID"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.ASSASSIN)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.ASSASSIN &&
+									playedPositions not contains MapPositionsEnum.MID)
 	then
 		MapPositionsEnum position = MapPositionsEnum.MID;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -147,7 +156,8 @@ end
 
 rule "ARTILLERY MAGES can be played SUPPORT"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE && subroles contains ChampionRolesEnum.ARTILLERY)
+		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE && subroles contains ChampionRolesEnum.ARTILLERY &&
+									playedPositions not contains MapPositionsEnum.SUPPORT)
 	then
 		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -163,7 +173,9 @@ end
 
 rule "SPECIALISTS can be played TOP and MID"
 	when
-	$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST)
+	$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST &&
+									playedPositions not contains MapPositionsEnum.MID &&
+									playedPositions not contains MapPositionsEnum.TOP)
 	then
 		MapPositionsEnum position1 = MapPositionsEnum.TOP;
 		MapPositionsEnum position2 = MapPositionsEnum.MID;
@@ -183,7 +195,8 @@ rule "Battlemages with Hp Regen >= 6.6 can be played TOP"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE
 									 && subroles contains ChampionRolesEnum.BATTLEMAGE
-									 && champion.stats.hpregen >= 6.6)
+									 && champion.stats.hpregen >= 6.6 &&
+									playedPositions not contains MapPositionsEnum.TOP)
 	then
 		MapPositionsEnum position = MapPositionsEnum.TOP;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -197,10 +210,12 @@ rule "Battlemages with Hp Regen >= 6.6 can be played TOP"
 		$champ.setPlayedPositions(positions);
 end
 
-rule "SPECIALISTS range > 400 and AD > 55 can be played BOTTOM AND JUNGLE"
+rule "SPECIALISTS range > 400 and AD > 59 can be played BOTTOM AND JUNGLE"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && 
-									champion.stats.attackrange > 400 && champion.stats.attackdamage > 55)
+									champion.stats.attackrange > 400 && champion.stats.attackdamage > 59 &&
+									playedPositions not contains MapPositionsEnum.BOTTOM && 
+									playedPositions not contains MapPositionsEnum.JUNGLE)
 	then
 		MapPositionsEnum position1 = MapPositionsEnum.BOTTOM;
 		MapPositionsEnum position2 = MapPositionsEnum.JUNGLE;
@@ -219,7 +234,8 @@ end
 rule "SPECIALISTS attackrange > 400 and AD < 52 and armor > 20 are SUPPORTS"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SPECIALIST && 
-								  champion.stats.attackrange > 400 && champion.stats.attackdamage < 52 && champion.stats.armor > 20)
+								  champion.stats.attackrange > 400 && champion.stats.attackdamage < 52 && champion.stats.armor > 20 &&
+									playedPositions not contains MapPositionsEnum.SUPPORT)
 	then
 		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -236,7 +252,8 @@ end
 rule "VANGUARD TANKS AD > 59.8 and armor+mr > 67 are SUPPORTS"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD && 
-								  champion.stats.attackdamage > 59.8 && (champion.stats.armor + champion.stats.spellblock) > 67)
+								  champion.stats.attackdamage > 59.8 && (champion.stats.armor + champion.stats.spellblock) > 67 &&
+									playedPositions not contains MapPositionsEnum.SUPPORT)
 	then
 		MapPositionsEnum position = MapPositionsEnum.SUPPORT;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -253,7 +270,8 @@ end
 rule "VANGUARD TANKS AD >= 62 are TOP"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD && 
-								  champion.stats.attackdamage >= 62)
+								  champion.stats.attackdamage >= 62 &&
+									playedPositions not contains MapPositionsEnum.TOP)
 	then
 		MapPositionsEnum position = MapPositionsEnum.TOP;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -273,7 +291,8 @@ rule "VANGUARD TANKS that are JUNGLE"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.TANK &&
 								  subroles contains ChampionRolesEnum.VANGUARD && 
-								  (name == "Zac" || name == "Gragas" || name == "Rammus" || name == "Sejuani" || name == "Amumu"))
+								  (name == "Zac" || name == "Gragas" || name == "Rammus" || name == "Sejuani" || name == "Amumu") &&
+									playedPositions not contains MapPositionsEnum.JUNGLE)
 	then
 		MapPositionsEnum position = MapPositionsEnum.JUNGLE;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -292,7 +311,8 @@ rule "SLAYERS that are JUNGLE"
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER &&
 								  (name == "Evelynn" || name == "Kayn" || name == "Kha'Zix" 
 								  || name == "Nocturne" || name == "Shaco" || name == "Jax" 
-								  || name == "Master Yi" || name == "Tryndamere"))
+								  || name == "Master Yi" || name == "Tryndamere") &&
+									playedPositions not contains MapPositionsEnum.JUNGLE)
 	then
 		MapPositionsEnum position = MapPositionsEnum.JUNGLE;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -310,9 +330,8 @@ rule "SKRIMISHER SLAYERS that are MID"
 	when
 		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.SLAYER &&
 								  subroles contains ChampionRolesEnum.SKRIMISHER && 
-								  (name == "Yasuo" || name == "Kayn" || name == "Kha'Zix" 
-								  || name == "Nocturne" || name == "Shaco" || name == "Jax" 
-								  || name == "Master Yi" || name == "Tryndamere"))
+								  (name == "Yasuo") &&
+									playedPositions not contains MapPositionsEnum.MID)
 	then
 		MapPositionsEnum position = MapPositionsEnum.MID;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
@@ -326,9 +345,10 @@ rule "SKRIMISHER SLAYERS that are MID"
 		$champ.setPlayedPositions(positions);
 end
 
-rule "Ivern and Kindred are Jungle because of passive"
+rule "Ivern, Kindred and Kai'Sa are Jungle because of passives or Abilities"
 	when
-		$champ: ChampionsAndRoles(name == "Ivern" || name == "Kindred")
+		$champ: ChampionsAndRoles(name == "Ivern" || name == "Kindred" && name == "Kai'Sa" &&
+									playedPositions not contains MapPositionsEnum.JUNGLE)
 	then
 		MapPositionsEnum position = MapPositionsEnum.JUNGLE;
 		List<MapPositionsEnum> positions = $champ.getPlayedPositions();
