@@ -1,6 +1,7 @@
 package com.lol.requestSender;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -10,10 +11,10 @@ import com.lol.model.reforgedRunes.ReforgedRunePathDto;
 import com.lol.requestSender.URLBuilder.RequestUrl;
 
 @Service
-public class RunesRequestSender extends RiotRequestSender<String, ReforgedRunePathDto>{
+public class RunesRequestSender extends RiotRequestSender<String, List<ReforgedRunePathDto>>{
 
 	@Override
-	public ReforgedRunePathDto sendRequest(String realm) throws IOException {
+	public List<ReforgedRunePathDto> sendRequest(String realm) throws IOException {
 		String fullUrl = urlBuilder.buildUrl(realm, RequestUrl.RUNE_PATHS, null);
 		String json = sendGET(fullUrl);
 		
@@ -21,12 +22,12 @@ public class RunesRequestSender extends RiotRequestSender<String, ReforgedRunePa
 	}
 
 	@Override
-	protected ReforgedRunePathDto convertToEntity(String json)
+	protected List<ReforgedRunePathDto> convertToEntity(String json)
 			throws JsonParseException, JsonMappingException, IOException {
 		if(json == null) {
 			throw new NullPointerException("Unable to convert to Runes Path. JSON is null.");
 		}
-		return mapper.readValue(json, ReforgedRunePathDto.class);
+		return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, ReforgedRunePathDto.class));
 	}
 
 }

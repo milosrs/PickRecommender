@@ -2,13 +2,11 @@ package com.lol.dataBeans;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
-
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +14,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lol.model.reforgedRunes.ReforgedRunePathDto;
-import com.lol.model.summonerSpells.SummonerSpellListDto;
 import com.lol.requestSender.RunesRequestSender;
 
 @Component
@@ -27,7 +24,7 @@ public class RunesBean implements Observer{
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	private ReforgedRunePathDto runes;
+	private List<ReforgedRunePathDto> runes;
 	private final String realm = "eun1";
 	private final String filePath = "./apiData/runesPath.json";
 
@@ -48,7 +45,7 @@ public class RunesBean implements Observer{
 			runes = requestSender.sendRequest(realm);
 			objectMapper.writeValue(f, runes);
 		} else {
-			runes = objectMapper.readValue(f, ReforgedRunePathDto.class);
+			runes = objectMapper.readValue(f, objectMapper.getTypeFactory().constructCollectionType(List.class, ReforgedRunePathDto.class));
 		}
 	}
 	
@@ -60,11 +57,11 @@ public class RunesBean implements Observer{
 		this.requestSender = requestSender;
 	}
 
-	public ReforgedRunePathDto getRunes() {
+	public List<ReforgedRunePathDto> getRunes() {
 		return runes;
 	}
 
-	public void setRunes(ReforgedRunePathDto runes) {
+	public void setRunes(List<ReforgedRunePathDto> runes) {
 		this.runes = runes;
 	}
 

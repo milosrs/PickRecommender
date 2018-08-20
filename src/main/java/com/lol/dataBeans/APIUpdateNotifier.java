@@ -6,9 +6,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -116,19 +120,18 @@ public class APIUpdateNotifier extends Observable {
 			fos.write(b);
 			fos.close();
 		} else {
-			FileInputStream fis = new FileInputStream(f);
-			
-			try( BufferedReader br =
-			           new BufferedReader( new InputStreamReader(fis, currentVersion)))
-			   {
-			      StringBuilder sb = new StringBuilder();
-			      String line;
-			      while(( line = br.readLine()) != null ) {
-			         sb.append( line );
-			         sb.append( '\n' );
-			      }
-			      currentVersion = sb.toString();
-			   }
+			StringBuilder contentBuilder = new StringBuilder();
+			 
+	        try (Stream<String> stream = Files.lines( Paths.get(filePath), StandardCharsets.UTF_8))
+	        {
+	            stream.forEach(s -> contentBuilder.append(s).append("\n"));
+	        }
+	        catch (IOException e)
+	        {
+	            e.printStackTrace();
+	        }
+	        
+	        currentVersion = contentBuilder.toString();
 		}
 	}
 
