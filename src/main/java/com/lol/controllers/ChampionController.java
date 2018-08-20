@@ -17,11 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lol.dataBeans.ChampionInfoBean;
+import com.lol.dataBeans.SummonerSpellBean;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
+import com.lol.model.recommendation.GenerateResult;
 import com.lol.model.summoner.SummonerDto;
+import com.lol.model.summonerSpells.SummonerSpellDto;
 import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.viewModel.ChampionViewModel;
+import com.lol.model.viewModel.GenerateResultViewModel;
+import com.lol.model.viewModel.SummonerSpellViewModel;
 import com.lol.requestSender.SummonerServiceRequestSender;
 import com.lol.security.JWTTokenUtil;
 import com.lol.service.ChampionService;
@@ -36,6 +41,9 @@ public class ChampionController {
 	
 	@Autowired
 	private ChampionInfoBean champInfoBean;
+	
+	@Autowired
+	private SummonerSpellBean spellBean;
 	
 	@Autowired
 	private SummonerServiceRequestSender summmonerRequestSender;
@@ -85,12 +93,17 @@ public class ChampionController {
 														  @RequestHeader("Authorization") String token) throws IOException {
 		token = token.substring(7);
 		SummonerDto summoner = summmonerRequestSender.sendRequest(summonerService.getByUsername(jwtTokenUtil.getUsernameFromToken(token)));
-		List<Champion> recommendations = championService.generateRecommendations(picks, summoner);
-		List<ChampionViewModel> ret = new ArrayList<ChampionViewModel>();
+		GenerateResult recommendations = championService.generateRecommendations(picks, summoner);
+		GenerateResultViewModel ret = new GenerateResultViewModel();
 		
-		for(Champion c : recommendations) {
+		for(Champion c : recommendations.getChampRecommendations()) {
 			ChampionViewModel toAdd = championService.convertChampionToViewModel(c);
-			ret.add(toAdd);
+			ret.getChampRecommendations().add(toAdd);
+		}
+		
+		for(SummonerSpellDto s : recommendations.getSpellRecommendations()) {
+			SummonerSpellViewModel toAdd = spellBean.convertToViewModel(s);
+			ret.getSpellRecommendations().add(toAdd);
 		}
 		
 		return ResponseEntity.ok(ret);

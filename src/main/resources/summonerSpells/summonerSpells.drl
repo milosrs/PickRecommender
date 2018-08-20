@@ -6,8 +6,13 @@ import com.lol.model.summonerSpells.SummonerSpellListDto;
 import com.lol.model.summonerSpells.SummonerSpellDto;
 import com.lol.model.MapPositionsEnum;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.lang.Number;
+
 //declare any global variables here
-global SummonerSpellListDto summmonerSpells;
+global SummonerSpellListDto summonerSpells;
 global List<SummonerSpellDto> recommendations;
 
 rule "Player mid - Ignite/Flash"

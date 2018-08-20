@@ -19,6 +19,7 @@ import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
 import com.lol.model.champions.ChampionsAndRoles;
+import com.lol.model.recommendation.GenerateResult;
 import com.lol.model.recommendation.PlayerGenerativeData;
 import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.summoner.SummonerAuth;
@@ -91,8 +92,9 @@ public class ChampionServiceImpl implements ChampionService {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<Champion> generateRecommendations(ChampionPicksViewModel picks, SummonerDto summoner) {
-		List<Champion> recommendations = new ArrayList<Champion>();
+	public GenerateResult generateRecommendations(ChampionPicksViewModel picks, SummonerDto summoner) {
+		GenerateResult ret = new GenerateResult();
+		
 		MapPositionsEnum[] positionOrder = fillFriendlyPositions(picks);
 		Map<MapPositionsEnum, ChampionsAndRoles> friendlyChampions = fillFriendlyChampRoles(picks);
 		List<ChampionsAndRoles> enemyChampions = fillEnemyChampRoles(picks);
@@ -105,17 +107,26 @@ public class ChampionServiceImpl implements ChampionService {
 		
 		fireCountersSession(playerGenData, acar, summoner);
 		fireSummonerSpellsSession(playerGenData.getPlayerPosition(), spellInfo.getSummonerSpells());
+		
 		Object droolsRet = countersSession.getGlobal("recommendations");
+		Object spellsRet = spellSession.getGlobal("recommendations");
 		
 		if(droolsRet instanceof List){
 		    if(((List)droolsRet).size()>0 && (((List)droolsRet).get(0) instanceof Champion)){
-		    	recommendations = (List<Champion>) droolsRet;
+		    	ret.setChampRecommendations((List<Champion>) droolsRet);
+		    }
+		}
+		
+		if(spellsRet instanceof List){
+		    if(((List)spellsRet).size()>0 && (((List)spellsRet).get(0) instanceof SummonerSpellDto)){
+		    	ret.setSpellRecommendations((List<SummonerSpellDto>) spellsRet);
 		    }
 		}
 		
 		countersSession.dispose();
+		spellSession.dispose();
 		
-		return recommendations;
+		return ret;
 	}
 	
 	private void fireCountersSession(PlayerGenerativeData playerGenData, AllChampionsAndRoles acar, SummonerDto summoner) {
@@ -134,6 +145,7 @@ public class ChampionServiceImpl implements ChampionService {
 		List<SummonerSpellDto> recommend = new ArrayList<SummonerSpellDto>();
 		spellSession = kieContainer.newKieSession("spell-rules");
 		spellSession.insert(playerPosition);
+		spellSession.setGlobal("summonerSpells", spellInfo.getSummonerSpells());
 		spellSession.setGlobal("recommendations", recommend);
 		spellSession.fireAllRules();
 	}
