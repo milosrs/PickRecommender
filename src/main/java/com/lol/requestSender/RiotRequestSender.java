@@ -3,26 +3,28 @@ package com.lol.requestSender;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lol.requestSender.URLBuilder.RequestUrl;
 import com.lol.requestSender.URLBuilder.URLBuilder;
 
 @Service
-public abstract class RiotRequestSender<S, R> {
+public abstract class RiotRequestSender<SendInfo, ResponseObject> {
 	@Autowired
 	protected URLBuilder urlBuilder;
 	@Autowired
 	protected ObjectMapper mapper;
 
-	protected R responseObject;
+	protected ResponseObject responseObject;
 	
 	private final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36";
 	private final String RIOT_API_KEY = "RGAPI-b153cc56-22c1-4b52-9573-2697c6de3fe4";
@@ -72,7 +74,22 @@ public abstract class RiotRequestSender<S, R> {
 		}
 	}
 	
-	public abstract R sendRequest(S sendInfo) throws IOException;
+	public String getLatestVersion(String realm) throws IOException {
+		String fullUrl = this.urlBuilder.buildUrl(realm, RequestUrl.VERSIONS, null);
+		String resultString = this.sendGET(fullUrl);
+		String latestVersion = convertToLatestVersion(resultString);
+		
+		return latestVersion;
+	}
 	
-	protected abstract R convertToEntity(String json) throws JsonParseException, JsonMappingException, IOException;
+	protected String convertToLatestVersion(String json) throws JsonParseException, JsonMappingException, IOException {
+		List<String> versions = mapper.readValue(json, new TypeReference<List<String>>(){});
+		String latest = versions.get(0);
+		
+		return latest;
+	}
+	
+	public abstract ResponseObject sendRequest(SendInfo sendInfo) throws IOException;
+	
+	protected abstract ResponseObject convertToEntity(String json) throws JsonParseException, JsonMappingException, IOException;
 }

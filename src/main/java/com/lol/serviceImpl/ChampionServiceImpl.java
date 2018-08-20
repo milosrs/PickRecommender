@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kie.api.builder.KieRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lol.ChampionInfoBean;
+import com.lol.dataBeans.ChampionInfoBean;
+import com.lol.dataBeans.SummonerSpellBean;
 import com.lol.facts.AllChampionsAndRoles;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.TeamTypesEnum;
@@ -23,11 +23,11 @@ import com.lol.model.recommendation.PlayerGenerativeData;
 import com.lol.model.viewModel.ChampionPicksViewModel;
 import com.lol.model.summoner.SummonerAuth;
 import com.lol.model.summoner.SummonerDto;
+import com.lol.model.summonerSpells.SummonerSpellDto;
+import com.lol.model.summonerSpells.SummonerSpellListDto;
 import com.lol.model.viewModel.ChampionViewModel;
 import com.lol.repository.SummonerRepository;
 import com.lol.requestSender.ChampionMasteryRequestSender;
-import com.lol.requestSender.ChampionRequestSender;
-import com.lol.requestSender.SummonerServiceRequestSender;
 import com.lol.security.JWTTokenUtil;
 import com.lol.service.ChampionService;
 import com.lol.util.Utils;
@@ -39,13 +39,7 @@ public class ChampionServiceImpl implements ChampionService {
 	private Utils utils;
 	
 	@Autowired
-	private ChampionRequestSender requestSender;
-	
-	@Autowired
 	private ChampionMasteryRequestSender champMasteryRequestSender;
-	
-	@Autowired
-	private SummonerServiceRequestSender summonerRequestSender;
 	
 	@Autowired
 	private JWTTokenUtil jwtTokenUtil;
@@ -58,11 +52,13 @@ public class ChampionServiceImpl implements ChampionService {
 	
 	private KieSession countersSession;
 	
-	@Autowired
-	private KieSession kieSession;
+	private KieSession spellSession;
 	
 	@Autowired
 	private ChampionInfoBean championInfo;
+	
+	@Autowired
+	private SummonerSpellBean spellInfo;
 	
 	@Override
 	public ChampionListDto getAllForList(String token) throws IOException {
@@ -108,6 +104,7 @@ public class ChampionServiceImpl implements ChampionService {
 		
 		
 		fireCountersSession(playerGenData, acar, summoner);
+		fireSummonerSpellsSession(playerGenData.getPlayerPosition(), spellInfo.getSummonerSpells());
 		Object droolsRet = countersSession.getGlobal("recommendations");
 		
 		if(droolsRet instanceof List){
@@ -131,6 +128,14 @@ public class ChampionServiceImpl implements ChampionService {
 		countersSession.setGlobal("championMasteryRequestSender", champMasteryRequestSender);
 		countersSession.setGlobal("recommendations", recommendations);
 		countersSession.fireAllRules();
+	}
+	
+	private void fireSummonerSpellsSession(MapPositionsEnum playerPosition, SummonerSpellListDto summonerSpellList) {
+		List<SummonerSpellDto> recommend = new ArrayList<SummonerSpellDto>();
+		spellSession = kieContainer.newKieSession("spell-rules");
+		spellSession.insert(playerPosition);
+		spellSession.setGlobal("recommendations", recommend);
+		spellSession.fireAllRules();
 	}
 	
 	private ChampionsAndRoles findChampInList(Champion champ) {
@@ -178,7 +183,7 @@ public class ChampionServiceImpl implements ChampionService {
 		int i = 0;
 		MapPositionsEnum[] positionOrder = new MapPositionsEnum[5];
 		
-		for(String key : picks.getFriendlyTeam().keySet()) {
+		for(String key : picks.getFriendlyPositionsOrder()) {
 			positionOrder[i++] = MapPositionsEnum.enumFactory(key.toUpperCase());
 		}
 		

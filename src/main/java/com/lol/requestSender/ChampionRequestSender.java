@@ -44,14 +44,6 @@ public class ChampionRequestSender extends RiotRequestSender<String, ChampionLis
 		return result;
 	}
 	
-	public String getLatestVersion(String realm) throws IOException {
-		String fullUrl = this.urlBuilder.buildUrl(realm, RequestUrl.VERSIONS, null);
-		String resultString = this.sendGET(fullUrl);
-		String latestVersion = convertToLatestVersion(resultString);
-		
-		return latestVersion;
-	}
-
 	@Override
 	protected ChampionListDto convertToEntity(String json)
 			throws JsonParseException, JsonMappingException, IOException {
@@ -64,12 +56,5 @@ public class ChampionRequestSender extends RiotRequestSender<String, ChampionLis
 		Champion ret = mapper.readValue(json, Champion.class);
 		
 		return ret;
-	}
-	
-	protected String convertToLatestVersion(String json) throws JsonParseException, JsonMappingException, IOException {
-		List<String> versions = mapper.readValue(json, new TypeReference<List<String>>(){});
-		String latest = versions.get(0);
-		
-		return latest;
 	}
 }

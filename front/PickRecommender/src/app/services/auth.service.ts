@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HelperFunctions } from '../shared/util/helper-functions';
@@ -15,7 +15,7 @@ import { Summoner } from '../model/summoner';
 })
 export class AuthService {
 
-  private logger = new Subject<boolean>();
+  private logger = new BehaviorSubject<boolean>(false);
   private readonly emptyToken = new Token('', '', undefined);
   loggedUserToken: Token;
   headers = new HttpHeaders({'Content-Type': 'application/json' });
@@ -31,12 +31,15 @@ export class AuthService {
       if (!HelperFunctions.containsEmptyValues(item) && item === this.emptyToken) {
         const ls = JSON.parse(window.localStorage.getItem('currentUser'));
         this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['id'], ls['token']);
+        
       }
       if(HelperFunctions.containsEmptyValues(this.loggedUserToken)) {
         const ls = JSON.parse(window.localStorage.getItem('currentUser'));
         this.loggedUserToken = new Token(ls['username'], ls['realm'], ls['id'], ls['token']);
       }
     }
+
+    this.logger.next(this.isLoggedInSimple());
   }
 
   storeToken() {
@@ -65,7 +68,6 @@ export class AuthService {
   logout() {
     window.localStorage.clear();
     this.loggedUserToken = null;
-    this.router.navigate(['/home']);
     this.logger.next(false);
   }
 

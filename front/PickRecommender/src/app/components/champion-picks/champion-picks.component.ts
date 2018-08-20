@@ -68,13 +68,15 @@ export class ChampionPicksComponent implements OnInit {
         opponents.push(toSend['Opponent'][keys[i]]);
       }
       generate = new PickGeneratorInfo(toSend['Friendly'], opponents, this.playerPosition, 
-                                       this.firstPick, this.auth.getToken().username);
+                                       this.firstPick, this.auth.getToken().username, 
+                                       this.championService.getFriendlyPlayersOrder());
       console.log(generate);
     }
     
     this.championService.generate(generate)
       .subscribe(resp => {
         console.log(resp);
+        resp = HelperFunctions.sortArrayByKey(resp, ['name']);
         this.championService.setRecommendations(resp as Champion[]);
         this.router.navigate(['recommendations']);
       });

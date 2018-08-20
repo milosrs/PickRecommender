@@ -13,4 +13,8 @@
     <kbase name="runeRules" packages="runeRules">
     	<ksession name="rune-rules"/>
     </kbase>
+    
+    <kbase name="summonerSpellRules" packages="summonerSpells">
+    	<ksession name="spell-rules"></ksession>
+    </kbase>
 </kmodule>

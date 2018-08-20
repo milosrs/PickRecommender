@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lol.ChampionInfoBean;
+import com.lol.dataBeans.ChampionInfoBean;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
 import com.lol.model.summoner.SummonerDto;

@@ -1,0 +1,73 @@
+//created on: Aug 20, 2018
+package summonerSpells
+
+//list any import classes here.
+import com.lol.model.summonerSpells.SummonerSpellListDto;
+import com.lol.model.summonerSpells.SummonerSpellDto;
+import com.lol.model.MapPositionsEnum;
+
+//declare any global variables here
+global SummonerSpellListDto summmonerSpells;
+global List<SummonerSpellDto> recommendations;
+
+rule "Player mid - Ignite/Flash"
+    when
+        MapPositionsEnum(value == MapPositionsEnum.MID)
+    then
+       	for(String key : summonerSpells.getData().keySet()) {
+       		SummonerSpellDto spell = summonerSpells.getData().get(key);
+       		if(spell.getName().equals("Ignite") || spell.getName().equals("Flash")) {
+       			recommendations.add(spell);
+       		}
+       	}
+end
+
+rule "Player top - Teleport/Flash"
+    when
+        MapPositionsEnum(value == MapPositionsEnum.TOP)
+    then
+        for(String key : summonerSpells.getData().keySet()) {
+       		SummonerSpellDto spell = summonerSpells.getData().get(key);
+       		if(spell.getName().equals("Teleport") || spell.getName().equals("Flash")) {
+       			recommendations.add(spell);
+       		}
+       	}
+
+end
+
+rule "Player jungle - Smite/Flash"
+    when
+        MapPositionsEnum(value == MapPositionsEnum.JUNGLE)
+    then
+        for(String key : summonerSpells.getData().keySet()) {
+       		SummonerSpellDto spell = summonerSpells.getData().get(key);
+       		if(spell.getName().equals("Smite") || spell.getName().equals("Flash")) {
+       			recommendations.add(spell);
+       		}
+       	}
+
+end
+
+rule "Player bottom - Heal/Barrier/Flash"
+    when
+        MapPositionsEnum(value == MapPositionsEnum.BOTTOM)
+    then
+		for(String key : summonerSpells.getData().keySet()) {
+       		SummonerSpellDto spell = summonerSpells.getData().get(key);
+       		if(spell.getName().equals("Heal") || spell.getName().equals("Barrier") || spell.getName().equals("Flash")) {
+       			recommendations.add(spell);
+       		}
+       	}
+end
+
+rule "Player support - Exhaust/Ignite/Flash"
+	when
+        MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+	then
+		for(String key : summonerSpells.getData().keySet()) {
+       		SummonerSpellDto spell = summonerSpells.getData().get(key);
+       		if(spell.getName().equals("Exhaust") || spell.getName().equals("Ignite") || spell.getName().equals("Flash")) {
+       			recommendations.add(spell);
+       		}
+       	}
+end

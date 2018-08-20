@@ -9,7 +9,6 @@ public class ReforgedRunePathDto {
 	private String key;	
 	private String name;
 	
-	
 	public ReforgedRunePathDto() {
 		super();
 	}
@@ -51,6 +50,4 @@ public class ReforgedRunePathDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 }

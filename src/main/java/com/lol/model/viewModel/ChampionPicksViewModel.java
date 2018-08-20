@@ -11,6 +11,7 @@ public class ChampionPicksViewModel {
 	private List<Integer> opponentTeam;
 	private String playerPosition;
 	private String firstPick;
+	private List<String> friendlyPositionsOrder;
 	
 	public ChampionPicksViewModel() {
 		super();
@@ -55,5 +56,13 @@ public class ChampionPicksViewModel {
 
 	public void setFirstPick(String firstPick) {
 		this.firstPick = firstPick;
+	}
+
+	public List<String> getFriendlyPositionsOrder() {
+		return friendlyPositionsOrder;
+	}
+
+	public void setFriendlyPositionsOrder(List<String> friendlyPositionsOrder) {
+		this.friendlyPositionsOrder = friendlyPositionsOrder;
 	}
 }

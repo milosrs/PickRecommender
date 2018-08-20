@@ -1,14 +1,18 @@
-package com.lol;
+package com.lol.dataBeans;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
-import java.util.TimerTask;
+
+import javax.annotation.PostConstruct;
 
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.InitializingBean;
@@ -16,10 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lol.model.ChampionRolesEnum;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.ChampionListDto;
@@ -27,25 +29,41 @@ import com.lol.model.champions.ChampionsAndRoles;
 import com.lol.requestSender.ChampionRequestSender;
 
 @Component
-public class ChampionInfoBean extends TimerTask implements InitializingBean{
-
+public class ChampionInfoBean implements Observer {
 	@Autowired
 	private ChampionRequestSender requestSender;
 	@Autowired
-	private ObjectMapper objectMapper;
-	@Autowired
 	private KieSession kieSession;
-	
+	@Autowired
+	private ObjectMapper objectMapper;
 	private ChampionListDto championData;
-	private final String realm = "eun1";
-	private long daily = 1000*60*60*24;
 	private List<ChampionsAndRoles> champRoles;
+	private final String realm = "eun1";
+	private final String filePath = "./apiData/champions.json";
 	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		championData = requestSender.sendRequest(realm);
-		Timer timer = new Timer();
-		timer.schedule(this, 0, daily);
+	@PostConstruct
+	public void construction() {
+		try {
+			readFile();
+			this.champRoles = readChampionsRoles();
+			championInfoIntoList();
+			generalizeChampionPositions();
+			printChampNameAndPositions();
+		} catch (Exception e) {
+			System.out.println("Error while reading JSON file.");
+			e.printStackTrace();
+		}
+	}
+	
+	private void readFile() throws JsonParseException, JsonMappingException, IOException{
+		File f = new File(filePath);
+
+		if (!f.exists()) {
+			championData = requestSender.sendRequest(realm);
+			objectMapper.writeValue(f, championData);
+		} else {
+			championData = objectMapper.readValue(f, ChampionListDto.class);
+		}
 	}
 
 	public ChampionRequestSender getRequestSender() {
@@ -63,43 +81,6 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 	public void setChampionData(ChampionListDto championData) {
 		this.championData = championData;
 	}
-
-	@Override
-	public void run() {
-		String currentVersion = championData.getVersion();
-		String[] currentVersionFragments = currentVersion.split(".");
-		String latestVersion = null;
-		String[] latestVersionFragments = null;
-		
-		try {
-			latestVersion = requestSender.getLatestVersion(realm);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		
-		latestVersionFragments = latestVersion.split(".");
-		
-		if(latestVersionGreaterThanCurrent(currentVersionFragments, latestVersionFragments)) {
-			try {
-				championData = requestSender.sendRequest(realm);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		try {
-			this.champRoles = readChampionsRoles();
-			championInfoIntoList();
-			generalizeChampionPositions();
-			printChampNameAndPositions();
-		} catch (Exception e) {
-			System.out.println("Error while reading JSON file.");
-			e.printStackTrace();
-		}
-	}
 	
 	private void championInfoIntoList() {
 		for(ChampionsAndRoles car : this.champRoles) {
@@ -116,7 +97,7 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 	}
 	
 	private List<ChampionsAndRoles> readChampionsRoles() throws JsonParseException, JsonMappingException, IOException {
-		File file = new File("./championClasses.json");
+		File file = new File("./apiData/championClasses.json");
 		List<ChampionsAndRoles> ret = objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, ChampionsAndRoles.class));
 		
 		return ret;
@@ -150,25 +131,6 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 		}
 	}
 
-	private boolean latestVersionGreaterThanCurrent(String[] current, String[] latest) {
-		boolean shouldUpdate = latest.length > current.length || 
-				   				latest.length < current.length;
-		
-		if(!shouldUpdate && current.length == latest.length) {
-			for(int i = 0; i < current.length; i++) {
-				long cvf = Long.parseLong(current[i]);
-				long lvf = Long.parseLong(latest[i]);
-				
-				if(lvf > cvf) {
-					shouldUpdate = true;
-					break;
-				}
-			}
-		}
-		
-		return shouldUpdate;
-	}
-
 	public Champion getChampionDataByKey(String champKey) {
 		return champKey == null ? null : championData.getData().get(champKey);
 	}
@@ -195,5 +157,17 @@ public class ChampionInfoBean extends TimerTask implements InitializingBean{
 	public void setChampRoles(List<ChampionsAndRoles> champRoles) {
 		this.champRoles = champRoles;
 	}
-	
+
+	@Override
+	public void update(Observable o, Object arg) {
+		File f = new File(filePath);
+		
+		try {
+			championData = requestSender.sendRequest(realm);
+			objectMapper.writeValue(f, championData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
 }
