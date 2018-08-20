@@ -8,6 +8,7 @@ import { ChampionViewList } from '../model/champion-view-list';
 import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PickGeneratorInfo } from '../model/pick-generator-info';
+import { GeneratedData } from '../model/generated-data';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ChampionService extends AbstractService<Champion, number> {
   private imageLocation = '{0}assets/8.9.1/img/champion/{1}';
   private friendlyPlayersOrder: string[];
 
-  private recommendations: Champion[];
+  private recommendations: GeneratedData;
 
   constructor(protected http: HttpClient, protected auth: AuthService) {
     super(http, 'champions', auth);
@@ -79,11 +80,11 @@ export class ChampionService extends AbstractService<Champion, number> {
     this.friendlyPlayersOrder = order;
   }
 
-  public setRecommendations(recommendations: Champion[]) {
+  public setRecommendations(recommendations: GeneratedData) {
     this.recommendations = recommendations;
   }
 
-  public getRecommendations() {
+  public getRecommendations(): GeneratedData {
     return this.recommendations;
   }
 }

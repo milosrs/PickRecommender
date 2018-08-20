@@ -9,6 +9,7 @@ import { Champion } from '../../model/champion';
 import { ChampionAreaComponent } from './champion-area/champion-area.component';
 import { PickGeneratorInfo } from '../../model/pick-generator-info';
 import { Router } from '@angular/router';
+import { GeneratedData } from '../../model/generated-data';
 
 @Component({
   selector: 'champion-picks',
@@ -75,9 +76,10 @@ export class ChampionPicksComponent implements OnInit {
     
     this.championService.generate(generate)
       .subscribe(resp => {
-        console.log(resp);
-        resp = HelperFunctions.sortArrayByKey(resp, ['name']);
-        this.championService.setRecommendations(resp as Champion[]);
+        const genDat = new GeneratedData(resp['champRecommendations'], resp['spellRecommendations']);
+        console.log(genDat);
+        genDat.champRecommendations = HelperFunctions.sortArrayByKey(genDat.champRecommendations, ['name']);
+        this.championService.setRecommendations(genDat);
         this.router.navigate(['recommendations']);
       });
   }
