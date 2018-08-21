@@ -1,0 +1,14 @@
+.BorderedArea {
+    cursor: default;
+    border-style: inset;
+    border-color: teal;
+}
+
+.Wrapper {
+    width: 100%;
+    height: 50%;
+}
+
+a {
+    cursor: default;
+}

@@ -1,3 +1,10 @@
-<p>
-  summoner-spells works!
-</p>
+<div class="container-fluid Wrapper">
+  <div class="row BorderedArea" *ngFor="let spell of summonerSpells">
+      <div class="col-6" style="align-self: center;">
+        {{spell.name}}
+      </div>
+      <div class="col-6">
+          <img src="../../../assets/8.9.1/img/spells/{{spell.name}}.png" width="64px" height="64px"/>
+      </div>
+  </div>
+</div>

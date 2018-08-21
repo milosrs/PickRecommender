@@ -3,6 +3,7 @@ import { ChampionService } from '../../services/champion.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Champion } from '../../model/champion';
+import { SummmonerSpell } from '../../model/summmoner-spell';
 
 @Component({
   selector: 'app-recommended-champs',
@@ -12,12 +13,15 @@ import { Champion } from '../../model/champion';
 export class RecommendedChampsComponent implements OnInit {
 
   private champList: Champion[];
+  private summonerSpells: SummmonerSpell[];
   private selectedChampion: Champion;
 
   constructor(private champService: ChampionService, private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.champList = this.champService.getRecommendations();
+    const generatedVals = this.champService.getRecommendations();
+    this.champList = generatedVals.champRecommendations;
+    this.summonerSpells = generatedVals.spellRecommendations;
   }
 
   public setSelectedChampion(champion: Champion) {
