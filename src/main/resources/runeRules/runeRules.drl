@@ -1,21 +1,493 @@
-//created on: Aug 13, 2018
 package runeRules
 
-//list any import classes here.
 import java.lang.System;
 import com.lol.model.champions.ChampionsAndRoles;
 import com.lol.model.ChampionRolesEnum;
 import com.lol.model.MapPositionsEnum;
 import com.lol.model.TeamTypesEnum;
 import com.lol.model.champions.Champion;
+import com.lol.model.reforgedRunes.ReforgedRuneDto;
+import com.lol.model.reforgedRunes.ReforgedRunePathDto;
+import com.lol.model.reforgedRunes.ReforgedRuneSlotDto;
+import com.lol.model.recommendation.RuneRecommendation;
+import com.lol.util.Utils;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import com.lol.model.recommendation.PlayerGenerativeData;
+import java.util.Arrays;
 
-rule "Runes test rule"
+global RuneRecommendation recommendation;
+global Utils util;
+global List<ReforgedRunePathDto> allRunes;
+
+rule "Player bottom - Marksman -> Precision + Sorcery"
 	when
-		$champ: ChampionsAndRoles(mainRole contains ChampionRolesEnum.MAGE)
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.BOTTOM)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.MARKSMAN)
 	then
-		System.out.println("Hello from runes!");
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Precision";
+		String secondaryName = "Sorcery";
+		List<String> primaryRuneNames = Arrays.asList("FleetFootwork", "PresenceOfMind", "LegendAlacrity", "CoupDeGrace");
+		List<String> secondaryRuneNames = Arrays.asList("Celerity", "GatheringStorm");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player support - tank or tanky catcher -> Resolve + Inspiration"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.TANK || 
+								  	(mainRole contains ChampionRolesEnum.TANK && 
+								  	 mainRole contains ChampionRolesEnum.CONTROLLER &&
+								  	 subroles contains ChampionRolesEnum.CATCHER))
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Resolve";
+		String secondaryName = "Inspiration";
+		List<String> primaryRuneNames = Arrays.asList("GraspOfTheUndying", "Demolish", "SecondWind", "Unflinching");
+		List<String> secondaryRuneNames = Arrays.asList("FuturesMarket", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player support - Enchanter Controller only -> Resolve + Magic"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.CONTROLLER && mainRole.size == 1 && 
+								  subroles contains ChampionRolesEnum.ENCHANTER)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Resolve";
+		String secondaryName = "Sorcery";
+		List<String> primaryRuneNames = Arrays.asList("Guardian", "BonePlating", "SecondWind", "Revitalize");
+		List<String> secondaryRuneNames = Arrays.asList("BiscuitDelivery", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player support - Catcher Controller only or Controller Slayer -> Domination + Magical Ignite"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  (mainRole contains ChampionRolesEnum.CONTROLLER && mainRole.size == 1 && subroles contains ChampionRolesEnum.CATCHER) ||
+								  (mainRole contains ChampionRolesEnum.CONTROLLER && mainRole contains ChampionRolesEnum.SLAYER && subroles contains ChampionRolesEnum.CATCHER))  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Domination";
+		String secondaryName = "Sorcery";
+		List<String> primaryRuneNames = Arrays.asList("Electrocute", "TasteOfBlood", "ZombieWard", "UltimateHunter");
+		List<String> secondaryRuneNames = Arrays.asList("ManaflowBand", "Scorch");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player support - mage controller -> Magic + Inspiration"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  (mainRole contains ChampionRolesEnum.CONTROLLER && mainRole contains ChampionRolesEnum.MAGE))
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Sorcery";
+		String secondaryName = "Inspiration";
+		List<String> primaryRuneNames = Arrays.asList("ArcaneComet", "NimbusCloak", "Transcendence", "Scorch");
+		List<String> secondaryRuneNames = Arrays.asList("BiscuitDelivery", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player support - specialist -> Magic + Inspiration"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.SPECIALIST)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Sorcery";
+		String secondaryName = "Inspiration";
+		List<String> primaryRuneNames = Arrays.asList("ArcaneComet", "NimbusCloak", "Transcendence", "Scorch");
+		List<String> secondaryRuneNames = Arrays.asList("BiscuitDelivery", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top - Fighter Diver -> Accuracy + Resolve (Tower crusher)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.FIGHTER &&
+								  subroles contains ChampionRolesEnum.DIVER)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Precision";
+		String secondaryName = "Resolve";
+		List<String> primaryRuneNames = Arrays.asList("Conqueror", "Triumph", "LegendBloodline", "LastStand");
+		List<String> secondaryRuneNames = Arrays.asList("Demolish", "Overgrowth");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top - Fighter Juggernaut -> Inspiration + Resolve (Tower crusher)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.FIGHTER &&
+								  subroles contains ChampionRolesEnum.JUGGERNAUT)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Inspiration";
+		String secondaryName = "Resolve";
+		List<String> primaryRuneNames = Arrays.asList("Kleptomancy", "MagicalFootwear", "MinionDematerializer", "TimeWarpTonic");
+		List<String> secondaryRuneNames = Arrays.asList("Demolish", "Overgrowth");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top - SPECIALIST top exclusive -> Inspiration + Resolve (Tower crusher)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition && playedPositions.size == 1 &&
+								  mainRole contains ChampionRolesEnum.SPECIALIST)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Inspiration";
+		String secondaryName = "Resolve";
+		List<String> primaryRuneNames = Arrays.asList("Kleptomancy", "MagicalFootwear", "MinionDematerializer", "TimeWarpTonic");
+		List<String> secondaryRuneNames = Arrays.asList("Demolish", "Overgrowth");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top or mid - SPECIALIST top and mid -> Magic aery + Accuracy(AS + DMG>HP)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition && playedPositions contains MapPositionsEnum.MID &&
+								  mainRole contains ChampionRolesEnum.SPECIALIST)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Sorcery";
+		String secondaryName = "Precision";
+		List<String> primaryRuneNames = Arrays.asList("SummonAery", "ManaflowBand", "Transcendence", "GatheringStorm");
+		List<String> secondaryRuneNames = Arrays.asList("LegendAlacrity", "CutDown");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top or mid - MAGE or CONTROLLER -> Magic aery + Inspiration(dematerializer + cdr)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  (mainRole contains ChampionRolesEnum.MAGE || mainRole contains ChampionRolesEnum.CONTROLLER))  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Sorcery";
+		String secondaryName = "Inspiration";
+		List<String> primaryRuneNames = Arrays.asList("SummonAery", "ManaflowBand", "Transcendence", "GatheringStorm");
+		List<String> secondaryRuneNames = Arrays.asList("MinionDematerializer", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top or mid - SLAYER SKRIMISHER -> Accuracy + Domination"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.SLAYER &&
+								  subroles contains ChampionRolesEnum.SKRIMISHER)  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Precision";
+		String secondaryName = "Domination";
+		List<String> primaryRuneNames = Arrays.asList("LethalTempo", "PresenceOfMind", "LegendBloodline", "CoupDeGrace");
+		List<String> secondaryRuneNames = Arrays.asList("SuddenImpact", "RavenousHunter");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top or mid - SLAYER ASSASSIN -> Domination + Accuracy"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.SLAYER &&
+								  subroles contains ChampionRolesEnum.SKRIMISHER)  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Domination";
+		String secondaryName = "Precision";
+		List<String> primaryRuneNames = Arrays.asList("Electrocute", "SuddenImpact", "GhostPoro", "RavenousHunter");
+		List<String> secondaryRuneNames = Arrays.asList("LegendBloodline", "CoupDeGrace");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top - TANK top -> Resolve(Lifesteal + Crusher) + Inspiration(Dematerializer + CDR)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.TANK)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Resolve";
+		String secondaryName = "Inspiration";
+		List<String> primaryRuneNames = Arrays.asList("GraspOfTheUndying", "Demolish", "Conditioning", "Overgrowth");
+		List<String> secondaryRuneNames = Arrays.asList("MinionDematerializer", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player top or mid - SPECIALIST + MARKSMAN -> Accuracy(Footwork) + Domination(Lifesteal + Ult CDR)"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.SPECIALIST && mainRole contains ChampionRolesEnum.MARKSMAN)  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Precision";
+		String secondaryName = "Domination";
+		List<String> primaryRuneNames = Arrays.asList("FleetFootwork", "PresenceOfMind", "LegendAlacrity", "CoupDeGrace");
+		List<String> secondaryRuneNames = Arrays.asList("TasteOfBlood", "UltimateHunter");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player jungle - TANK -> Resolve + Domination"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.JUNGLE)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.TANK)  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Resolve";
+		String secondaryName = "Domination";
+		List<String> primaryRuneNames = Arrays.asList("GraspOfTheUndying", "Demolish", "Conditioning", "Unflinching");
+		List<String> secondaryRuneNames = Arrays.asList("SuddenImpact", "EyeballCollection");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+
+rule "Player jungle - FIGHTER -> Accuracy + Domination"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.JUNGLE)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.FIGHTER)  
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Precision";
+		String secondaryName = "Domination";
+		List<String> primaryRuneNames = Arrays.asList("PressTheAttack", "Triumph", "LegendBloodline", "CoupDeGrace");
+		List<String> secondaryRuneNames = Arrays.asList("SuddenImpact", "UltimateHunter");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(0, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player jungle - SLAYER -> Domination + Accuracy"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.JUNGLE)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.SLAYER) 
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Domination";
+		String secondaryName = "Precision";
+		List<String> primaryRuneNames = Arrays.asList("Electrocute", "SuddenImpact", "GhostPoro", "RelentlessHunter");
+		List<String> secondaryRuneNames = Arrays.asList("LegendBloodline", "CoupDeGrace");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player jungle - Specialist Marksman -> Domination + Accuracy"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.JUNGLE)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.SPECIALIST &&
+								  mainRole contains ChampionRolesEnum.MARKSMEN)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Domination";
+		String secondaryName = "Precision";
+		List<String> primaryRuneNames = Arrays.asList("DarkHarvest", "TasteOfBlood", "GhostPoro", "RelentlessHunter");
+		List<String> secondaryRuneNames = Arrays.asList("LegendAlacrity", "CoupDeGrace");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
+end
+
+rule "Player jungle - MAGE -> Domination + Magic"
+	when
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.JUNGLE)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  mainRole contains ChampionRolesEnum.MAGE)
+	then
+		List<ReforgedRuneDto> primary = new ArrayList<ReforgedRuneDto>();
+		List<ReforgedRuneDto> secondary = new ArrayList<ReforgedRuneDto>();
+		String primaryName = "Domination";
+		String secondaryName = "Sorcery";
+		List<String> primaryRuneNames = Arrays.asList("Predator", "TasteOfBlood", "GhostPoro", "RavenousHunter");
+		List<String> secondaryRuneNames = Arrays.asList("ManaflowBand", "Waterwalking");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		recommendation = new RuneRecommendation(primaryName, secondaryname, primary, secondary);
 end

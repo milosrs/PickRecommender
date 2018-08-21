@@ -2,15 +2,49 @@ package com.lol.util;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lol.dataBeans.RunesBean;
 import com.lol.model.champions.Champion;
 import com.lol.model.champions.Spell;
 import com.lol.model.champions.Stats;
+import com.lol.model.reforgedRunes.ReforgedRuneDto;
+import com.lol.model.reforgedRunes.ReforgedRunePathDto;
+import com.lol.model.reforgedRunes.ReforgedRuneSlotDto;
 
 @Service
 public class Utils {
 
+	@Autowired
+	private RunesBean runes;
+	
+	public ReforgedRuneDto getRunesFromPathAndLevel(int level, String pathName, String runeKey) {
+		ReforgedRunePathDto inPath = null;
+		ReforgedRuneSlotDto inSlot = null;
+		ReforgedRuneDto ret = null;
+		
+		for(ReforgedRunePathDto path: runes.getRunes()) {
+			if(path.getKey().equals(pathName)) {
+				inPath = path;
+				break;
+			}
+		}
+		
+		if(inPath != null) {
+			inSlot = inPath.getSlots().get(level);
+		}
+		
+		for(ReforgedRuneDto rune: inSlot.getRunes()) {
+			if(rune.getKey().equals(runeKey)) {
+				ret = rune;
+				break;
+			}
+		}
+		
+		return ret;
+	}
+	
 	public static boolean isAdcEligible(Champion champ, Champion enemy) {
 		System.out.println("Champion name: "+ champ.getName());
 		Stats stats = champ.getStats();

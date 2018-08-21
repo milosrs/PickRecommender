@@ -2,6 +2,7 @@ package com.lol.dataBeans;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,7 +14,11 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lol.model.recommendation.RuneRecommendation;
+import com.lol.model.reforgedRunes.ReforgedRuneDto;
 import com.lol.model.reforgedRunes.ReforgedRunePathDto;
+import com.lol.model.viewModel.ReforgedRuneViewModel;
+import com.lol.model.viewModel.RuneRecommendationViewModel;
 import com.lol.requestSender.RunesRequestSender;
 
 @Component
@@ -76,5 +81,36 @@ public class RunesBean implements Observer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public RuneRecommendationViewModel runesRecommendationToRunesRecommendationViewModel(RuneRecommendation recommendation) {
+		RuneRecommendationViewModel ret = new RuneRecommendationViewModel();
+		List<ReforgedRuneViewModel> primary = new ArrayList<ReforgedRuneViewModel>();
+		List<ReforgedRuneViewModel> secondary = new ArrayList<ReforgedRuneViewModel>();
+		
+		ret.setPrimaryRunesPathName(recommendation.getPrimaryRunesPathName());
+		ret.setSecondaryRunesPathName(recommendation.getSecondaryRunesPathName());
+		
+		for(ReforgedRuneDto r : recommendation.getPrimaryRunes()) {
+			primary.add(runeToViewModel(r));
+		}
+		
+		for(ReforgedRuneDto r : recommendation.getSecondaryRunes()) {
+			secondary.add(runeToViewModel(r));
+		}
+		
+		ret.setPrimaryRunes(primary);
+		ret.setSecondaryRunes(secondary);
+		
+		return ret;
+	}
+	
+	public ReforgedRuneViewModel runeToViewModel(ReforgedRuneDto rune) {
+		ReforgedRuneViewModel ret = new ReforgedRuneViewModel();
+		
+		ret.setName(rune.getName());
+		ret.setDescription(rune.getShortDesc());
+		
+		return ret;
 	}
 }
