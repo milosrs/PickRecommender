@@ -101,7 +101,7 @@ public class ChampionServiceImpl implements ChampionService {
 		
 		AllChampionsAndRoles acar = new AllChampionsAndRoles(championInfo.getChampRoles());
 		PlayerGenerativeData playerGenData = new PlayerGenerativeData(friendlyChampions, enemyChampions,
-				MapPositionsEnum.enumFactory(picks.getPlayerPosition().toUpperCase()),
+				MapPositionsEnum.convertShortToEnum(picks.getPlayerPosition()),
 				TeamTypesEnum.valueOf(picks.getFirstPick().toUpperCase()), positionOrder);
 		
 		
@@ -185,7 +185,7 @@ public class ChampionServiceImpl implements ChampionService {
 			Champion champ = championInfo.getChampionDataById(id);
 			ChampionsAndRoles toAdd = findChampInList(champ);
 			
-			friendlyChampions.put(MapPositionsEnum.enumFactory(key.toUpperCase()), toAdd);
+			friendlyChampions.put(MapPositionsEnum.convertShortToEnum(key), toAdd);
 		}
 		
 		return friendlyChampions;
@@ -196,7 +196,7 @@ public class ChampionServiceImpl implements ChampionService {
 		MapPositionsEnum[] positionOrder = new MapPositionsEnum[5];
 		
 		for(String key : picks.getFriendlyPositionsOrder()) {
-			positionOrder[i++] = MapPositionsEnum.enumFactory(key.toUpperCase());
+			positionOrder[i++] = MapPositionsEnum.convertShortToEnum(key);
 		}
 		
 		return positionOrder;

@@ -5,7 +5,9 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,7 +30,7 @@ public class RuneController {
 	private RunesBean runesBean;
 	
 	@PostMapping("/{championId}")
-	public ResponseEntity<?> getChampionInfoForList(@PathParam("championId") Integer championId, String playerPosition) {
+	public ResponseEntity<?> getChampionInfoForList(@PathVariable("championId") Integer championId, @RequestBody String playerPosition) {
 		RuneRecommendation recommendations = runeService.recommendRunes(championId, playerPosition);
 		RuneRecommendationViewModel ret = runesBean.runesRecommendationToRunesRecommendationViewModel(recommendations);
 		

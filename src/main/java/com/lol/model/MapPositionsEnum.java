@@ -11,8 +11,9 @@ public enum MapPositionsEnum {
 		return this;
 	}
 	
-	public static MapPositionsEnum enumFactory(String name) {
+	public static MapPositionsEnum convertShortToEnum(String name) {
 		MapPositionsEnum toRet = null;
+		name = name.toUpperCase();
 		
 		if(name.equals("JG"))
 			toRet = MapPositionsEnum.JUNGLE;
