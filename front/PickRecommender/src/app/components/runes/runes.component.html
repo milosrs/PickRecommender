@@ -1,3 +1,49 @@
 <div class="container-fluid">
-  <h2>Runes work!</h2>
+  <div class="row" *ngIf="runesObject === null || runesObject === undefined">
+    Select a champion to see runes
+  </div>
+
+  <div class="row" *ngIf="runesObject !== null && runesObject !== undefined">
+
+    <div class="col-6">
+      <div class="row">
+        Primary: {{runesObject.primaryRunesPathName}}
+      </div>
+
+      <div class="row" *ngFor="let prim of runesObject.primaryRunes">
+        <div class="row"*ngIf="prim === runesObject.primaryRunes[0]">
+          <div class="col-6 Keystone">
+              <img src="../../assets/8.9.1/img/runes/{{prim.icon}}" width="64px" height="64px"/>
+          </div>
+          <div class="col-6 SmallBold">
+            {{prim.name}}
+          </div>
+        </div>
+
+        <div class="row" *ngIf="prim !== runesObject.primaryRunes[0]">
+            <div class="col-6" >
+                <img src="../../assets/8.9.1/img/runes/{{prim.icon}}" width="64px" height="64px"/>
+            </div>
+            <div class="col-6 SmallBold">
+              {{prim.name}}
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="row">
+        Secondary: {{runesObject.secondaryRunesPathName}}
+      </div>
+      <div class="row" *ngFor="let sec of runesObject.secondaryRunes">
+        <div class="col-6">
+            <img src="../../assets/8.9.1/img/runes/{{sec.icon}}" width="64px" height="64px"/>
+        </div>
+        <div class="col-6 SmallBold">
+          {{sec.name}}
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

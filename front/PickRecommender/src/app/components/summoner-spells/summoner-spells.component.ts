@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '../../../../node_modules/@angular/router';
 import { SummmonerSpell } from '../../model/summmoner-spell';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'summoner-spells',
@@ -17,10 +16,6 @@ export class SummonerSpellsComponent implements OnInit {
 
   ngOnInit() {
     this.hoveredSpell = null;
-  }
-
-  togglePopover() {
-    $('.popover').popover('toggle');
   }
 
   onMouseEnter(spell: SummmonerSpell) {

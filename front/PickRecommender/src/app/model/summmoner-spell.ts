@@ -1,3 +1,3 @@
 export class SummmonerSpell {
-    constructor(public description: string, public name: string, public fullImagePath: string) {}
+    constructor(public description, public name, public fullImagePath) {}
 }

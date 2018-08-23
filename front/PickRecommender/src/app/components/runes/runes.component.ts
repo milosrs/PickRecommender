@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { RuneRecommendation } from '../../model/rune-recommendation';
 
 @Component({
-  selector: 'app-runes',
+  selector: 'runes',
   templateUrl: './runes.component.html',
   styleUrls: ['./runes.component.css']
 })
 export class RunesComponent implements OnInit {
+
+  @Input() public runesObject: RuneRecommendation;
 
   constructor() { }
 

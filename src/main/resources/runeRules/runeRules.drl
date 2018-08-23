@@ -244,7 +244,7 @@ rule "Player top or mid - SPECIALIST top and mid -> Magic aery + Accuracy(AS + D
 		$fact: RunesNames()
 		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
 		$champ: ChampionsAndRoles(playedPositions contains $playerPosition && playedPositions contains MapPositionsEnum.MID &&
-								  mainRole contains ChampionRolesEnum.SPECIALIST)
+								  mainRole contains ChampionRolesEnum.SPECIALIST && playedPositions not contains MapPositionsEnum.BOTTOM)
 	then
 		primaryName = "Sorcery";
 		secondaryName = "Precision";

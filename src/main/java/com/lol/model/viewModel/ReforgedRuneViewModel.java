@@ -3,6 +3,7 @@ package com.lol.model.viewModel;
 public class ReforgedRuneViewModel {
 	private String name;
 	private String description;
+	private String icon;
 	
 	public ReforgedRuneViewModel(String name, String description) {
 		super();
@@ -29,4 +30,13 @@ public class ReforgedRuneViewModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	
 }

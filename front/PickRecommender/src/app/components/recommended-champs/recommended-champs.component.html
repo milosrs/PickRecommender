@@ -1,25 +1,24 @@
+<h2 align="center">Our recommendations. Select a champion to see recommended runes.</h2>
+
 <div class="container-fluid">
-
-  <div class="row" align="center">
-      <h3 align="center">These are recommended champions, forged just for you.</h3>
-      <h5 align="center">Pick a champion and recommended <strong>runes</strong> and <strong>summoner spells</strong> will appear.</h5>
-  </div>
-
 
   <div class="row">
     <div class="col-2">
-      <h6>Spells</h6>
+      <h4 align="center">Spells</h4>
       <summoner-spells 
         [summonerSpells]="summonerSpells"></summoner-spells>
     </div>
     <div class="col-6">
+        <h4 align="center">Champions</h4>
         <champion-area
           [shouldWaitForPositionSelection]="false"
           [champList]='champList'
-          (championSelectEvent)='setSelectedChampions($event)'></champion-area>
+          (championSelectEvent)='getRunes($event)'></champion-area>
     </div>
     <div class="col-4">
-      <p>Here go runes</p>
+        <h4 align="center">Runes</h4>
+          <runes
+            [runesObject]="runesObject"></runes>
     </div>
   </div>
 </div>

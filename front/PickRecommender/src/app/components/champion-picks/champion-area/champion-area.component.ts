@@ -85,17 +85,22 @@ export class ChampionAreaComponent implements OnInit {
   }
 
   selectChampion(champion) {
-    if(this.selectedPosition['type'] === 'Friendly') {
+    if(this.shouldWaitForPositionSelection) {
+      if(this.selectedPosition['type'] === 'Friendly') {
         this.friendlyChampions['type'] = this.selectedPosition['type'];
         this.friendlyChampions[this.selectedPosition['id']] = champion;
         this.championSelectEvent.emit(this.friendlyChampions);
-    } else if (this.selectedPosition['type'] === 'Opponent') {
-        this.opponentChampions['type'] = this.selectedPosition['type'];
-        this.opponentChampions[this.selectedPosition['id']] = champion;
-        this.championSelectEvent.emit(this.opponentChampions);
-    } else {
+      } else if (this.selectedPosition['type'] === 'Opponent') {
+          this.opponentChampions['type'] = this.selectedPosition['type'];
+          this.opponentChampions[this.selectedPosition['id']] = champion;
+          this.championSelectEvent.emit(this.opponentChampions);
+      } else {
         this.championSelectEvent.emit(champion);
+      }
+    } else {
+      this.championSelectEvent.emit(champion);
     }
+    
   }
 
   getFriendlyPicks() {

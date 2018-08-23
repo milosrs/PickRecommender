@@ -4,6 +4,8 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Champion } from '../../model/champion';
 import { SummmonerSpell } from '../../model/summmoner-spell';
+import { RunesService } from '../../services/runes.service';
+import { RuneRecommendation } from '../../model/rune-recommendation';
 
 @Component({
   selector: 'app-recommended-champs',
@@ -15,8 +17,11 @@ export class RecommendedChampsComponent implements OnInit {
   private champList: Champion[];
   private summonerSpells: SummmonerSpell[];
   private selectedChampion: Champion;
+  private runesObject: RuneRecommendation;
 
-  constructor(private champService: ChampionService, private auth: AuthService, private router: Router) { }
+  constructor(private champService: ChampionService, 
+              private auth: AuthService, private router: Router,
+              private runesService: RunesService) { }
 
   ngOnInit() {
     const generatedVals = this.champService.getRecommendations();
@@ -24,8 +29,15 @@ export class RecommendedChampsComponent implements OnInit {
     this.summonerSpells = generatedVals.spellRecommendations;
   }
 
-  public setSelectedChampion(champion: Champion) {
-    this.selectedChampion = champion;
-  }
+  public getRunes(champion: Champion) {
+    if(champion !== this.selectedChampion) {
+      this.selectedChampion = champion;
 
+      this.runesService.generateRecommendation(this.selectedChampion.id, this.champService.getPlayerPosition())
+                      .subscribe(resp => {
+                        console.log(this.runesObject);
+                        this.runesObject = resp as RuneRecommendation;
+                      });
+    }
+  }
 }

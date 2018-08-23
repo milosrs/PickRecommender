@@ -110,6 +110,7 @@ public class RunesBean implements Observer{
 		
 		ret.setName(rune.getName());
 		ret.setDescription(rune.getShortDesc());
+		ret.setIcon(rune.getIcon());
 		
 		return ret;
 	}
