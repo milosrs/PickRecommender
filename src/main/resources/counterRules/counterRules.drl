@@ -64,7 +64,7 @@ rule "Player plays a position that enemy team hasn't covered"
 		$ac: AllChampionsAndRoles($allChampions: allChampions)
 		Number(intValue == 0) from accumulate(
 			ChampionsAndRoles(playedPositions contains $position) 
-				from $allChampions,
+				from $playerData.opponentTeam,
 				init(int count = 0;),
 				action(count++;),
 				reverse(count--;),
@@ -370,6 +370,27 @@ rule "Player plays JUNGLE, oponnents have a SPECIALIST - SLAYER/TANK-VANGUARD "
 		recommendations.addAll($list);
 end
 
+rule "Player plays JUNGLE, oponnents have a jungle TANK - DIVER "
+	no-loop
+	when
+		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.JUNGLE)
+		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.JUNGLE && 
+										mainRole contains ChampionRolesEnum.TANK,
+						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
+		AllChampionsAndRoles($allChampions: allChampions)
+		accumulate(
+			ChampionsAndRoles(
+				$champion: champion,
+				$stats: champion.stats,
+				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.JUNGLE &&
+				subroles contains ChampionRolesEnum.DIVER
+			) from $allChampions,
+			$list: collectList($champion))
+	then
+		System.out.println("Player plays JUNGLE, oponnents have a jungle TANK - Mage Jungle");
+		recommendations.addAll($list);
+end
+
 rule "Player plays JUNGLE, oponnents have a jungle DIVER/JUGGERNAUT - SPECIALIST/VANGUARD "
 	no-loop
 	when
@@ -415,13 +436,12 @@ rule "Player plays JUNGLE, oponnents have a JUNGLE MARKSMAN - MAGES/ASSASSINS "
 		recommendations.addAll($list);
 end
 
-rule "Player plays JUNGLE, oponnents have a MAGE/ASSASSIN JUNGLE - VANGUARD"
+rule "Player plays JUNGLE, oponnents have a SLAYER JUNGLE - FIGHTER DIVER"
 	no-loop
 	when
 		$playerData: PlayerGenerativeData(playerPosition == MapPositionsEnum.JUNGLE)
 		$enemyChamp: ChampionsAndRoles(playedPositions contains MapPositionsEnum.JUNGLE && 
-										(mainRole contains ChampionRolesEnum.MAGE ||
-							 			 subroles contains ChampionRolesEnum.ASSASSIN),
+										(mainRole contains ChampionRolesEnum.SLAYER),
 						  				  $enemyStats: champion.stats) from $playerData.opponentTeam
 		AllChampionsAndRoles($allChampions: allChampions)
 		accumulate(
@@ -429,11 +449,11 @@ rule "Player plays JUNGLE, oponnents have a MAGE/ASSASSIN JUNGLE - VANGUARD"
 				$champion: champion,
 				$stats: champion.stats,
 				name != $enemyChamp.name && playedPositions contains MapPositionsEnum.JUNGLE &&
-				(subroles contains ChampionRolesEnum.VANGUARD || mainRole contains ChampionRolesEnum.SPECIALIST)
+				(subroles contains ChampionRolesEnum.DIVER)
 			) from $allChampions,
 			$list: collectList($champion)) 
 	then
-		System.out.println("Player plays JUNGLE, oponnents have a MAGE/ASSASSIN JUNGLE - VANGUARD");
+		System.out.println("Player plays JUNGLE, oponnents have a SLAYER JUNGLE - FIGHTER DIVER");
 		recommendations.addAll($list);
 end
 
@@ -496,8 +516,8 @@ rule "Player plays MID, oponnents have a SLAYER MID - SPECIALIST/TANK/MAGE CONTR
 				 mainRole contains ChampionRolesEnum.TANK ||
 				 (mainRole contains ChampionRolesEnum.MAGE && mainRole contains ChampionRolesEnum.CONTROLLER))
 			) from $allChampions,
-			$list: collectList($champion)) 
+			$list: collectList($champion))
 	then
-		System.out.println("Player plays MID, oponnents have a MAGE MID - ASSASSIN MID");
+		System.out.println("Player plays MID, oponnents have a SLAYER MID - SPECIALIST/TANK/MAGE CONTROLLER");
 		recommendations.addAll($list);
 end

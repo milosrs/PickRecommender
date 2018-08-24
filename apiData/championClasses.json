@@ -212,8 +212,8 @@
 	
 	{
 	    "name": "Graves",
-	    "mainRole": ["SPECIALIST"],
-	    "subroles": ["SPECIALIST"]
+	    "mainRole": ["SPECIALIST", "MARKSMAN"],
+	    "subroles": ["SPECIALIST", "MARKSMAN"]
 	 },
 	
 	{

@@ -46,14 +46,40 @@ rule "Player bottom - Marksman -> Precision + Sorcery"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
-rule "Player support - tank or tanky catcher -> Resolve + Inspiration"
+rule "Player support - tank warden -> Resolve + Inspiration"
 	when
 		$fact: RunesNames()
 		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
 		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
-								  mainRole contains ChampionRolesEnum.TANK || 
+								  mainRole contains ChampionRolesEnum.TANK &&
+								  subroles contains ChampionRolesEnum.WARDEN)
+	then
+		primaryName = "Resolve";
+		secondaryName = "Inspiration";
+		$fact.setPrimaryName(primaryName);
+		$fact.setSecondaryName(secondaryName);
+		List<String> primaryRuneNames = Arrays.asList("Guardian", "FontOfLife", "Conditioning", "Revitalize");
+		List<String> secondaryRuneNames = Arrays.asList("FuturesMarket", "CosmicInsight");
+		int i = 0;
+		
+		for(String runeName : primaryRuneNames) {
+			primary.add(util.getRunesFromPathAndLevel(i++, primaryName, runeName));
+		}
+		
+		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
+		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
+end
+
+rule "Player support - tank vanguard or tanky catcher -> Resolve + Inspiration"
+	when
+		$fact: RunesNames()
+		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+								  (mainRole contains ChampionRolesEnum.TANK && subroles contains ChampionRolesEnum.VANGUARD) || 
 								  	(mainRole contains ChampionRolesEnum.TANK && 
 								  	 mainRole contains ChampionRolesEnum.CONTROLLER &&
 								  	 subroles contains ChampionRolesEnum.CATCHER))
@@ -72,18 +98,20 @@ rule "Player support - tank or tanky catcher -> Resolve + Inspiration"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player support - Enchanter Controller only -> Resolve + Magic"
 	when
 		$fact: RunesNames()
 		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.SUPPORT)
-		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
-								  mainRole contains ChampionRolesEnum.CONTROLLER && mainRole.size == 1 && 
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition && mainRole not contains ChampionRolesEnum.MAGE && 
+								  mainRole not contains ChampionRolesEnum.TANK &&
+								  mainRole contains ChampionRolesEnum.CONTROLLER &&
 								  subroles contains ChampionRolesEnum.ENCHANTER)
 	then
 		primaryName = "Resolve";
-		secondaryName = "Sorcery";
+		secondaryName = "Inspiration";
 		$fact.setPrimaryName(primaryName);
 		$fact.setSecondaryName(secondaryName);
 		List<String> primaryRuneNames = Arrays.asList("Guardian", "BonePlating", "SecondWind", "Revitalize");
@@ -96,6 +124,7 @@ rule "Player support - Enchanter Controller only -> Resolve + Magic"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player support - Catcher Controller only or Controller Slayer -> Domination + Magical Ignite"
@@ -120,6 +149,7 @@ rule "Player support - Catcher Controller only or Controller Slayer -> Dominatio
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player support - mage controller -> Magic + Inspiration"
@@ -143,6 +173,7 @@ rule "Player support - mage controller -> Magic + Inspiration"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player support - specialist -> Magic + Inspiration"
@@ -166,6 +197,7 @@ rule "Player support - specialist -> Magic + Inspiration"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top - Fighter Diver -> Accuracy + Resolve (Tower crusher)"
@@ -214,6 +246,7 @@ rule "Player top - Fighter Juggernaut -> Inspiration + Resolve (Tower crusher)"
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top - SPECIALIST top exclusive -> Inspiration + Resolve (Tower crusher)"
@@ -237,9 +270,11 @@ rule "Player top - SPECIALIST top exclusive -> Inspiration + Resolve (Tower crus
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top or mid - SPECIALIST top and mid -> Magic aery + Accuracy(AS + DMG>HP)"
+	no-loop
 	when
 		$fact: RunesNames()
 		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
@@ -260,13 +295,14 @@ rule "Player top or mid - SPECIALIST top and mid -> Magic aery + Accuracy(AS + D
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top or mid - MAGE or CONTROLLER -> Magic aery + Inspiration(dematerializer + cdr)"
 	when
 		$fact: RunesNames()
 		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
-		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition && mainRole not contains ChampionRolesEnum.SLAYER &&
 								  (mainRole contains ChampionRolesEnum.MAGE || mainRole contains ChampionRolesEnum.CONTROLLER))  
 	then
 		primaryName = "Sorcery";
@@ -283,6 +319,7 @@ rule "Player top or mid - MAGE or CONTROLLER -> Magic aery + Inspiration(demater
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top or mid - SLAYER SKRIMISHER -> Accuracy + Domination"
@@ -307,6 +344,7 @@ rule "Player top or mid - SLAYER SKRIMISHER -> Accuracy + Domination"
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top or mid - SLAYER ASSASSIN -> Domination + Accuracy"
@@ -331,6 +369,7 @@ rule "Player top or mid - SLAYER ASSASSIN -> Domination + Accuracy"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top - TANK top -> Resolve(Lifesteal + Crusher) + Inspiration(Dematerializer + CDR)"
@@ -354,13 +393,14 @@ rule "Player top - TANK top -> Resolve(Lifesteal + Crusher) + Inspiration(Demate
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player top or mid - SPECIALIST + MARKSMAN -> Accuracy(Footwork) + Domination(Lifesteal + Ult CDR)"
 	when
 		$fact: RunesNames()
 		$playerPosition: MapPositionsEnum(value == MapPositionsEnum.TOP || value == MapPositionsEnum.MID)
-		$champ: ChampionsAndRoles(playedPositions contains $playerPosition &&
+		$champ: ChampionsAndRoles(playedPositions contains $playerPosition && mainRole not contains ChampionRolesEnum.MAGE &&
 								  mainRole contains ChampionRolesEnum.SPECIALIST && mainRole contains ChampionRolesEnum.MARKSMAN)  
 	then
 		primaryName = "Precision";
@@ -377,6 +417,7 @@ rule "Player top or mid - SPECIALIST + MARKSMAN -> Accuracy(Footwork) + Dominati
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player jungle - TANK -> Resolve + Domination"
@@ -400,6 +441,7 @@ rule "Player jungle - TANK -> Resolve + Domination"
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 
@@ -424,6 +466,7 @@ rule "Player jungle - FIGHTER -> Accuracy + Domination"
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player jungle - SLAYER -> Domination + Accuracy"
@@ -447,6 +490,7 @@ rule "Player jungle - SLAYER -> Domination + Accuracy"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player jungle - Specialist Marksman -> Domination + Accuracy"
@@ -471,6 +515,7 @@ rule "Player jungle - Specialist Marksman -> Domination + Accuracy"
 		
 		secondary.add(util.getRunesFromPathAndLevel(2, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end
 
 rule "Player jungle - MAGE -> Domination + Magic"
@@ -494,4 +539,5 @@ rule "Player jungle - MAGE -> Domination + Magic"
 		
 		secondary.add(util.getRunesFromPathAndLevel(1, secondaryName, secondaryRuneNames.get(0)));
 		secondary.add(util.getRunesFromPathAndLevel(3, secondaryName, secondaryRuneNames.get(1)));
+		System.out.println(drools.getRule().getName());
 end

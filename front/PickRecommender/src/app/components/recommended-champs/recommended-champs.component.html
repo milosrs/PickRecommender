@@ -10,10 +10,13 @@
     </div>
     <div class="col-6">
         <h4 align="center">Champions</h4>
-        <champion-area
+        <champion-area *ngIf="champList.length > 0 && champList !== null && champList !== undefined"
           [shouldWaitForPositionSelection]="false"
           [champList]='champList'
           (championSelectEvent)='getRunes($event)'></champion-area>
+        <p *ngIf="champList.length === 0 && champList === null && champList === undefined">
+          No recommended champions for these picks. :(
+        </p>
     </div>
     <div class="col-4">
         <h4 align="center">Runes</h4>
