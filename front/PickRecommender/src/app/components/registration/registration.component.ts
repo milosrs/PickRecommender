@@ -32,7 +32,7 @@ export class RegistrationComponent implements OnInit {
   private errorMessage = null;
   private serverList: any;
 
-  constructor(protected auth: AuthService, protected rt: Router) {
+  constructor(protected auth: AuthService, protected router: Router) {
   }
 
   ngOnInit() {
@@ -41,6 +41,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   tryRegister() {
+    debugger;
     const areAnyEmptyValues = HelperFunctions.containsEmptyValues(this.regInfo);
     const arePasswordsMatching = this.regInfo.password === this.repeatPW;
     const shouldSendToServer = !areAnyEmptyValues && arePasswordsMatching;
@@ -48,7 +49,8 @@ export class RegistrationComponent implements OnInit {
     if (shouldSendToServer) {
       this.errorMessage = null;
       const summonerAuth = new SummonerAuth(this.regInfo.userName, this.regInfo.password, this.regInfo.realm);
-      this.auth.register(summonerAuth).subscribe(data => console.log(data), err => {console.log(err)}).unsubscribe();
+      this.auth.register(summonerAuth).subscribe(data => this.router.navigate(['/picker']),
+                                                  err => this.errorMessage = 'Error registering you. Please try again.');
     } else {
       this.clearImportantDetails();
       if (arePasswordsMatching === false) {

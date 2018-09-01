@@ -59,7 +59,7 @@ end
 
 rule "Player plays a position that enemy team hasn't covered"
 	when
-		$playerData: PlayerGenerativeData($position: playerPosition)
+		$playerData: PlayerGenerativeData($position: playerPosition && playerPosition != friendlyTeamPositionOrder[0])
 		$summoner: SummonerDto()
 		$ac: AllChampionsAndRoles($allChampions: allChampions)
 		Number(intValue == 0) from accumulate(

@@ -97,20 +97,15 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
     		.sessionManagement()
     		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     		.and()
+    		.anonymous().and()
     		.authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
             .and()
-    		.authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated()
-    		.and()
-    		.authorizeRequests().antMatchers("/champions/**").authenticated();
+    		.authorizeRequests().antMatchers("/auth/**").permitAll()
+    		.anyRequest().authenticated();
     	
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 	}
-    
-    @Override
-	public void configure(WebSecurity web) throws Exception{
-    	web.ignoring().antMatchers("/auth/**");
-    }
 	
 	
 	@Bean
